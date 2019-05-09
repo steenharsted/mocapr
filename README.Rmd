@@ -8,13 +8,23 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-`mocapr` uses a series of tidyverse packages to import ([`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), `forcats`(https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.
+`mocapr` uses a series of tidyverse packages to import ([`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
+
+The current state of the package is **work in progress**.
 
 ##Why this package?
+Motion capture data has become readily availble, and more will come
+It is becoming easy to collect this type of data
+Most systems are using their own export formats (especially true for markerless motion capture), and 
 
 ##The Vision
 
 ##Can you help?
+Yes. Clinical background, ended up with the programming part by nessescity. No programming skills when I started the Ph.D., and I consider myself a beginner/intermediate R-user. While I think the code is correct, I am quite sure that it is not optimal. Input....
+
+Data + video(if possible)
+Function to import data into the `mocapr`format
+
 
 ## Installation
 `mocapr` can  be installed directly from github using devtools:
@@ -25,13 +35,23 @@ devtools::install_github('steenharsted/mocapr')
 ```
 
 
-##Example 1
+##The Data
+All data currently obtained from the CapturyLive system
+Kinetisense to come
+Vicon plug-in-gait likely to come
+
 ```{r}
 library(mocapr)
 
 #Data
 Jump <- mocapr::jump_1
+head(Jump)
+```
 
+
+
+##Example 1
+```{r}
 #Project to Anatomical Planes 
 Jump <- cbind(Jump,
               #Upper extremity
