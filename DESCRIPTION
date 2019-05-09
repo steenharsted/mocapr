@@ -20,3 +20,5 @@ Imports:
     magrittr,
     dplyr,
     forcats
+URL: https://github.com/steenharsted/mocapr
+BugReports: https://github.com/steenharsted/mocapr/issues
