@@ -1,10 +1,10 @@
 
-#Captury Import Jump Function----
-#' Import_Captury
+#captury import function----
+#' import_captury
 #'
 #' Import_Captury() takes the filepath and filename of a .csv file containg motion capture data captured and exported using the CapturyLive motion capture system. The
 #' .csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abreviated names (e.g. left knee flexion =
-#' LKF, global Y coordinate of the right hip joint is RHY).Please see the package vignette for a more detailed description.
+#' LKF, global Y coordinate of the right hip joint is RHY).Please see the GitHub README.me for a more detailed description.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Captury system
 #'
@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples dontrun{}
-Import_Captury <- function(filename){
+import_captury <- function(filename){
 
   #Name Variables----
   df <-
@@ -87,15 +87,15 @@ Import_Captury <- function(filename){
 
 
 
-#Project to Anatomical Planes----
-#' Project_to_AP()
+#project single joint to the Anatomical Planes(AP)----
+#' project_single_joint_to_AP()
 #'
-#'Project_to_AP() takes the global 3D coordinates of a joint and project these coordinates onto the anatomical planes of the subject (the frontal and the sagital plane).
+#'project_single_joint_to_AP() takes the global 3D coordinates of a single joint and project these coordinates onto the anatomical planes of the subject (the frontal and the sagital plane).
 #'The frontal plane is defined as the plane between the two hip joint centers that is perpendicular to the floor. The sagital plane is perpendicular to the frontal
 #'and floor plane.
-#'As the subject moves the anatomical planes will change for each frame, as opposed to the movement planes created by the Project_to_MP() function where the planes
-#'stay the same throught the movement.
-#'Please see the package vignette for a more detailed description.
+#'As the subject moves the anatomical planes will change with each frame as the pose of the subject changes. This is different to the movement planes created
+#'by the project_single_joint_to_MP() function where the planes stay the same througout the movement.
+#'Please see the GitHub README.me for a more detailed description.
 #'
 #' @param .data A tibble containing the global 3D positions of the joints given in the parameters X, Y, Z and the 3D  positions of both hip joints.
 #' @param Y The name of the global Y coordinate column (up direction) of the joint you wish to project to the frontal plane
@@ -103,11 +103,11 @@ Import_Captury <- function(filename){
 #' @param Z The name of the global Z coordinate column of the joint you wish to project to the frontal plane
 #' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
 #'
-#' @return A tibble containig two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
+#' @return A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
 #' @export
 #'
 #' @examples dontrun{}
-Project_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
+project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
   Y <- dplyr::enquo(Y)
   X <- dplyr::enquo(X)
   Z <- dplyr::enquo(Z)
@@ -149,15 +149,15 @@ Project_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 }
 
 
-#Project to Movement Plane ----
-#Project to Movement Plane
-#' Project_to_MP
+#project single joint to the Movement Planes(MP) ----
+#project_single_joint_to_MP
+#' project_single_joint_to_MP()
 #'
-#' Project_to_MP() projects the global joint center positions onto the movement plane (MP). MP is calculated by first creating a direction going from
-#' the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame. Please see the vignette for a
+#' project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement plane (MP). MP is calculated by first creating a direction going from
+#' the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame. Please see the GitHub README.me for a
 #' more in-depth explanation.
 #'
-#' @param .data A tibble containing the global 3D positions of the joints given in the parameters X, Y, Z and the 3D  positions of both hip joints.
+#' @param .data A tibble containing the global 3D positions of the joint given in the parameters X, Y, Z and the 3D  positions of both hip joints.
 #' @param Y The name of the global Y coordinate column (up direction) of the joint you wish to project to the movement plane
 #' @param X The name of the global X coordinate column of the joint you wish to project to the movement plane
 #' @param Z The name of the global Z coordinate column of the joint you wish to project to the movement plane
@@ -167,7 +167,7 @@ Project_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @export
 #'
 #' @examples dontrun{}
-  Project_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
+project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     Y <- dplyr::enquo(Y)
     X <- dplyr::enquo(X)
     Z <- dplyr::enquo(Z)
@@ -227,7 +227,8 @@ Project_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 
 
 #Animate Movement----
-#' animate_movement()
+#' animate_movement().
+#' Please see GitHub README.me for a more detailed description.
 #'
 #' @param .data A tibble containing joint center positions in the movement plane generated using the project_to_MP() function.
 #' @param ... These parameters are passed to the gganimate::animate() function
@@ -440,3 +441,66 @@ Project_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
     gganimate::animate(df_plot, ...)
   }
 
+
+#' project_full_body_to_MP()
+#' project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.
+#' The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
+#' Please see the GitHub README.md fpr a more detailed description.
+#'
+#' @param .data A tibble containing 3D positions of the following left and right joints: toe, ankle, knee, hip, wrist, elbow, and shoulder
+#'
+#' @return A tibble with the positions of the pre-specied joint-centers in the movement planes.
+#' @export
+#'
+#' @examples dontrun{}
+  project_full_body_to_MP <- function(.data){
+    dplyr::bind_cols(.data,
+                     #Upper extremity
+                     project_single_joint_to_MP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS"),
+                     project_single_joint_to_MP(.data, Y=LEY, X=LEX, Z=LEZ, New_Name = "LE"),
+                     project_single_joint_to_MP(.data, Y=LWY, X=LWX, Z=LWZ, New_Name = "LW"),
+                     project_single_joint_to_MP(.data, Y=RSY, X=RSX, Z=RSZ, New_Name = "RS"),
+                     project_single_joint_to_MP(.data, Y=REY, X=REX, Z=REZ, New_Name = "RE"),
+                     project_single_joint_to_MP(.data, Y=RWY, X=RWX, Z=RWZ, New_Name = "RW"),
+                     #Lower extremity
+                     project_single_joint_to_MP(.data,Y=LKY, X=LKX, Z=LKZ, New_Name = "LK"),
+                     project_single_joint_to_MP(.data,Y=LHY, X=LHX, Z=LHZ, New_Name = "LH"),
+                     project_single_joint_to_MP(.data,Y=LAY, X=LAX, Z=LAZ, New_Name = "LA"),
+                     project_single_joint_to_MP(.data,Y=LTY, X=LTX, Z=LTZ, New_Name = "LT"),
+                     project_single_joint_to_MP(.data,Y=RKY, X=RKX, Z=RKZ, New_Name = "RK"),
+                     project_single_joint_to_MP(.data,Y=RHY, X=RHX, Z=RHZ, New_Name = "RH"),
+                     project_single_joint_to_MP(.data,Y=RAY, X=RAX, Z=RAZ, New_Name = "RA"),
+                     project_single_joint_to_MP(.data,Y=RTY, X=RTX, Z=RTZ, New_Name = "RT"))
+  }
+
+
+  #' project_full_body_to_AP()
+  #' project_full_body_to_AP() uses project_single_joint_to_AP() to project a pre-specified collection of joint centers onto the anatomical planes of the subject.
+  #' The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
+  #' Please see the GitHub README.md fpr a more detailed description.
+  #'
+  #' @param .data A tibble containing 3D positions of the following left and right joints: toe, ankle, knee, hip, wrist, elbow, and shoulder
+  #'
+  #' @return A tibble with the positions of the pre-specied joint-centers in the anatomical planes.
+  #' @export
+  #'
+  #' @examples dontrun{}
+  project_full_body_to_AP <- function(.data){
+    dplyr::bind_cols(.data,
+                     #Upper extremity
+                     project_single_joint_to_AP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS"),
+                     project_single_joint_to_AP(.data, Y=LEY, X=LEX, Z=LEZ, New_Name = "LE"),
+                     project_single_joint_to_AP(.data, Y=LWY, X=LWX, Z=LWZ, New_Name = "LW"),
+                     project_single_joint_to_AP(.data, Y=RSY, X=RSX, Z=RSZ, New_Name = "RS"),
+                     project_single_joint_to_AP(.data, Y=REY, X=REX, Z=REZ, New_Name = "RE"),
+                     project_single_joint_to_AP(.data, Y=RWY, X=RWX, Z=RWZ, New_Name = "RW"),
+                     #Lower extremity
+                     project_single_joint_to_AP(.data,Y=LKY, X=LKX, Z=LKZ, New_Name = "LK"),
+                     project_single_joint_to_AP(.data,Y=LHY, X=LHX, Z=LHZ, New_Name = "LH"),
+                     project_single_joint_to_AP(.data,Y=LAY, X=LAX, Z=LAZ, New_Name = "LA"),
+                     project_single_joint_to_AP(.data,Y=LTY, X=LTX, Z=LTZ, New_Name = "LT"),
+                     project_single_joint_to_AP(.data,Y=RKY, X=RKX, Z=RKZ, New_Name = "RK"),
+                     project_single_joint_to_AP(.data,Y=RHY, X=RHX, Z=RHZ, New_Name = "RH"),
+                     project_single_joint_to_AP(.data,Y=RAY, X=RAX, Z=RAZ, New_Name = "RA"),
+                     project_single_joint_to_AP(.data,Y=RTY, X=RTX, Z=RTZ, New_Name = "RT"))
+  }

@@ -2,7 +2,8 @@
 % Please edit documentation in R/01_Functions.R
 \name{animate_movement}
 \alias{animate_movement}
-\title{animate_movement()}
+\title{animate_movement().
+Please see GitHub README.me for a more detailed description.}
 \usage{
 animate_movement(.data, ...)
 }
@@ -15,7 +16,8 @@ animate_movement(.data, ...)
 An animated gif
 }
 \description{
-animate_movement()
+animate_movement().
+Please see GitHub README.me for a more detailed description.
 }
 \examples{
 dontrun{}
