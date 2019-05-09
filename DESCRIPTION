@@ -1,0 +1,22 @@
+Package: mocapr
+Type: Package
+Title: Functions to import, plot, animate, and analuse motion capture data.
+Version: 0.1.0
+Author: Steen Harsted
+Maintainer: Steen Harsted <steenharsted@gmail.com>
+Description: Functions to import, plot, animate, and analuse motion capture data.
+    Use four spaces when indenting paragraphs within the Description.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
+Imports: 
+    tidyr,
+    gganimate,
+    ggplot2,
+    stringr,
+    readr,
+    magrittr,
+    dplyr,
+    forcats
