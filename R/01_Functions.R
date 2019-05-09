@@ -13,8 +13,6 @@
 #'
 #' @examples dontrun{}
 Import_Captury <- function(filename){
-  #If File doesn´t exist return NA
-  if(!file.exists(paste0(filename))) {return(NA)}
 
   #Name Variables----
   df <-

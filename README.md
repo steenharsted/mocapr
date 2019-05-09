@@ -1,33 +1,21 @@
-README
+mocapr
 ================
 
-## GitHub Documents
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-This is an R Markdown format used for publishing markdown documents to
-GitHub. When you click the **Knit** button all R code chunks are run and
-a markdown file (.md) suitable for publishing to GitHub is generated.
+`mocapr` uses a series of tidyverse packages to import
+([`tidyr`](https://github.com/tidyverse/tidyr),
+[`dplyr`](https://github.com/tidyverse/dplyr),
+[`stringr`](https://github.com/tidyverse/stringr)), plot
+([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate
+([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
+motion capture data.
 
-## Including Code
+## Installation
 
-You can include R code in the document as follows:
+`mocapr` can be installed directly from github using devtools:
 
 ``` r
-summary(cars)
+# install.packages('devtools')
+devtools::install_github('steenharsted/mocapr')
 ```
-
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
-
-## Including Plots
-
-You can also embed plots, for example:
-
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
-
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.

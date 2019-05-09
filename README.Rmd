@@ -1,30 +1,33 @@
 ---
-title: "README"
+title: "mocapr"
 output: github_document
 ---
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+`mocapr` uses a series of tidyverse packages to import ([`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), `forcats`(https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+##Why this package?
 
-## Including Code
+##The Vision
 
-You can include R code in the document as follows:
+##Can you help?
 
-```{r cars}
-summary(cars)
+## Installation
+`mocapr` can  be installed directly from github using devtools:
+
+```{r installation, eval=FALSE}
+# install.packages('devtools')
+devtools::install_github('steenharsted/mocapr')
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+##Example
+```{r}
+library(mocapr)
+Import_Captury("https://github.com/steenharsted/mocapr/blob/master/raw_data/standing_long_jump_1.csv")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
