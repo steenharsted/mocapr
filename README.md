@@ -100,3 +100,37 @@ Jump %>%
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.gif)<!-- -->
+
+``` r
+library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+Jump %>% 
+  project_full_body_to_AP() %>% 
+  filter(Frame == 2 | Frame == 10 | Frame == 25) %>% 
+  animate_anatomical(animate = FALSE)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+library(dplyr)
+Jump %>% 
+  project_full_body_to_MP() %>% 
+  filter(Frame == min(Frame) | Frame == max(Frame) | Frame == 50) %>% 
+  animate_movement(animate = FALSE)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->

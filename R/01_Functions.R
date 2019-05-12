@@ -231,13 +231,14 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' Please see GitHub README.me for a more detailed description.
 #'
 #' @param .data A tibble containing joint center positions in the movement plane generated using the project_to_MP() function.
+#' @param animate Defaults to TRUE. If false the function will provide a plot faceted on frames.
 #' @param ... These parameters are passed to the gganimate::animate() function
 #'
-#' @return An animated gif
+#' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
 #' @examples dontrun{}
-  animate_movement <- function(.data, ...){
+  animate_movement <- function(.data, animate = TRUE, ...){
 
     #Make Data Frame
     df <- .data %>%
@@ -297,7 +298,6 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
         ggplot2::coord_equal()+
-        ggplot2::facet_grid(cols = dplyr::vars(Dir))+
         ggplot2::guides(size = FALSE)+
         ggplot2::theme_bw()+
         ggplot2::theme(
@@ -310,24 +310,30 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
           strip.text.y = ggplot2::element_blank())
 
     #Animation stuff
+    if(animate){
     df_plot <- df_plot +
+      ggplot2::facet_grid(cols = dplyr::vars(Dir))+
       gganimate::transition_time(Frame) +
       gganimate::ease_aes('linear')
 
-    gganimate::animate(df_plot, ...)
+    return(gganimate::animate(df_plot, ...))
+    }
+    df_plot+
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(Frame))
   }
 
 ##Animate antomical (Function)----
 #' animate_anatomical()
 #'
 #' @param .data A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.
+#' @param animate Defaults to TRUE. If false the function will provide a plot faceted on frames.
 #' @param ... These arguments are passed to the gganimate::animate() function.
 #'
-#' @return An animated gif
+#' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
 #' @examples dontrun{}
-  animate_anatomical <- function(.data, ...){
+  animate_anatomical <- function(.data, animate = TRUE, ...){
 
     #Make Data Frame
     df <- .data %>%
@@ -422,7 +428,6 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
         ggplot2::coord_equal()+
-        ggplot2::facet_grid(cols = dplyr::vars(Dir))+
         ggplot2::guides(size = FALSE)+
         ggplot2::theme_bw()+
         ggplot2::theme(
@@ -435,10 +440,16 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
           strip.text.y = ggplot2::element_blank())
 
     #Animation stuff
+    if(animate){
     df_plot <- df_plot +
+      ggplot2::facet_grid(cols = dplyr::vars(Dir))+
       gganimate::transition_time(Frame) +
       gganimate::ease_aes('linear')
-    gganimate::animate(df_plot, ...)
+    return(gganimate::animate(df_plot, ...))
+    }
+
+    df_plot+
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(Frame))
   }
 
 

@@ -68,5 +68,21 @@ Jump %>%
   animate_anatomical(nframes = nrow(.)*2, fps = 50, rewind = FALSE)
 ```
 
+```{r}
+library(dplyr)
+Jump %>% 
+  project_full_body_to_AP() %>% 
+  filter(Frame == 2 | Frame == 10 | Frame == 25) %>% 
+  animate_anatomical(animate = FALSE)
+```
+
+```{r}
+library(dplyr)
+Jump %>% 
+  project_full_body_to_MP() %>% 
+  filter(Frame == min(Frame) | Frame == max(Frame) | Frame == 50) %>% 
+  animate_movement(animate = FALSE)
+```
+
 
 

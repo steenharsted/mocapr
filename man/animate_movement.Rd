@@ -5,15 +5,17 @@
 \title{animate_movement().
 Please see GitHub README.me for a more detailed description.}
 \usage{
-animate_movement(.data, ...)
+animate_movement(.data, animate = TRUE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the movement plane generated using the project_to_MP() function.}
 
+\item{animate}{Defaults to TRUE. If false the function will provide a plot faceted on frames.}
+
 \item{...}{These parameters are passed to the gganimate::animate() function}
 }
 \value{
-An animated gif
+Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 }
 \description{
 animate_movement().

@@ -4,15 +4,17 @@
 \alias{animate_anatomical}
 \title{animate_anatomical()}
 \usage{
-animate_anatomical(.data, ...)
+animate_anatomical(.data, animate = TRUE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
 
+\item{animate}{Defaults to TRUE. If false the function will provide a plot faceted on frames.}
+
 \item{...}{These arguments are passed to the gganimate::animate() function.}
 }
 \value{
-An animated gif
+Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 }
 \description{
 animate_anatomical()
