@@ -184,7 +184,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
       dplyr::select(frame, HAX, HAY, HAZ) %>%
       tidyr::gather(key, value, -frame) %>%
       dplyr::mutate(
-        Frame = dplyr::case_when(
+        frame = dplyr::case_when(
           frame == min(frame) ~ "First",
           frame == max(frame) ~ "Last")) %>%
       dplyr::mutate(key = paste0(key, "_", frame)) %>%

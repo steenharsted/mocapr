@@ -22,9 +22,10 @@ MOCAP_data <- tibble::tibble(
       TRUE ~ NA_real_
     )) %>%
   dplyr::select(movement_nr, movement_description, data) %>%
-  dplyr::arrange(movement_nr)
+  dplyr::arrange(movement_nr) %>%
+  tidyr::unnest()
 
-usethis::use_data(MOCAP_data)
+usethis::use_data(MOCAP_data, overwrite = TRUE)
 
 
 

@@ -19,6 +19,8 @@ Imports:
     readr,
     magrittr,
     dplyr,
-    forcats
+    forcats,
+    purrr,
+    here
 URL: https://github.com/steenharsted/mocapr
 BugReports: https://github.com/steenharsted/mocapr/issues
