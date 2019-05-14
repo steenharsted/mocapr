@@ -4,10 +4,12 @@
 \alias{import_captury}
 \title{import_captury}
 \usage{
-import_captury(filename)
+import_captury(filename, frames_pr_second = 50)
 }
 \arguments{
 \item{filename}{Path and filename of a .csv file containg motion capture data from the Captury system}
+
+\item{frames_pr_second}{Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.}
 }
 \value{
 A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.

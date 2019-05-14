@@ -7,20 +7,24 @@
 #' LKF, global Y coordinate of the right hip joint is RHY).Please see the GitHub README.me for a more detailed description.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Captury system
+#' @param frames_pr_second Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.
 #'
 #' @return A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 #' @export
 #'
 #' @examples dontrun{}
-import_captury <- function(filename){
+import_captury <- function(filename, frames_pr_second = 50){
 
   #Name Variables----
   df <-
     suppressWarnings(
       readr::read_delim(
         paste0(filename), ";", escape_double = FALSE, col_names = FALSE, trim_ws = TRUE, skip = 6)) %>%
-    dplyr::filter(dplyr::row_number() < dplyr::n()-10) %>%  #Remove rows with information on cameara positions
+    #Captury exports containts camera positions on the last 10 rows of the first columns
+    #Remove rows with information on cameara positions
+    dplyr::filter(dplyr::row_number() < dplyr::n()-10) %>%
     dplyr::mutate_at(c("X1", "X4", "X5", "X6", "X7", "X8", "X9", "X10", "X11", "X12", "X13"), list(as.numeric)) %>%
+    #Select the columns of interest
     dplyr::select(X1,      #Frame
            X3,      #Annotations
            X4 :X6,  #CG
@@ -45,7 +49,7 @@ import_captury <- function(filename){
            X85:X87, #Hip Positions - right
            X88:X90  #Hip Angles - right
     ) %>%
-    dplyr::rename(Frame = X1, Marks = X3,
+    dplyr::rename(frame = X1, marks = X3,
            CGX = X4,  CGY = X5,  CGZ = X6,  #Center of Gravity
            LWX = X7,  LWY = X8,  LWZ = X9,  #Left Wrist
            LEX = X13, LEY = X14, LEZ = X15, #Left Elbow
@@ -73,14 +77,13 @@ import_captury <- function(filename){
       #Captury exports knee extension - change this to flexion, just because....
       LKF = LKF*(-1),
       RKF = RKF*(-1),
-      #This setup records with 50 Frames pr second
-      Time_Seconds = Frame/50,
+      #Calculate time in seconds
+      time_Seconds = frame/frames_pr_second,
       #Create average postions of the Hips, we need these to create the jump direction later
       HAX = (LHX+RHX)/2,
       HAY = (LHY+RHY)/2,
       HAZ = (LHZ+RHZ)/2) %>%
-
-    dplyr::select(mocap_system, Frame, Time_Seconds, dplyr::everything())
+    dplyr::select(mocap_system, frame, time_Seconds, dplyr::everything())
   dplyr::as_tibble(df)
 }
 
@@ -177,15 +180,15 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 
     #Create movement plane (MP)
     MP <- .data %>%
-      dplyr::filter(Frame == min(Frame) | Frame == max(Frame) ) %>%
-      dplyr::select(Frame, HAX, HAY, HAZ) %>%
-      tidyr::gather(key, value, -Frame) %>%
+      dplyr::filter(frame == min(frame) | frame == max(frame) ) %>%
+      dplyr::select(frame, HAX, HAY, HAZ) %>%
+      tidyr::gather(key, value, -frame) %>%
       dplyr::mutate(
         Frame = dplyr::case_when(
-          Frame == min(Frame) ~ "First",
-          Frame == max(Frame) ~ "Last")) %>%
-      dplyr::mutate(key = paste0(key, "_", Frame)) %>%
-      dplyr::select(-Frame) %>%
+          frame == min(frame) ~ "First",
+          frame == max(frame) ~ "Last")) %>%
+      dplyr::mutate(key = paste0(key, "_", frame)) %>%
+      dplyr::select(-frame) %>%
       tidyr::spread(key, value) %>%
       dplyr::summarise(
         Y = 1,
@@ -243,7 +246,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     #Make Data Frame
     df <- .data %>%
       #Select only Frame number and Joint center positions from the joints we wish to plot.
-      dplyr::select(Frame, dplyr::ends_with("_MPF"), dplyr::ends_with("_MPU"), dplyr::ends_with("_MPR")) %>%
+      dplyr::select(frame, dplyr::ends_with("_MPF"), dplyr::ends_with("_MPU"), dplyr::ends_with("_MPR")) %>%
 
       # Create data for the torso and head (center of hips NH_, center of shoulder NS_, center of cranium NC_)
       dplyr::mutate(
@@ -262,7 +265,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 
     df_plot <- df %>%
       ## Transform data into long format
-      tidyr::gather(key, value, - Frame) %>%
+      tidyr::gather(key, value, - frame) %>%
       tidyr::extract(key, into = c("Joint", "Plane", "Dir"), regex = "(.+)_(MP)(.+)") %>%
       tidyr::spread(Dir, value) %>%
       tidyr::gather(Dir, value, F, R) %>%
@@ -289,7 +292,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
           TRUE ~ 3)) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
-      dplyr::arrange(Frame, Joint) %>%
+      dplyr::arrange(frame, Joint) %>%
 
       #Lets plot it!
       ggplot2::ggplot(ggplot2::aes(x = value, y = U, group = Side, color = Side))+
@@ -313,13 +316,13 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     if(animate){
     df_plot <- df_plot +
       ggplot2::facet_grid(cols = dplyr::vars(Dir))+
-      gganimate::transition_time(Frame) +
+      gganimate::transition_time(frame) +
       gganimate::ease_aes('linear')
 
     return(gganimate::animate(df_plot, ...))
     }
     df_plot+
-      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(Frame))
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
   }
 
 ##Animate antomical (Function)----
@@ -375,7 +378,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         LT_APF = LT_APF-Normaliser_F) %>%
 
       #Select only Frame number and Joint center positions from the joints we wish to plot.
-      dplyr::select(Frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF")) %>%
+      dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF")) %>%
 
       ## Create Sagital plane data (center of hips NH_, center of shoulder NS_, center of cranium NC_)
       dplyr::mutate(
@@ -392,7 +395,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 
     df_plot <- df %>%
       ## Transform data into long format
-      tidyr::gather(key, value, - Frame) %>%
+      tidyr::gather(key, value, - frame) %>%
       tidyr::extract(key, into = c("Joint", "Plane", "Dir"), regex = "(.+)_(AP)(.+)") %>%
       tidyr::spread(Dir, value) %>%
       tidyr::gather(Dir, value, R, F) %>%
@@ -419,7 +422,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
           TRUE ~ 3)) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
-      dplyr::arrange(Frame, Joint) %>%
+      dplyr::arrange(frame, Joint) %>%
 
       #Lets plot it!
       ggplot2::ggplot(ggplot2::aes(x = value, y = U, group = Side, color = Side))+
@@ -443,13 +446,13 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     if(animate){
     df_plot <- df_plot +
       ggplot2::facet_grid(cols = dplyr::vars(Dir))+
-      gganimate::transition_time(Frame) +
+      gganimate::transition_time(frame) +
       gganimate::ease_aes('linear')
     return(gganimate::animate(df_plot, ...))
     }
 
     df_plot+
-      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(Frame))
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
   }
 
 
