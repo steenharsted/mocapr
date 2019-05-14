@@ -83,7 +83,7 @@ Jump %>%
 library(dplyr)
 Jump %>% 
   project_full_body_to_AP() %>% 
-  filter(frame == 2 | frame == 10 | frame == 25) %>% 
+  filter(frame == 1 | frame == 50 | frame == 75| frame == 100 | frame == 150 | frame == max(frame)) %>% 
   animate_anatomical(animate = FALSE)
 ```
 
@@ -91,7 +91,7 @@ Jump %>%
 library(dplyr)
 Jump %>% 
   project_full_body_to_MP() %>% 
-  filter(Frame == min(Frame) | Frame == max(Frame) | Frame == 50) %>% 
+  filter(frame == min(frame) | frame == max(frame) | frame == 50) %>% 
   animate_movement(animate = FALSE)
 ```
 

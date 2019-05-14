@@ -4,21 +4,32 @@ mocapr
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 `mocapr` uses a series of tidyverse packages to import
-([`tidyr`](https://github.com/tidyverse/tidyr),
+([`readr`](https://github.com/tidyverse/readr),
+[`tidyr`](https://github.com/tidyverse/tidyr),
 [`dplyr`](https://github.com/tidyverse/dplyr),
 [`stringr`](https://github.com/tidyverse/stringr),
 [`forcats`](https://github.com/tidyverse/forcats)), plot
 ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate
 ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
-motion capture data.
+motion capture data.  
+The package also contains sample data set `MOCAP_data` which is
+generated using some of the above packages as well as
+[`purrr`](https://github.com/tidyverse/purrr).
 
-The current state of the package is **work in progress**.
+While all functions should run without loading other libraries I
+strongly recommend you load the \[`tidyverse`\].
 
-\#\#Why this package? Motion capture data has become readily availble,
-and more will come It is becoming easy to collect this type of data Most
-systems are using their own export formats (especially true for
-markerless motion capture), and Open source tools to work with this data
-has not followed the same trajectory.
+The current state of the package is **work in progress**.  
+Feedback and suggestions for improvements are most welcome.
+
+## Why this package?
+
+The field of motion capture has expanded rapidly over the last years
+Motion capture data has become readily availble, and more will come It
+is becoming easy to collect this type of data Most systems are using
+their own export formats (especially true for markerless motion
+capture), and Open source tools to work with this data has not followed
+the same trajectory.
 
 \#\#The Vision
 
@@ -45,31 +56,40 @@ Kinetisense to come Vicon plug-in-gait likely to come
 
 ``` r
 library(mocapr)
-#Data
-Jump <- dplyr::as_tibble(mocapr::jump_1)
-head(Jump)
+library(dplyr)
 ```
 
-    ## # A tibble: 6 x 70
-    ##   mocap_system Frame Time_Seconds Marks    CGX   CGY   CGZ    LWX   LWY
-    ##   <chr>        <dbl>        <dbl> <chr>  <dbl> <dbl> <dbl>  <dbl> <dbl>
-    ## 1 Captury          1         0.02 <NA>  -1451. 1093.  20.6 -1321. 2094.
-    ## 2 Captury          2         0.04 <NA>  -1450. 1093.  21.1 -1336. 2102.
-    ## 3 Captury          3         0.06 <NA>  -1447. 1093.  21.5 -1353. 2109.
-    ## 4 Captury          4         0.08 <NA>  -1444. 1093.  22.1 -1371. 2117.
-    ## 5 Captury          5         0.1  <NA>  -1442. 1093.  22.4 -1384. 2122.
-    ## 6 Captury          6         0.12 <NA>  -1440. 1093.  22.7 -1396. 2125.
-    ## # ... with 61 more variables: LWZ <dbl>, LEX <dbl>, LEY <dbl>, LEZ <dbl>,
-    ## #   LSX <dbl>, LSY <dbl>, LSZ <dbl>, RWX <dbl>, RWY <dbl>, RWZ <dbl>,
-    ## #   REX <dbl>, REY <dbl>, REZ <dbl>, RSX <dbl>, RSY <dbl>, RSZ <dbl>,
-    ## #   LTX <dbl>, LTY <dbl>, LTZ <dbl>, LAX <dbl>, LAY <dbl>, LAZ <dbl>,
-    ## #   LADF <dbl>, X53 <dbl>, X54 <dbl>, LKX <dbl>, LKY <dbl>, LKZ <dbl>,
-    ## #   LKF <dbl>, LKVarus <dbl>, LKRot <dbl>, LHX <dbl>, LHY <dbl>,
-    ## #   LHZ <dbl>, LHF <dbl>, LHA <dbl>, LHRot <dbl>, RTX <dbl>, RTY <dbl>,
-    ## #   RTZ <dbl>, RAX <dbl>, RAY <dbl>, RAZ <dbl>, RADF <dbl>, X77 <dbl>,
-    ## #   X78 <dbl>, RKX <dbl>, RKY <dbl>, RKZ <dbl>, RKF <dbl>, RKVarus <dbl>,
-    ## #   RKRot <dbl>, RHX <dbl>, RHY <dbl>, RHZ <dbl>, RHF <dbl>, RHA <dbl>,
-    ## #   RHRot <dbl>, HAX <dbl>, HAY <dbl>, HAZ <dbl>
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
+#Data
+mocapr::MOCAP_data %>% 
+  group_by(movement_nr, movement_description) %>% 
+  tidyr::nest()
+```
+
+    ## # A tibble: 5 x 3
+    ##   movement_nr movement_description                            data         
+    ##         <dbl> <chr>                                           <list>       
+    ## 1           1 standing long jump for maximal performance      <tibble [172~
+    ## 2           2 standing long jump with simulated poor landing~ <tibble [228~
+    ## 3           3 normal gait in a straight line                  <tibble [157~
+    ## 4           4 normal gait in a semi square                    <tibble [375~
+    ## 5           5 caipoera dance                                  <tibble [1,2~
+
+``` r
+Jump <- mocapr::MOCAP_data %>%
+  filter(movement_nr == 1)
+```
 
 \#\#Example 1
 
@@ -103,23 +123,9 @@ Jump %>%
 
 ``` r
 library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 Jump %>% 
   project_full_body_to_AP() %>% 
-  filter(Frame == 2 | Frame == 10 | Frame == 25) %>% 
+  filter(frame == 1 | frame == 50 | frame == 75| frame == 100 | frame == 150 | frame == max(frame)) %>% 
   animate_anatomical(animate = FALSE)
 ```
 
@@ -129,7 +135,7 @@ Jump %>%
 library(dplyr)
 Jump %>% 
   project_full_body_to_MP() %>% 
-  filter(Frame == min(Frame) | Frame == max(Frame) | Frame == 50) %>% 
+  filter(frame == min(frame) | frame == max(frame) | frame == 50) %>% 
   animate_movement(animate = FALSE)
 ```
 
