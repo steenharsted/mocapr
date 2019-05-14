@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 `mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
 The package also contains sample data set `MOCAP_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
 
-While all functions should run without loading other libraries I strongly recommend you load the [`tidyverse`].
+While all functions should run without loading other libraries I strongly recommend you load the tidyverse `library(tidyverse)`.
 
 
 The current state of the package is **work in progress**.  
@@ -24,13 +24,17 @@ It is becoming easy to collect this type of data
 Most systems are using their own export formats (especially true for markerless motion capture), and 
 Open source tools to work with this data has not followed the same trajectory.
 
-##The Vision
+## The Vision
 
-##Can you help?
+## Can you help?
 Yes. Clinical background, ended up with the programming part by nessescity. No programming skills when I started the Ph.D., and I consider myself a beginner/intermediate R-user. While I think the code is correct, I am quite sure that it is not optimal. Input....
 
 Data + video(if possible)
 Function to import data into the `mocapr`format
+global coordinate system
+anatomical projections
+movement projections
+
 
 
 ## Installation
