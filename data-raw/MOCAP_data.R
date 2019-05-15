@@ -10,11 +10,13 @@ MOCAP_data <- tibble::tibble(
       file == "gait_2.csv" ~ "normal gait in a semi square",
       file == "standing_long_jump_1.csv" ~ "standing long jump for maximal performance",
       file == "standing_long_jump_2.csv" ~ "standing long jump with simulated poor landing technique of the left lower extremity",
+      file == "vertical_jump.csv" ~ "vertical jump for maximal performance",
       TRUE ~ "No information"
     )) %>%
   dplyr::mutate(
     movement_nr = dplyr::case_when(
-      file == "caipoera.csv" ~ 5,
+      file == "caipoera.csv" ~ 6,
+      file == "vertical_jump.csv" ~ 5,
       file == "gait_1.csv" ~ 3,
       file == "gait_2.csv" ~ 4,
       file == "standing_long_jump_1.csv" ~ 1,
