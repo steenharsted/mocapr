@@ -12,7 +12,7 @@ mocapr
 ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate
 ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
 motion capture data.  
-The package also contains sample data set `MOCAP_data` which is
+The package also contains a sample data set `MOCAP_data` which is
 generated using some of the above packages as well as
 [`purrr`](https://github.com/tidyverse/purrr).
 
@@ -23,16 +23,16 @@ The package is in **the very early stages of development** and is only
 minimally effective in the sense that it, at current, only supports
 import from [the Captury](http://thecaptury.com/) system. My clear
 intent is to make this package work with motion capture data from
-different sources, and I expect to add a function to import mocap data
-from [the Kinetisense](https://kinetisense.com/) system shortly. If you
-have motion capture data that contains frame by frame joint center
-positions from other sources, you might be able to wrangle the data into
-a format that will allow you to use the functions in this package. If
-you are willing to share the data, I will be happy to help you write an
-import function and include both the function and the data in this
-package.  
-Feedback and suggestions for improvement and future development is
-**most welcome. **
+different sources, and I expect to add a function that imports data from
+[the Kinetisense](https://kinetisense.com/) system shortly.  
+If you have motion capture data that contains frame by frame joint
+center positions from other systems, it should be possible to wrangle
+the data into a format that will allow you to use the functions in this
+package. If you are willing to share the data, I will be happy to help
+you write an import function and include both the function and the data
+in this package.  
+Feedback and suggestions for improvement and future development are
+**most welcome**.
 
 ## Installation
 
@@ -43,16 +43,17 @@ Feedback and suggestions for improvement and future development is
 devtools::install_github('steenharsted/mocapr')
 ```
 
-Data + video(if possible) Function to import data into the
-`mocapr`format global coordinate system anatomical projections movement
-projections
-
-## The Data
+## The Sample Data `MOCAP_data`
 
 All data included in the package is, at current, captured using the
-Captury Live markerless motion capture system. I have also prepared an
-avi file for each movement, but these avi files can’t be uploaded to
-GitHub due to their size (suggestions are welcome).
+Captury Live markerless motion capture system. Raw exports in .csv
+format can be found in the folder “data-raw”.  
+Each movement is also supplied with avi file showing the recording with
+an overlay of the tracked poses. Unfortunately, these avi files can’t be
+uploaded to GitHub due to their size (suggestions are welcome, I am
+considering putting them on YouTube and adding links from there).
+
+A first look on the data
 
 ``` r
 suppressPackageStartupMessages(library(tidyverse))
@@ -78,41 +79,43 @@ The data contains frame by frame joint angles and global joint center
 positions. All joint related variables are abbreviated according to
 their side (L|R), joint(A|K|H|S|E|W), and position/angle. The focus of
 this README is on joint center positions.  
-Example for left knee:
+Example for left
+knee:
 
-    ## # A tibble: 3 x 2
-    ##   Variable Meaning                                       
-    ##   <chr>    <chr>                                         
-    ## 1 LKX      Left Knee position on the X axis (floor plane)
-    ## 2 LKY      Left Knee position on the Y axis (Up)         
-    ## 3 LKZ      Left Knee position on the Z axis (floor plane)
+| Abbreviated Variable Name |                   Meaning of abbreviation                   |
+| :-----------------------: | :---------------------------------------------------------: |
+|            LKX            | Left Knee joint center position on the X axis (floor plane) |
+|            LKZ            | Left Knee joint center position on the Z axis (floor plane) |
+|            LKY            |     Left Knee joint center position on the Y axis (up)      |
 
 The global joint center positions can be used for plots and animations,
 but this will cause an oblique viewpoint if the subject moves at an
 angle to axis of the global coordinate system. In many cases, such as
 gait analysis on adults, out of axis movement will be easy to prevent,
-but if work with other subjects, such as pre-school children, or more
-complicated movements, such as caipoera, out of axis movement is likely
-to occur. `mocapr` solves this challenge by providing to functions that
-project the global joint center positions onto the anatomical planes the
-subject (`mocapr::project_full_body_to_AP()`) or the planes of the
-movement direction (`mocapr::project_full_body_to_MP()`).
+but if one is working with other subjects, such as pre-school children,
+or more complicated movements, such as caipoera, out of axis movement is
+likely to occur. `mocapr` solves this challenge by providing two
+functions that project the global joint center positions onto the planes
+of the movement direction (`mocapr::project_full_body_to_MP()`) or the
+anatomical planes the subject (`mocapr::project_full_body_to_AP()`).
 
-The movement planes are: \* Forward) a plane perpendicular to the floor,
-going in the direction from the position of the subject at the first
-frame to the position of the subject at the last frame. \* Sidewards) a
-plane perpendicular to the floor and the forwards plane.
+The movement planes are:  
+\* Forward) a plane perpendicular to the floor, going in the direction
+from the position of the subject at the first frame to the position of
+the subject at the last frame.  
+\* Side-wards) a plane perpendicular to the floor and the forwards
+plane.
 
-The anatomcial planes are:  
+The anatomical planes are:  
 \* Frontal) a plane perpendicular to the floor, going through both
-hip-joint centers \* Sagital) a plane perpendicular to the floor and the
-Frontal plane.
+hip-joint centers.  
+\* Sagital) a plane perpendicular to the floor and the Frontal plane.
 
 For movements where the subject is moving in one direction without
 rotation (such as walking in a straight line, or jumping using both
-legs) these two projections will be very similar to eachother, but they
+legs) these two projections will be very similar to each other, but they
 will differ greatly if the direction of the movement changes.This is
-best explained by wathing the animations produced by the animation
+best explained by watching the animations produced by the animation
 functions `mocapr::animate_movement()` and
 `mocapr::animate_anatomical()`.
 
@@ -185,10 +188,10 @@ gait_2 %>%
 ![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
 
 Now the difference between the two types of animations is evident. While
-both the animate\_movement() and the animate\_anatimical() gives you two
-view points that are perpendicular to eachother, animate\_movement()
+both the animate\_movement() and the animate\_anatomical() gives you two
+view points that are perpendicular to each other, animate\_movement()
 gives you *fixed viewpoints* (you are standing still and watching the
-movement) and animate\_anatmocial() *updates your viewpoint for each
+movement) and animate\_anatomical() *updates your viewpoint for each
 frame* (you are always the watching the subject from the front and the
 side of the pelvis).
 
@@ -196,7 +199,7 @@ side of the pelvis).
 
 Both the animate\_anatomical() and animate\_movement() functions can be
 used to plot if you supply the argument `animate = FALSE`. In that case
-the you will get a plot that is facetted on the frames. I suggest you
+the you will get a plot that is faceted on the frames. I suggest you
 reduce the number of frames before you use the functions to plot.
 
 ``` r
@@ -206,4 +209,4 @@ jump %>%
   animate_anatomical(animate = FALSE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
