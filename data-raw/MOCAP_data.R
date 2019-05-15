@@ -9,7 +9,7 @@ MOCAP_data <- tibble::tibble(
       file == "gait_1.csv" ~ "normal gait in a straight line",
       file == "gait_2.csv" ~ "normal gait in a semi square",
       file == "standing_long_jump_1.csv" ~ "standing long jump for maximal performance",
-      file == "standing_long_jump_2.csv" ~ "standing long jump with simulated poor landing technique of the left lower extremity",
+      file == "standing_long_jump_2.csv" ~ "standing long jump with simulated poor landing technique of the right lower extremity",
       file == "vertical_jump.csv" ~ "vertical jump for maximal performance",
       TRUE ~ "No information"
     )) %>%
