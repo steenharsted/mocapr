@@ -3,6 +3,9 @@ mocapr
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+The goal of `mocapr` is to provide R functions to import, plot, animate,
+and analyse motion capture data.
+
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
 [`tidyr`](https://github.com/tidyverse/tidyr),
@@ -31,7 +34,7 @@ the data into a format that will allow you to use the functions in this
 package. If you are willing to share the data, I will be happy to help
 you write an import function and include both the function and the data
 in this package.  
-Feedback and suggestions for improvement and future development are
+Feedback and suggestions for improvement and future developments are
 **most welcome**.
 
 ## Installation
@@ -65,6 +68,16 @@ mocapr::MOCAP_data %>%
   tidyr::nest()
 ```
 
+    ## # A tibble: 6 x 3
+    ##   movement_nr movement_description                            data         
+    ##         <dbl> <chr>                                           <list>       
+    ## 1           1 standing long jump for maximal performance      <tibble [172~
+    ## 2           2 standing long jump with simulated poor landing~ <tibble [228~
+    ## 3           3 normal gait in a straight line                  <tibble [157~
+    ## 4           4 normal gait in a semi square                    <tibble [375~
+    ## 5           5 vertical jump for maximal performance           <tibble [143~
+    ## 6           6 caipoera dance                                  <tibble [1,2~
+
 The data contains frame by frame joint angles and global joint center
 positions. All joint related variables are abbreviated according to
 their side (L|R), joint(A|K|H|S|E|W), and angle/position. As such each
@@ -92,16 +105,54 @@ The focus of this tutorial is on ploting and animating motion capture
 data. For this we only need the joint center positions, and I will not
 discuss the joint angles further. Feel free to explore them on your own.
 
-The global joint center positions can be used for plots and animations,
-but this will cause an oblique viewpoint if the subject moves at an
-angle to axis of the global coordinate system. In many cases, such as
-gait analysis on adults, out of axis movement will be easy to prevent,
-but if one is working with other subjects, such as pre-school children,
-or more complicated movements, such as caipoera, out of axis movement is
-likely to occur. `mocapr` solves this challenge by providing two
-functions that project the global joint center positions onto the planes
-of the movement direction (`mocapr::project_full_body_to_MP()`) or the
-anatomical planes the subject (`mocapr::project_full_body_to_AP()`).
+Lets first create some sample data:
+
+``` r
+gait_1 <- mocapr::MOCAP_data %>%
+  filter(movement_nr == 3)
+
+gait_2 <- mocapr::MOCAP_data %>%
+  filter(movement_nr == 4)
+
+caipoera <- mocapr::MOCAP_data %>% 
+  filter(movement_nr == 6)
+
+jump_1 <- mocapr::MOCAP_data %>% 
+  filter(movement_nr == 1)
+
+jump_2 <- mocapr::MOCAP_data %>% 
+  filter(movement_nr == 2)
+```
+
+The global joint center positions can be used for plots and animations
+using the `animate_global()` function.
+
+``` r
+jump_1 %>% 
+  animate_global(nframes = nrow(.), fps = 50)
+```
+
+![](README_files/figure-gfm/animate_global-1.gif)<!-- -->
+
+Plots and animations using global joint center positions will cause a,
+less optimal, oblique viewpoint if the subject moves at an angle to the
+axis of the global coordinate system.
+
+``` r
+jump_2 %>% 
+  animate_global(nframes = nrow(.), fps = 50)
+```
+
+![](README_files/figure-gfm/animate_global_out_of_axis-1.gif)<!-- -->
+
+In many cases, such as gait analysis on adults, out of axis movement
+will be easy to prevent, but if one is working with other subjects, such
+as pre-school children, or more complicated movements, such as caipoera,
+out of axis movement is likely to occur. `mocapr` solves this challenge
+by providing two functions that projects the global joint center
+positions onto the planes of the movement direction
+(`project_full_body_to_MP()`) or the anatomical planes the subject
+(`project_full_body_to_AP()`).
 
 The movement planes are:  
 \* Forward) a plane perpendicular to the floor, going in the direction
@@ -123,22 +174,6 @@ best explained by watching the animations produced by the animation
 functions `mocapr::animate_movement()` and
 `mocapr::animate_anatomical()`.
 
-Lets first create some sample data:
-
-``` r
-gait_1 <- mocapr::MOCAP_data %>%
-  filter(movement_nr == 3)
-
-gait_2 <- mocapr::MOCAP_data %>%
-  filter(movement_nr == 4)
-
-caipoera <- mocapr::MOCAP_data %>% 
-  filter(movement_nr == 6)
-
-jump <- mocapr::MOCAP_data %>% 
-  filter(movement_nr == 2)
-```
-
 ### Example 1.A (walking straight movement plane)
 
 ``` r
@@ -149,7 +184,8 @@ gait_1 %>%
   animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
 
-### Example 1.B (walking straight anatomical plane)
+![](README_files/figure-gfm/walking_straight_MP-1.gif)<!-- --> \#\#\#
+Example 1.B (walking straight anatomical plane)
 
 ``` r
 gait_1 %>% 
@@ -158,6 +194,8 @@ gait_1 %>%
   #Animate the anatomical projections
   animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
+
+![](README_files/figure-gfm/walking_straight_AP-1.gif)<!-- -->
 
 Besides the size difference the two animations are very similar (note:
 the right side appears on the right side in the anatomical animation and
@@ -174,6 +212,8 @@ gait_2 %>%
   animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
 
+![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
+
 ### Example 2.B (walking in a semi square anatomical plane)
 
 ``` r
@@ -183,6 +223,8 @@ gait_2 %>%
   #Animate the anatomical projections
   animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
+
+![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
 
 Now the difference between the two types of animations is evident. While
 both the animate\_movement() and the animate\_anatomical() gives you two
@@ -200,8 +242,10 @@ the you will get a plot that is faceted on the frames. I suggest you
 reduce the number of frames before you use the functions to plot.
 
 ``` r
-jump %>% 
+jump_2 %>% 
   project_full_body_to_AP() %>% 
   filter( frame == 120 | frame == 150 | frame == 165 | frame == 170) %>% 
   animate_anatomical(animate = FALSE)
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->

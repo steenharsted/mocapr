@@ -6,8 +6,9 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(eval = FALSE)
 ```
+
+The goal of `mocapr` is to provide R functions to import, plot, animate, and analyse motion capture data. 
 
 `mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
 The package also contains a sample data set `MOCAP_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
@@ -158,7 +159,7 @@ Now the difference between the two types of animations is evident. While both th
 Both the animate_anatomical() and animate_movement() functions can be used to plot if you supply the argument `animate = FALSE`. In that case the you will get a plot that is faceted on the frames. I suggest you reduce the number of frames before you use the functions to plot.
 
 ```{r}
-jump %>% 
+jump_2 %>% 
   project_full_body_to_AP() %>% 
   filter( frame == 120 | frame == 150 | frame == 165 | frame == 170) %>% 
   animate_anatomical(animate = FALSE)
