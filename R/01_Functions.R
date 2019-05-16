@@ -455,6 +455,116 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
   }
 
+#Animate Global----
+#' animate_global().
+#' Please see GitHub README.me for a more detailed description.
+#'
+#' @param .data A tibble containing global joint center positions (X, Y, Z).
+#' @param animate Defaults to TRUE. If false the function will provide a plot faceted on frames.
+#' @param ... These parameters are passed to the gganimate::animate() function
+#'
+#' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
+#' @export
+#'
+#' @examples dontrun{}
+  animate_global <- function(.data, animate = TRUE, ...){
+    #   #Make Data Frame
+    df <- .data %>%
+      #Select only Frame number and Joint center positions from the joints we wish to plot.
+      dplyr::select(frame,
+                    LTX, LTY, LTZ,
+                    LAX, LAY, LAZ,
+                    LKX, LKY, LKZ,
+                    LHX, LHY, LHZ,
+                    LWX, LWY, LWZ,
+                    LEX, LEY, LEZ,
+                    LSX, LSY, LSZ,
+                    RTX, RTY, RTZ,
+                    RAX, RAY, RAZ,
+                    RKX, RKY, RKZ,
+                    RHX, RHY, RHZ,
+                    RWX, RWY, RWZ,
+                    REX, REY, REZ,
+                    RSX, RSY, RSZ,
+      ) %>%
+
+      # Create data for the torso and head (center of hips NH_, center of shoulder NS_, center of cranium NC_)
+      dplyr::mutate(
+        #Center of Hip
+        NHY = (LHY + RHY)/2,
+        NHX = (LHX + RHX)/2,
+        NHZ = (LHZ + RHZ)/2,
+        #Center of shoulder
+        NSY = (LSY + RSY)/2,
+        NSX = (LSX + RSX)/2,
+        NSZ = (LSZ + RSZ)/2,
+        #Center of cranium
+        NCY = NSY + (NSY - NHY)*0.3,
+        NCX = NSX + (NSX - NHX)*0.5,
+        NCZ = NSZ + (NSZ - NHZ)*0.3)
+
+    df_plot <- df %>%
+      ## Transform data into long format
+      tidyr::gather(key, value, - frame) %>%
+      tidyr::extract(key, into = c("Joint", "Dir"), regex = "(..)(.)") %>%
+      tidyr::spread(Dir, value) %>%
+      tidyr::gather(Dir, value, X, Z) %>%
+
+      #Create groups for all the joints and extremities. This is needed for ggplot to  connect the correct joints together with geom_path()
+      dplyr::mutate(
+        Joint = factor(Joint),
+        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LS", "LE", "LW", "NH", "NS", "NC", "RT", "RA", "RK", "RH", "RS", "RE", "RW"),
+        Side =  dplyr::case_when(
+          Joint %in% c("LT", "LA", "LK", "LH") ~ "Left Leg",
+          Joint %in% c("RT", "RA", "RK", "RH") ~ "Right Leg",
+          Joint %in% c("LS", "LE", "LW") ~ "Left Arm",
+          Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
+          TRUE ~ "No_side"),
+
+        #Create a larger size for the Torso
+        Size_Path = dplyr::case_when(
+          Joint == "NH" ~ 2,
+          TRUE ~ 1),
+
+        #Create a larger size for the Cranium
+        Size_Point = dplyr::case_when(
+          Joint == "NC" ~ 10,
+          TRUE ~ 3)) %>%
+
+      #Arrange the data according to joint. This will make ggplot connect the joints as we wish
+      dplyr::arrange(frame, Joint) %>%
+
+      #Lets plot it!
+      ggplot2::ggplot(ggplot2::aes(x = value, y = Y, group = Side, color = Side))+
+      ggplot2::geom_point(ggplot2::aes(size = Size_Point))+
+      ggplot2::geom_path(ggplot2::aes(size = Size_Path))+
+      ggplot2::ylab("Height (mm)")+
+      ggplot2::xlab("(mm)")+
+      ggplot2::coord_equal()+
+      ggplot2::guides(size = FALSE)+
+      ggplot2::theme_bw()+
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_blank(),
+        axis.ticks.x = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        legend.position = "bottom",
+        legend.title = ggplot2::element_blank(),
+        strip.text.x = ggplot2::element_blank(),
+        strip.text.y = ggplot2::element_blank())
+
+    #Animation stuff
+    if(animate){
+      df_plot <- df_plot +
+        ggplot2::facet_grid(cols = dplyr::vars(Dir))+
+        gganimate::transition_time(frame) +
+        gganimate::ease_aes('linear')
+
+      return(gganimate::animate(df_plot, ...))
+    }
+    df_plot+
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
+  }
+
 
 #' project_full_body_to_MP()
 #' project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.

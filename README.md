@@ -65,28 +65,32 @@ mocapr::MOCAP_data %>%
   tidyr::nest()
 ```
 
-    ## # A tibble: 6 x 3
-    ##   movement_nr movement_description                            data         
-    ##         <dbl> <chr>                                           <list>       
-    ## 1           1 standing long jump for maximal performance      <tibble [172~
-    ## 2           2 standing long jump with simulated poor landing~ <tibble [228~
-    ## 3           3 normal gait in a straight line                  <tibble [157~
-    ## 4           4 normal gait in a semi square                    <tibble [375~
-    ## 5           5 vertical jump for maximal performance           <tibble [143~
-    ## 6           6 caipoera dance                                  <tibble [1,2~
-
 The data contains frame by frame joint angles and global joint center
 positions. All joint related variables are abbreviated according to
-their side (L|R), joint(A|K|H|S|E|W), and position/angle. The focus of
-this README is on joint center positions.  
+their side (L|R), joint(A|K|H|S|E|W), and angle/position. As such each
+joint is typically represented by 6
+columns.
+
+| Side      | Joint        | Angle/Position                                        |
+| :-------- | :----------- | :---------------------------------------------------- |
+|           | A (Ankle)    | F (Flexion)                                           |
+| L (left)  | K (Knee)     | Varus                                                 |
+|           | H (Hip)      | DF (Dorsi Flexion)                                    |
+| R (Right) | W (Wrist)    | X (joint center position on the global X axis (floor) |
+|           | E (Elbow)    | Y (joint center position on the global Y axis)(up)    |
+|           | S (Shoulder) | Z (joint center position on the global Z axis)(floor) |
+
 Example for left
 knee:
 
 | Abbreviated Variable Name |                   Meaning of abbreviation                   |
 | :-----------------------: | :---------------------------------------------------------: |
+|            LKF            |                      Left Knee Flexion                      |
 |            LKX            | Left Knee joint center position on the X axis (floor plane) |
-|            LKZ            | Left Knee joint center position on the Z axis (floor plane) |
-|            LKY            |     Left Knee joint center position on the Y axis (up)      |
+
+The focus of this tutorial is on ploting and animating motion capture
+data. For this we only need the joint center positions, and I will not
+discuss the joint angles further. Feel free to explore them on your own.
 
 The global joint center positions can be used for plots and animations,
 but this will cause an oblique viewpoint if the subject moves at an
@@ -145,8 +149,7 @@ gait_1 %>%
   animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
 
-![](README_files/figure-gfm/walking_straight_MP-1.gif)<!-- --> \#\#\#
-Example 1.B (walking straight anatomical plane)
+### Example 1.B (walking straight anatomical plane)
 
 ``` r
 gait_1 %>% 
@@ -155,8 +158,6 @@ gait_1 %>%
   #Animate the anatomical projections
   animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
-
-![](README_files/figure-gfm/walking_straight_AP-1.gif)<!-- -->
 
 Besides the size difference the two animations are very similar (note:
 the right side appears on the right side in the anatomical animation and
@@ -173,8 +174,6 @@ gait_2 %>%
   animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
 
-![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
-
 ### Example 2.B (walking in a semi square anatomical plane)
 
 ``` r
@@ -184,8 +183,6 @@ gait_2 %>%
   #Animate the anatomical projections
   animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
 ```
-
-![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
 
 Now the difference between the two types of animations is evident. While
 both the animate\_movement() and the animate\_anatomical() gives you two
@@ -208,5 +205,3 @@ jump %>%
   filter( frame == 120 | frame == 150 | frame == 165 | frame == 170) %>% 
   animate_anatomical(animate = FALSE)
 ```
-
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->

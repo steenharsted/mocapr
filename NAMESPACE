@@ -2,6 +2,7 @@
 
 export("%>%")
 export(animate_anatomical)
+export(animate_global)
 export(animate_movement)
 export(import_captury)
 export(project_full_body_to_AP)
