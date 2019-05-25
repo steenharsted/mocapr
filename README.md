@@ -6,7 +6,7 @@ mocapr
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
+status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.com/steenharsted/mocapr)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
