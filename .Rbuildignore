@@ -4,3 +4,4 @@
 ^mocapr\.Rproj$
 ^data-raw$
 ^\.travis\.yml$
+^appveyor\.yml$
