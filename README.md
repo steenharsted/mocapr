@@ -3,6 +3,12 @@ mocapr
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
+[![Travis build
+status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
+<!-- badges: end -->
+
 The goal of `mocapr` is to provide R functions to import, plot, animate,
 and analyse motion capture data.
 
@@ -33,9 +39,18 @@ center positions* from other systems, it should be possible to wrangle
 the data into a format that will allow you to use the functions in this
 package. If you are willing to share the data, I will be happy to make
 an attempt at writing an import function and include both the function
-and the data in this package.  
-Feedback and suggestions for improvement and future developments are
-**most welcome**.
+and the data in this package.
+
+This is my first R package. Feedback and suggestions for improvement and
+future developments are **most welcome**. A few weeks ago almost all the
+code included in this package was containted in two huge functions and
+all variable names started with capital letters. I am sure the current
+version is easier to understand and work with, but I am convinced that
+many improvements can be made as well.
+
+## Short on the story behind the package
+
+MiPS
 
 ## Installation
 
@@ -46,25 +61,22 @@ Feedback and suggestions for improvement and future developments are
 devtools::install_github('steenharsted/mocapr')
 ```
 
-## The Sample Data `MOCAP_data`
+## The Sample Data `mocapr_data`
 
-All data included in the package is, at current, captured using the
-Captury Live markerless motion capture system. Raw exports in .csv
-format can be found in the folder “data-raw”.  
-Each movement is also supplied with avi file showing the recording with
-an overlay of the tracked poses. Unfortunately, these avi files can’t be
-uploaded to GitHub due to their size (suggestions are welcome, I am
-considering putting them on YouTube and adding links from there).
-
-`MOCAP_data` consists of 6 movements, each supplied with a number
-(`movement_nr`) and a short description (`movement_description`).
+`mocapr_data` consists of 6 movements, each supplied with a number
+(`movement_nr`) and a short description (`movement_description`). All
+data included in the package is, at current, captured using the Captury
+Live markerless motion capture system. Raw exports in .csv format can be
+found in the folder “data-raw”. Videos of the movements with an overlay
+of the track is available at this [YouTube playlist
+Link](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ)
 
 ``` r
 suppressPackageStartupMessages(library(tidyverse))
 library(mocapr)
 
 #Data
-mocapr::MOCAP_data %>% 
+mocapr::mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   tidyr::nest()
 ```
@@ -110,16 +122,16 @@ own.
 Lets first create some sample data:
 
 ``` r
-jump_1 <- mocapr::MOCAP_data %>% 
+jump_1 <- mocapr::mocapr_data %>% 
   filter(movement_nr == 1)
 
-jump_2 <- mocapr::MOCAP_data %>% 
+jump_2 <- mocapr::mocapr_data %>% 
   filter(movement_nr == 2)
 
-gait <-  mocapr::MOCAP_data %>% 
+gait <-  mocapr::mocapr_data %>% 
   filter(movement_nr == 4)
 
-caipoera <- mocapr::MOCAP_data %>% 
+caipoera <- mocapr::mocapr_data %>% 
   filter(movement_nr == 6)
 ```
 
@@ -135,8 +147,9 @@ jump_1 %>%
 animations using global joint center positions will cause a oblique
 viewpoint if the subject moves at an angle to the axis of the global
 coordinate system. For the purpose of analysing or interpreting motions
-an oblique viewpoint is, in general, less optimal. `jump_2` is an
-example of such a movement.
+an oblique viewpoint is, in general, less optimal.  
+When I performed `jump_2` I simulated a poor landing on the right knee
+and made sure that the movement was oblique to global coordinate system.
 
 ``` r
 jump_2 %>% 

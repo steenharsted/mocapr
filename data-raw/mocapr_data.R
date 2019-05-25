@@ -1,5 +1,5 @@
-## code to prepare `MOCAP_data` dataset goes here
-MOCAP_data <- tibble::tibble(
+## code to prepare `mocapr_data` dataset goes here
+mocapr_data <- tibble::tibble(
   file = list.files(here::here("data-raw"), pattern = ".csv")) %>%
   dplyr::mutate(
     data = purrr::map(.x = file, .f = ~import_captury(here::here("data-raw", .x)))) %>%
@@ -27,7 +27,7 @@ MOCAP_data <- tibble::tibble(
   dplyr::arrange(movement_nr) %>%
   tidyr::unnest()
 
-usethis::use_data(MOCAP_data, overwrite = TRUE)
+usethis::use_data(mocapr_data, overwrite = TRUE)
 
 
 

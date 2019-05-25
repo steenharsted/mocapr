@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^mocapr\.Rproj$
 ^data-raw$
+^\.travis\.yml$
