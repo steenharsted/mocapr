@@ -22,5 +22,5 @@ animate_global().
 Please see GitHub README.me for a more detailed description.
 }
 \examples{
-dontrun{}
+\dontrun{}
 }

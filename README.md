@@ -7,6 +7,8 @@ mocapr
 
 [![Travis build
 status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The goal of `mocapr` is to provide R functions to import, plot, animate,

@@ -5,6 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 

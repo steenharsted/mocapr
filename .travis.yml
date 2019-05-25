@@ -2,3 +2,14 @@
 
 language: R
 cache: packages
+sudo: false
+
+os:
+  - linux
+  - osx
+  - windows
+
+r:
+  - oldrel
+  - release
+  - devel

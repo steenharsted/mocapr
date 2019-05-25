@@ -20,5 +20,5 @@ Defaults to an animated gif. Different outputs can be achieved by passing differ
 animate_anatomical()
 }
 \examples{
-dontrun{}
+\dontrun{}
 }

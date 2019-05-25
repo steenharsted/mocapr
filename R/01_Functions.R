@@ -1,3 +1,12 @@
+#Document mocapr_data
+#' This is data to be included in my package
+#'
+#' @name mocapr_data
+#' @docType data
+#' @author Steen Harsted \email{steenharsted@gmail.com}
+#' @references \url{https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ}
+#' @keywords data
+
 
 #captury import function----
 #' import_captury
@@ -12,7 +21,7 @@
 #' @return A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
 import_captury <- function(filename, frames_pr_second = 50){
 
   #Name Variables----
@@ -109,7 +118,7 @@ import_captury <- function(filename, frames_pr_second = 50){
 #' @return A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
 project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
   Y <- dplyr::enquo(Y)
   X <- dplyr::enquo(X)
@@ -169,7 +178,7 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @return A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
 project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     Y <- dplyr::enquo(Y)
     X <- dplyr::enquo(X)
@@ -240,7 +249,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
   animate_movement <- function(.data, animate = TRUE, ...){
 
     #Make Data Frame
@@ -335,7 +344,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
   animate_anatomical <- function(.data, animate = TRUE, ...){
 
     #Make Data Frame
@@ -466,7 +475,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
   animate_global <- function(.data, animate = TRUE, ...){
     #   #Make Data Frame
     df <- .data %>%
@@ -576,7 +585,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return A tibble with the positions of the pre-specied joint-centers in the movement planes.
 #' @export
 #'
-#' @examples dontrun{}
+#' @examples \dontrun{}
   project_full_body_to_MP <- function(.data){
     dplyr::bind_cols(.data,
                      #Upper extremity
@@ -608,7 +617,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
   #' @return A tibble with the positions of the pre-specied joint-centers in the anatomical planes.
   #' @export
   #'
-  #' @examples dontrun{}
+  #' @examples \dontrun{}
   project_full_body_to_AP <- function(.data){
     dplyr::bind_cols(.data,
                      #Upper extremity

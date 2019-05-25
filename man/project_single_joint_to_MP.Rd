@@ -26,5 +26,5 @@ the position of the hip joint centers at the first frame to the position of the 
 more in-depth explanation.
 }
 \examples{
-dontrun{}
+\dontrun{}
 }
