@@ -7,7 +7,6 @@ sudo: false
 os:
   - linux
   - osx
-  - windows
 
 r:
   - oldrel
