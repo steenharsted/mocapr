@@ -6,13 +6,26 @@ mocapr
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/steenharsted/mocapr.svg?branch=master)](https://travis-ci.com/steenharsted/mocapr)
+status](https://travis-ci.com/steenharsted/mocapr.svg?token=TWbxTsB8WvZpmvPSsk8j&branch=master)](https://travis-ci.com/steenharsted/mocapr)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The goal of `mocapr` is to provide R functions to import, plot, animate,
-and analyse motion capture data.
+and analyse motion capture data. The package is in **the very early
+stages of development** and is only **minimally effective** in the sense
+that it, at current, only supports import from [the
+Captury](http://thecaptury.com/) system. My intent is to make this
+package work with motion capture data from other sources as well, and I
+expect to add a function that imports data from [the
+Kinetisense](https://kinetisense.com/) system shortly.
+
+If you have motion capture data that contains frame by frame *joint
+center positions* from other systems than the Captury, it should be
+possible to wrangle the data into a format that will allow you to use
+the functions in this package. If you are willing to share some sample
+data, I will be happy to make an attempt at writing an import function
+and include both the function and the sample data in this package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -23,32 +36,17 @@ and analyse motion capture data.
 ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate
 ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
 motion capture data.  
-The package also contains a sample data set `MOCAP_data` which is
+The package also contains a sample data set `mocapr_data` which is
 generated using some of the above packages as well as
 [`purrr`](https://github.com/tidyverse/purrr).
 
 While all functions should run without loading other libraries I
-strongly recommend you load the tidyverse `library(tidyverse)`.
+strongly recommend you load the tidyverse `library(tidyverse)` prior to
+loading the mocapr library.
 
-The package is in **the very early stages of development** and is only
-**minimally effective** in the sense that it, at current, only supports
-import from [the Captury](http://thecaptury.com/) system. My intent is
-to make this package work with motion capture data from other sources as
-well, and I expect to add a function that imports data from [the
-Kinetisense](https://kinetisense.com/) system shortly.  
-If you have motion capture data that contains frame by frame *joint
-center positions* from other systems, it should be possible to wrangle
-the data into a format that will allow you to use the functions in this
-package. If you are willing to share the data, I will be happy to make
-an attempt at writing an import function and include both the function
-and the data in this package.
-
-This is my first R package. Feedback and suggestions for improvement and
-future developments are **most welcome**. A few weeks ago almost all the
-code included in this package was containted in two huge functions and
-all variable names started with capital letters. I am sure the current
-version is easier to understand and work with, but I am convinced that
-many improvements can be made as well.
+This is my first R package, and I’d be surprised if have gotten
+everything right in the first try. Feedback and suggestions for
+improvement and future developments are **most welcome**.
 
 ## Short on the story behind the package
 
@@ -116,7 +114,7 @@ knee:
 |            LKF            |                      Left Knee Flexion                      |
 |            LKX            | Left Knee joint center position on the X axis (floor plane) |
 
-The focus of this tutorial is on ploting and animating motion capture
+The focus of this tutorial is on plotting and animating motion capture
 data. For this we only need the joint center positions. I will not
 discuss the joint angles further, but feel free to explore them on your
 own.
@@ -148,7 +146,7 @@ jump_1 %>%
 ![](README_files/figure-gfm/jump_1_GP-1.gif)<!-- --> Plots and
 animations using global joint center positions will cause a oblique
 viewpoint if the subject moves at an angle to the axis of the global
-coordinate system. For the purpose of analysing or interpreting motions
+coordinate system. For the purpose of analyzing or interpreting motions
 an oblique viewpoint is, in general, less optimal.  
 When I performed `jump_2` I simulated a poor landing on the right knee
 and made sure that the movement was oblique to global coordinate system.
@@ -164,12 +162,12 @@ In many cases out of axis movement is easy to prevent, and here the
 `animate_global()` function might be sufficient, but in other cases
 (e.g. working with pre-school children or more complicated movements
 than walking), out of axis movement is difficult to prevent - at least
-without interferring in the spontaneous movements of the subject. Also
+without interfering in the spontaneous movements of the subject. Also
 the the orientation of the global coordinate system differs from system
 to system and sometimes even between different setups of the same
 motion-capture system. This creates a need for animation and plotting
 functions that are free from the orientation of the global coordinate
-system, and instead focussed on the subject or the direction of the
+system, and instead focused on the subject or the direction of the
 movement the subject is performing. `mocapr` solves this challenge by
 providing two functions that projects the global joint center positions
 onto the planes of the movement direction (`project_full_body_to_MP()`)
@@ -228,7 +226,7 @@ uni-directional.
 animation and on the left side in the movement animation, this is
 intentional but might change in future versions*.  
 Lets explore the difference between the two types of projections by
-looking at a movement that is not unidrectional.
+looking at a movement that is not unidirectional.
 
 ``` r
 gait %>%
