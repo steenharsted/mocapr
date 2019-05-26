@@ -22,12 +22,13 @@ package work with motion capture data from other sources as well, and I
 expect to add a function that imports data from [the
 Kinetisense](https://kinetisense.com/) system shortly.
 
-If you have motion capture data that contains frame by frame *joint
-center positions* from other systems than the Captury, it should be
-possible to wrangle the data into a format that will allow you to use
-the functions in this package. If you are willing to share some sample
-data, I will be happy to make an attempt at writing an import function
-and include both the function and the sample data in this package.
+If you have motion capture data from other systems than the Captury, it
+should be possible to wrangle the data into a format that will allow you
+to use the functions in this package, as long as the data contains frame
+by frame *joint center positions*. If you are willing to share some
+sample data, I will be happy to make an attempt at writing an import
+function and include both the function and the sample data in this
+package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -52,7 +53,18 @@ improvement and future developments are **most welcome**.
 
 ## Short on the story behind the package
 
-MiPS
+My Ph.D. project is a part of the
+[MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/) project,
+where we have followed a cohort of \~950 pre-school children with yearly
+follow-ups. Each follow-up consisted of a series of tests and
+examinations with one them being a series of squats and jumps recorded
+using markerless motion capture. My Ph.D. project revolves around
+collecting and analyzing this motion capture data, and the code
+available in this package is a more general form of some of the code I
+have written so far in my project. My initial attempts at approaching
+the data were made in Stata, but my work significantly picked up speed
+after I was introduced to R in the summer of 2017, and especially after
+I discovered the Tidyverse.
 
 ## Installation
 
