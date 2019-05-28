@@ -7,10 +7,10 @@ mocapr
 
 [![Travis build
 status](https://travis-ci.com/steenharsted/mocapr.svg?token=TWbxTsB8WvZpmvPSsk8j&branch=master)](https://travis-ci.com/steenharsted/mocapr)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The goal of `mocapr` is to provide R functions to import, plot, animate,
@@ -19,13 +19,13 @@ stages of development** and is only **minimally effective** in the sense
 that it, at current, only supports import from [the
 Captury](http://thecaptury.com/) system.
 
-If you have motion capture data from other systems than the Captury, it
-should be possible to wrangle the data into a format that will allow you
-to use the functions in this package, as long as the data contains frame
-by frame *joint center positions*. If you are willing to share some
-sample data, I will be happy to make an attempt at writing an import
-function and include both the function and the sample data in this
-package.
+It should be possible to wrangle the motion capture data from other
+systems into a format that will allow useage of the functions in this
+package, as long as the data contains frame by frame *joint center
+positions*. If you have such motion capture data from another system,
+and if you are willing to share some sample data, I will be happy to
+make an attempt at writing an import function and include both the
+function and the sample data in this package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -75,12 +75,14 @@ devtools::install_github('steenharsted/mocapr')
 ## The Sample Data `mocapr_data`
 
 `mocapr_data` consists of 6 movements, each supplied with a number
-(`movement_nr`) and a short description (`movement_description`). All
-data included in the package is, at current, captured using the Captury
-Live markerless motion capture system. Raw exports in .csv format can be
-found in the folder “data-raw”. Videos of the movements with an overlay
-of the track is available at this [YouTube playlist
-Link](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ)
+(`movement_nr`) and a short description (`movement_description`). Raw
+exports in .csv format can be found in the folder “data-raw”. Videos of
+the movements with an overlay of the track is available at this [YouTube
+playlist
+Link](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
+These videoes are made using the Captury software.
+
+Lets inspect the `mocapr_data`:
 
 ``` r
 suppressPackageStartupMessages(library(tidyverse))
@@ -102,11 +104,12 @@ mocapr::mocapr_data %>%
     ## 5           5 vertical jump for maximal performance           <tibble [143~
     ## 6           6 caipoera dance                                  <tibble [1,2~
 
-Each movement contains frame by frame joint angles and global joint
-center positions. All joint related variables are abbreviated according
-to their side (L|R), joint(A|K|H|S|E|W), and angle/position. As such
-each joint is typically represented by 6
-columns.
+The format of the data is wide and contains frame by frame joint angles
+and global joint center positions. As such each joint is typically
+represented by 6 columns (3 angles and 3 positions). All joint related
+variables are abbreviated according to their side (L|R),
+joint(A|K|H|S|E|W), and
+angle/position.
 
 | Side      | Joint        | Angle/Position                                        |
 | :-------- | :----------- | :---------------------------------------------------- |
@@ -146,21 +149,32 @@ caipoera <- mocapr::mocapr_data %>%
   filter(movement_nr == 6)
 ```
 
-The global joint center positions can be used for plots and animations
-using the `animate_global()` function.
+## Animate the data
+
+The global coordinate system refers to a 3D coordinate system (X, Y, and
+Z axis) that is created and oriented during the setup and calibration of
+the system. Global joint center positions refer to the position of a
+given joint inside the global coordinate system.  
+The `animate_global()` function animates the subject using the global
+joint center positions. It creates two animations one in the X and Y
+plane and one in the Z and Y plane. If the subject is moving along
+either the X or the Y axis the viewpoints will essentially be a side
+view and a front|back view.
 
 ``` r
 jump_1 %>% 
   animate_global(nframes = nrow(.), fps = 50)
 ```
 
-![](README_files/figure-gfm/jump_1_GP-1.gif)<!-- --> Plots and
-animations using global joint center positions will cause a oblique
-viewpoint if the subject moves at an angle to the axis of the global
-coordinate system. For the purpose of analyzing or interpreting motions
-an oblique viewpoint is, in general, less optimal.  
-When I performed `jump_2` I simulated a poor landing on the right knee
-and made sure that the movement was oblique to global coordinate system.
+![](README_files/figure-gfm/jump_1_GP-1.gif)<!-- -->
+
+If the recorded subject moves at an angle to the axis’ of the global
+coordinate system, animations and plots using global joint center
+positions will have oblique viewpoints. When I performed `jump_2` I both
+simulated a poor landing on the right knee and made sure that the
+direction of the jump was oblique to the axis’ in the global coordinate
+system. You can see that using the `animate_global()` function on
+`jump_2` produces an animation with oblique viewpoints.
 
 ``` r
 jump_2 %>% 
@@ -176,37 +190,22 @@ than walking), out of axis movement is difficult to prevent - at least
 without interfering in the spontaneous movements of the subject. Also
 the the orientation of the global coordinate system differs from system
 to system and sometimes even between different setups of the same
-motion-capture system. This creates a need for animation and plotting
-functions that are free from the orientation of the global coordinate
-system, and instead focused on the subject or the direction of the
-movement the subject is performing. `mocapr` solves this challenge by
-providing two functions that projects the global joint center positions
-onto the planes of the movement direction (`project_full_body_to_MP()`)
-or the anatomical planes the subject (`project_full_body_to_AP()`). Each
-project function should then be followed by it’s corresponding animation
+motion-capture system.  
+For the purpose of analyzing or interpreting motions, oblique viewpoints
+are, in general, less optimal. This creates a need for animation and
+plotting functions that are free from the orientation of the global
+coordinate system, and instead focused on the subject or the direction
+of the movement the subject is performing. `mocapr` solves this
+challenge by providing two functions that projects the global joint
+center positions onto the planes of the movement direction
+(`project_full_body_to_MP()`) or the anatomical planes the subject
+(`project_full_body_to_AP()`). You can think of these functions as
+functions that creates new coordinate systems that are just
+**shifted/tilted** version of the global coordinate system. Each project
+function should then be followed by it’s corresponding animation
 function (`animate_movement()` or `animate_anatomical()`)
 
-The movement planes are:  
-\* Forward) a plane perpendicular to the floor, going in the direction
-from the position of the subject at the first frame to the position of
-the subject at the last frame.  
-\* Side-wards) a plane perpendicular to the floor and the forwards
-plane.
-
-The anatomical planes are:  
-\* Frontal) a plane perpendicular to the floor, going through both
-hip-joint centers.  
-\* Sagital) a plane perpendicular to the floor and the Frontal plane.
-
-For movements where the subject is moving in one direction without
-rotation (such as walking in a straight line, or jumping using both
-legs) these two projections will be very similar to each other, but they
-will differ greatly if the direction of the movement changes.This is
-best explained by watching the animations produced by the animation
-functions `mocapr::animate_movement()` and
-`mocapr::animate_anatomical()`.
-
-Lets look again at jump\_2 (the jump that is oblique to the global
+Lets look again at `jump_2` (the jump that is oblique to the global
 coordinate system), and animate the jump using the `animate_movement()`
 and the `animate_anatomical()` functions.
 
@@ -230,12 +229,18 @@ jump_2 %>%
 
 ![](README_files/figure-gfm/jump_2_AP-1.gif)<!-- -->
 
-Besides the size difference the two animations are very similar. This is
-because the movement that the subject is performing is
-uni-directional.  
 *note: the right side appears on the right side in the anatomical
 animation and on the left side in the movement animation, this is
-intentional but might change in future versions*.  
+intentional but might change in future versions*.
+
+Besides the size difference the two animations are very similar. This is
+because the movement that the subject is performing is uni-directional.
+For movements where the subject is moving in one direction without
+rotation (such as walking in a straight line, or jumping using both
+legs) the two projections and the following animations will produce
+similar results, but the results will differ greatly if the direction of
+the movement changes throughout the recording.
+
 Lets explore the difference between the two types of projections by
 looking at a movement that is not unidirectional.
 
@@ -282,3 +287,18 @@ jump_2 %>%
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+## Options
+
+the width and height arguments can be used to specify width and height I
+find slow-mo effects is best achieved by adding more rows, e.g.,
+`nrow(.)*2`
+
+``` r
+caipoera %>% 
+  filter(frame > 48 & frame < 223) %>% 
+  project_full_body_to_MP() %>% 
+  animate_movement(nframes = nrow(.)*2, fps = 50, width = 600, height = 600)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-2-1.gif)<!-- -->
