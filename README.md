@@ -17,10 +17,7 @@ The goal of `mocapr` is to provide R functions to import, plot, animate,
 and analyse motion capture data. The package is in **the very early
 stages of development** and is only **minimally effective** in the sense
 that it, at current, only supports import from [the
-Captury](http://thecaptury.com/) system. My intent is to make this
-package work with motion capture data from other sources as well, and I
-expect to add a function that imports data from [the
-Kinetisense](https://kinetisense.com/) system shortly.
+Captury](http://thecaptury.com/) system.
 
 If you have motion capture data from other systems than the Captury, it
 should be possible to wrangle the data into a format that will allow you
@@ -53,18 +50,18 @@ improvement and future developments are **most welcome**.
 
 ## Short on the story behind the package
 
-My Ph.D. project is a part of the
-[MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/) project,
-where we have followed a cohort of \~950 pre-school children with yearly
-follow-ups. Each follow-up consisted of a series of tests and
-examinations with one them being a series of squats and jumps recorded
-using markerless motion capture. My Ph.D. project revolves around
-collecting and analyzing this motion capture data, and the code
+My Ph.d. is a part of the project “Motor Skills in Pre-Schoolers”
+([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)). In MiPS
+we have follow a cohort of \~950 pre-school children with yearly
+follow-ups. Each follow-up consists of a series of tests and
+examinations with one the tests being a series of squats and jumps
+recorded using markerless motion capture. My Ph.d. project revolves
+around collecting and analyzing this motion capture data, and the code
 available in this package is a more general form of some of the code I
-have written so far in my project. My initial attempts at approaching
-the data were made in Stata, but my work significantly picked up speed
-after I was introduced to R in the summer of 2017, and especially after
-I discovered the Tidyverse.
+have written so far in for use in the project. My initial attempts at
+approaching the data were made in Stata, but my work significantly
+picked up speed after I was introduced to R in the summer of 2017, and
+especially after I discovered the Tidyverse.
 
 ## Installation
 
