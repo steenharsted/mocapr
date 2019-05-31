@@ -50,18 +50,23 @@ improvement and future developments are **most welcome**.
 
 ## Short on the story behind the package
 
-My Ph.d. is a part of the project “Motor Skills in Pre-Schoolers”
-([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)). In MiPS
-we have follow a cohort of \~950 pre-school children with yearly
-follow-ups. Each follow-up consists of a series of tests and
-examinations with one the tests being a series of squats and jumps
-recorded using markerless motion capture. My Ph.d. project revolves
-around collecting and analyzing this motion capture data, and the code
-available in this package is a more general form of some of the code I
-have written so far in for use in the project. My initial attempts at
-approaching the data were made in Stata, but my work significantly
-picked up speed after I was introduced to R in the summer of 2017, and
-especially after I discovered the Tidyverse.
+I am a Ph.d. studen at The Department of Sports Science and Clinical
+Biomechanics, Faculty of Health Sciences at the University of Southern
+Denmark (SDU). My work is a part of the project “Motor Skills in
+Pre-Schoolers”([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)),
+wich is led by Lise Hestbæk. In MiPS we follow a cohort of \~950
+pre-school children with yearly follow-ups. At each follow-up one of the
+examinations is a series of squats and jumps recorded using markerless
+motion capture. My Ph.d. project revolves around collecting and
+analyzing this motion capture data, and the code available in this
+package is a more general form of some of the code I have written so far
+for use in this project. My initial attempts at approaching the data
+were made in Stata, but my work significantly picked up speed after I
+was introduced to R in the summer of 2017, and especially after I
+discovered the Tidyverse. Since the I have found R tobe extremely useful
+for working with large amounts of motion capture data. I hope this
+package can at least serve as an inspiration as to how R can be utilized
+outside of statistics.
 
 ## Installation
 
@@ -78,9 +83,10 @@ devtools::install_github('steenharsted/mocapr')
 (`movement_nr`) and a short description (`movement_description`). Raw
 exports in .csv format can be found in the folder “data-raw”. Videos of
 the movements with an overlay of the track is available at this [YouTube
-playlist
-Link](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
-These videoes are made using the Captury software.
+playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
+The videoes are made using the CapturyLive software.
+
+Lets load `mocapr` and inspect the `mocapr_data`:
 
 Lets inspect the `mocapr_data`:
 

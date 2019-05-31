@@ -21,8 +21,8 @@ project_single_joint_to_MP(.data, Y, X, Z, New_Name = "New")
 A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
 }
 \description{
-project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement plane (MP). MP is calculated by first creating a direction going from
-the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame. Please see the GitHub README.me for a
+project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement planes (MP). MP is calculated by first creating a direction going from
+the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame.\cr Please see the GitHub README.me for a
 more in-depth explanation.
 }
 \examples{

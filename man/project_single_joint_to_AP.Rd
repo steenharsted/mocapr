@@ -23,7 +23,7 @@ A tibble containing two columns with coordinates in the right and up direction. 
 \description{
 project_single_joint_to_AP() takes the global 3D coordinates of a single joint and project these coordinates onto the anatomical planes of the subject (the frontal and the sagital plane).
 The frontal plane is defined as the plane between the two hip joint centers that is perpendicular to the floor. The sagital plane is perpendicular to the frontal
-and floor plane.
+and floor plane.\cr
 As the subject moves the anatomical planes will change with each frame as the pose of the subject changes. This is different to the movement planes created
 by the project_single_joint_to_MP() function where the planes stay the same througout the movement.
 Please see the GitHub README.me for a more detailed description.

@@ -3,84 +3,33 @@
 \docType{data}
 \name{mocapr_data}
 \alias{mocapr_data}
-\alias{import_captury}
-\title{This is data to be included in my package}
+\title{Motion Capture Data of 6 Different Movements}
+\format{A \code{tibble}
+\describe{
+\item{movement_nr}{A variable for easy reference of the 6 movements in the dataset}
+\item{movement_description}{A short description of the movement being performed}
+\item{frame}{Frame number}
+\item{time_seconds}{Passed time in seconds from begining of the recording}
+\item{Please_see_above_for_the_remaining_68_columns}{The data set contains 68 columns more.\cr Please read the abbreviation guide above
+or the GitHub \href{https://github.com/steenharsted/mocapr}{README.md} for more information.}
+}}
 \usage{
-import_captury(filename, frames_pr_second = 50)
-}
-\arguments{
-\item{filename}{Path and filename of a .csv file containg motion capture data from the Captury system}
-
-\item{frames_pr_second}{Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.}
-}
-\value{
-A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
+mocapr_data
 }
 \description{
-This is data to be included in my package
-}
-\examples{
-\dontrun{}
+\code{mocapr_data} contains motion catpure data of 6 movements.The format of the data is wide
+and contains frame by frame joint angles and global joint center positions.
+Each joint is typically represented by 6 columns (3 angles and 3 positions).
+All joint related variables are abbreviated according to their side (L|R),
+joint(A|K|H|S|E|W), and angle/position.\cr
+Please see GitHub README.md for more information.
 }
 \references{
-\url{https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ}
+See video footage of the movements \href{https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ}{here}.\cr
+Thanks to Archi Montañez for allowing the data of him danceing Capoeira to be included in this package.\cr
+The remaining movements are recordings of the package author.
 }
 \author{
 Steen Harsted \email{steenharsted@gmail.com}
 }
-\keyword{(e.g.}
-\keyword{.csv}
-\keyword{=}
-\keyword{All}
-\keyword{CapturyLive}
-\keyword{GitHub}
-\keyword{Import_Captury()}
-\keyword{LKF,}
-\keyword{README.me}
-\keyword{RHY).Please}
-\keyword{The}
-\keyword{Y}
-\keyword{a}
-\keyword{abreviated}
-\keyword{and}
-\keyword{angles}
-\keyword{are}
-\keyword{as}
-\keyword{capture}
-\keyword{captured}
-\keyword{center}
-\keyword{cleaned}
-\keyword{containg}
-\keyword{coordinate}
 \keyword{data}
-\keyword{description.}
-\keyword{detailed}
-\keyword{exported}
-\keyword{file}
-\keyword{filename}
-\keyword{filepath}
-\keyword{flexion}
-\keyword{for}
-\keyword{global}
-\keyword{hip}
-\keyword{import_captury}
-\keyword{imported}
-\keyword{in}
-\keyword{is}
-\keyword{joint}
-\keyword{knee}
-\keyword{left}
-\keyword{more}
-\keyword{motion}
-\keyword{names}
-\keyword{of}
-\keyword{positions}
-\keyword{returned}
-\keyword{right}
-\keyword{see}
-\keyword{system.}
-\keyword{takes}
-\keyword{the}
-\keyword{then}
-\keyword{tibble.}
-\keyword{using}

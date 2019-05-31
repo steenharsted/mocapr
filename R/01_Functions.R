@@ -1,11 +1,28 @@
 #Document mocapr_data
-#' This is data to be included in my package
-#'
+#' @title Motion Capture Data of 6 Different Movements
+#' @description `mocapr_data` contains motion catpure data of 6 movements.The format of the data is wide
+#'  and contains frame by frame joint angles and global joint center positions.
+#'  Each joint is typically represented by 6 columns (3 angles and 3 positions).
+#'  All joint related variables are abbreviated according to their side (L|R),
+#'  joint(A|K|H|S|E|W), and angle/position.\cr
+#'  Please see GitHub README.md for more information.
+#' @format A \code{tibble}
+#' \describe{
+#'   \item{movement_nr}{A variable for easy reference of the 6 movements in the dataset}
+#'   \item{movement_description}{A short description of the movement being performed}
+#'   \item{frame}{Frame number}
+#'   \item{time_seconds}{Passed time in seconds from begining of the recording}
+#'   \item{Please_see_above_for_the_remaining_68_columns}{The data set contains 68 columns more.\cr Please read the abbreviation guide above
+#'   or the GitHub [README.md](https://github.com/steenharsted/mocapr) for more information.}
+#'   }
 #' @name mocapr_data
 #' @docType data
 #' @author Steen Harsted \email{steenharsted@gmail.com}
-#' @references \url{https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ}
+#' @references See video footage of the movements [here](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).\cr
+#' Thanks to Archi Montañez for allowing the data of him danceing Capoeira to be included in this package.\cr
+#' The remaining movements are recordings of the package author.
 #' @keywords data
+"mocapr_data"
 
 
 #captury import function----
@@ -13,7 +30,8 @@
 #'
 #' Import_Captury() takes the filepath and filename of a .csv file containg motion capture data captured and exported using the CapturyLive motion capture system. The
 #' .csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abreviated names (e.g. left knee flexion =
-#' LKF, global Y coordinate of the right hip joint is RHY).Please see the GitHub README.me for a more detailed description.
+#' LKF, global Y coordinate of the right hip joint is RHY).\cr
+#' Please see the GitHub README.me for a more detailed description.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Captury system
 #' @param frames_pr_second Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.
@@ -29,9 +47,10 @@ import_captury <- function(filename, frames_pr_second = 50){
     suppressWarnings(
       readr::read_delim(
         paste0(filename), ";", escape_double = FALSE, col_names = FALSE, trim_ws = TRUE, skip = 6)) %>%
-    #Captury exports containts camera positions on the last 10 rows of the first columns
+    #Captury exports containts camera positions on the last 10 rows of the first 13 columns
     #Remove rows with information on cameara positions
     dplyr::filter(dplyr::row_number() < dplyr::n()-10) %>%
+    #Convert the remaing data in the columns into numeric
     dplyr::mutate_at(c("X1", "X4", "X5", "X6", "X7", "X8", "X9", "X10", "X11", "X12", "X13"), list(as.numeric)) %>%
     #Select the columns of interest
     dplyr::select(X1,      #Frame
@@ -87,12 +106,12 @@ import_captury <- function(filename, frames_pr_second = 50){
       LKF = LKF*(-1),
       RKF = RKF*(-1),
       #Calculate time in seconds
-      time_Seconds = frame/frames_pr_second,
+      time_seconds = frame/frames_pr_second,
       #Create average postions of the Hips, we need these to create the jump direction later
       HAX = (LHX+RHX)/2,
       HAY = (LHY+RHY)/2,
       HAZ = (LHZ+RHZ)/2) %>%
-    dplyr::select(mocap_system, frame, time_Seconds, dplyr::everything())
+    dplyr::select(mocap_system, frame, time_seconds, dplyr::everything())
   dplyr::as_tibble(df)
 }
 
@@ -104,7 +123,7 @@ import_captury <- function(filename, frames_pr_second = 50){
 #'
 #'project_single_joint_to_AP() takes the global 3D coordinates of a single joint and project these coordinates onto the anatomical planes of the subject (the frontal and the sagital plane).
 #'The frontal plane is defined as the plane between the two hip joint centers that is perpendicular to the floor. The sagital plane is perpendicular to the frontal
-#'and floor plane.
+#'and floor plane.\cr
 #'As the subject moves the anatomical planes will change with each frame as the pose of the subject changes. This is different to the movement planes created
 #'by the project_single_joint_to_MP() function where the planes stay the same througout the movement.
 #'Please see the GitHub README.me for a more detailed description.
@@ -118,7 +137,8 @@ import_captury <- function(filename, frames_pr_second = 50){
 #' @return A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' \dontrun{}
 project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
   Y <- dplyr::enquo(Y)
   X <- dplyr::enquo(X)
@@ -165,8 +185,8 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #project_single_joint_to_MP
 #' project_single_joint_to_MP()
 #'
-#' project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement plane (MP). MP is calculated by first creating a direction going from
-#' the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame. Please see the GitHub README.me for a
+#' project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement planes (MP). MP is calculated by first creating a direction going from
+#' the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame.\cr Please see the GitHub README.me for a
 #' more in-depth explanation.
 #'
 #' @param .data A tibble containing the global 3D positions of the joint given in the parameters X, Y, Z and the 3D  positions of both hip joints.
@@ -215,7 +235,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         MPU_Z  = 0,
 
         #Generate cross product of _MDF and _MDU vectors
-        #This gives the direction Right
+        #This gives the direction Left
         SX = MPU_Y * MPF_Z - MPU_Z * MPF_Y,
         SY = MPU_Z * MPF_X - MPU_X * MPF_Z,
         SZ = MPU_X * MPF_Y - MPU_Y * MPF_X,
@@ -637,3 +657,6 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
                      project_single_joint_to_AP(.data,Y=RAY, X=RAX, Z=RAZ, New_Name = "RA"),
                      project_single_joint_to_AP(.data,Y=RTY, X=RTX, Z=RTZ, New_Name = "RT"))
   }
+
+
+
