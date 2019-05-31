@@ -3,5 +3,6 @@
 ^LICENSE\.md$
 ^mocapr\.Rproj$
 ^data-raw$
+^figures$
 ^\.travis\.yml$
 ^appveyor\.yml$
