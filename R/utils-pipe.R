@@ -9,3 +9,9 @@
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 NULL
+
+
+## usethis namespace: start
+#' @importFrom tibble tibble
+## usethis namespace: end
+NULL
