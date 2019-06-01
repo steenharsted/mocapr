@@ -115,9 +115,9 @@ library(tidyverse)
 library(mocapr)
 
 #Data
-mocapr::mocapr_data %>% 
+mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
-  tidyr::nest()
+  nest()
 ```
 
     ## # A tibble: 6 x 3
@@ -217,18 +217,17 @@ In many cases, out of axis movement and oblique viewpoints are easy to
 prevent. In these cases the `animate_global()` function might be
 sufficient, but in other cases, such as working with with pre-school
 children, out of axis movement is difficult to prevent without
-interfering in the spontaneous movements of the subject. Another source
-of animations with oblique viewpoints may stem from fact that the
-orientation of the global coordinate system can differ between motion
-capture systems and sometimes even between different setups of the same
-motion-capture system.
+interfering in the spontaneous movements of the subject. Oblique
+viewpoints may also stem from differences in the orientation of the
+global coordinate system between motion capture systems or between
+different setups of the same motion-capture system.
 
 For the purpose of analyzing or interpreting motions, oblique viewpoints
 are, in general, less optimal. This creates a need for animation and
 plotting functions that are free from the orientation of the global
-coordinate system, and instead focused on the subject or the direction
-of the movement the subject is performing. `mocapr` solves this
-challenge by providing two functions that projects the global joint
+coordinate system, and instead focused on either the subject itself or
+the direction of the movement the subject is performing. `mocapr` solves
+this challenge by providing two functions that projects the global joint
 center positions onto the planes of the movement direction
 (`project_full_body_to_MP()`) or the anatomical planes the subject
 (`project_full_body_to_AP()`). You can think of these functions as
@@ -274,14 +273,15 @@ intentional but might change in future versions*.
 
 Besides the size difference the two animations are very similar. This is
 because the movement that the subject is performing is uni-directional.
-For movements where the subject is moving in one direction without
-rotation (such as walking in a straight line, or jumping using both
-legs) the two projections and the following animations will produce
-similar results, but the results will differ greatly if the direction of
-the movement changes throughout the recording.
+For movements where the subject is moving in one direction with limited
+rotation of the pelvis (such as walking in a straight line, or jumping
+using both legs) the two projections and the following animations will
+produce similar results, but the results will differ greatly if the
+direction of the movement changes throughout the recording.
 
 Lets explore the difference between the two types of projections by
-looking at a movement that is not unidirectional.
+looking at a movement that is not unidirectional. \#\#\#\#
+animate\_movement()
 
 ``` r
 gait %>%
@@ -291,7 +291,8 @@ gait %>%
   animate_movement(nframes = nrow(.), fps = 50, height = 800, width = 800)
 ```
 
-![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
+![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- --> \#\#\#\#
+animate\_anatomical()
 
 ``` r
 gait %>% 
