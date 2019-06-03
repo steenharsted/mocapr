@@ -15,13 +15,13 @@ The goal of `mocapr` is to provide researchers or clinicians with R
 functions that can import, plot, animate, and analyse motion capture
 data. The package is in **the very early experimental stages of
 development** and is only **minimally effective** in the sense that it,
-at current, only supports import from [the
+currently, only supports import from [the
 Captury](http://thecaptury.com/) system.
 
 It should be possible to wrangle motion capture data from other systems
 into a format that will allow useage of the functions in this package,
 as long as the data contains frame by frame joint center positions. If
-you have such motion capture data from another system, and if you are
+you have such motion capture data from other systems, and if you are
 willing to share some sample data, I will be happy to make an attempt at
 writing an import function and include both the function and the sample
 data in this package.
@@ -43,9 +43,10 @@ While all functions should run without loading other libraries I
 strongly recommend you load the tidyverse `library(tidyverse)` prior to
 loading the mocapr library.
 
-This is my first R package.I know I have much to learn in this area, but
-I am less sure of what it is I need to learn. Feedback and suggestions
-for improvement and future developments are **most welcome**.
+This is my first R package. I am sure I have much to learn in this area,
+but I am less sure of what it is I actually need to learn. Feedback and
+suggestions for improvement and future developments are **most
+welcome**.
 
 ## Short on the story behind the package
 
@@ -280,26 +281,28 @@ produce similar results, but the results will differ greatly if the
 direction of the movement changes throughout the recording.
 
 Lets explore the difference between the two types of projections by
-looking at a movement that is not unidirectional. \#\#\#\#
-animate\_movement()
+looking at a movement that is not unidirectional.
+
+#### animate\_movement()
 
 ``` r
 gait %>%
   #Project to the movements planes
   project_full_body_to_MP() %>%
   #Animate the movement plane projections
-  animate_movement(nframes = nrow(.), fps = 50, height = 800, width = 800)
+  animate_movement(nframes = nrow(.), fps = 50)
 ```
 
-![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- --> \#\#\#\#
-animate\_anatomical()
+![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
+
+#### animate\_anatomical()
 
 ``` r
 gait %>% 
   #Project to the anatomical Planes 
   project_full_body_to_AP() %>% 
   #Animate the anatomical projections
-  animate_anatomical(nframes = nrow(.), fps = 50, height = 800, width = 800)
+  animate_anatomical(nframes = nrow(.), fps = 50)
 ```
 
 ![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
