@@ -310,8 +310,8 @@ gait %>%
 Now the difference between the two types of animations is evident.
 `animate_movement()` gives you *fixed viewpoints* (you are standing
 still and watching the movement) and `animate_anatomical()` *updates
-your viewpoint for each frame* (you are always the watching the subject
-from the back and the side of the pelvis).
+your viewpoint for each frame* (you are always watching the subject from
+the back and the side of the pelvis).
 
 ## using `mocapr` to plot
 
