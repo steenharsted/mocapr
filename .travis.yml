@@ -36,8 +36,7 @@ matrix:
   include:
   - r: devel
   - r: release
-    r_packages:
-      - gapminder
+
     after_success:
     - Rscript -e 'covr::codecov()'
 
