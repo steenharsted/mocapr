@@ -11,6 +11,18 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+Suggests: magick,
+    svglite,
+    knitr,
+    rmarkdown,
+    testthat,
+    base64enc,
+    htmltools,
+    covr,
+    transformr,
+    av,
+    png,
+    gifski
 Imports: 
     tidyr,
     gganimate,
