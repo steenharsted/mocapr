@@ -16,9 +16,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    base64enc,
-    htmltools,
-    covr,
     transformr,
     png
 Imports: 
