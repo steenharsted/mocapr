@@ -351,7 +351,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     return(gganimate::animate(df_plot, ...))
     }
     df_plot+
-      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
 
 ##Animate antomical (Function)----
@@ -481,7 +481,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     }
 
     df_plot+
-      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
 
 #Animate Global----
@@ -496,7 +496,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @export
 #'
 #' @examples
-#' mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1), fps = 50)
+#' mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame %in% c(1, 10, 20, 25)), animate = FALSE)
 #' \dontrun{
 #' jump_1 <-  dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 #' mocapr::animate_global(jump_1, nframes = nrow(jump_1), fps = 50)
@@ -596,7 +596,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
       return(gganimate::animate(df_plot, ...))
     }
     df_plot+
-      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = vars(frame))
+      ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
 
 
