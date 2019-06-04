@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The goal of `mocapr` is to provide researchers or clinicians with R functions that can import, plot, animate, and analyse motion capture data. The package is in **the very early experimental stages of development** and is only **minimally effective** in the sense that it, currently, only supports import from [the Captury](http://thecaptury.com/) system.  
 
-It should be possible to wrangle motion capture data from other systems into a format that will allow useage of the functions in this package, as long as the data contains frame by frame joint center positions. If you have such motion capture data from other systems, and if you are willing to share some sample data, I will be happy to make an attempt at writing an import function and include both the function and the sample data in this package. 
+It should be possible to wrangle motion capture data from other systems into a format that will allow usage of the functions in this package, as long as the data contains frame by frame joint center positions. If you have such motion capture data from other systems, and if you are willing to share some sample data, I will be happy to make an attempt at writing an import function and include both the function and the sample data in this package. 
 
 `mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
 The package also contains a sample data set `mocapr_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
@@ -37,23 +37,16 @@ I have found R to be completely capable of working with large amounts of motion 
 # install.packages('devtools')
 devtools::install_github('steenharsted/mocapr')
 ```
-### Core Functions
-`mocapr` contains 6 core functions and some sample data `mocapr_data`.
-```{r eval=FALSE}
-# Core Functions
-import_captury()
-project_full_body_to_AP()
-project_full_body_to_MP()
-animate_global()
-animate_anatomical()
-animate_movement()
-```
+You may have to install additional packages manually that are needed in order to run `gganimate` functions.
 
-### Intended workflow using the `mocapr` package 
+### Core Functions
+`mocapr` contains six core functions and some sample data `mocapr_data`.  
+The six core functions are: one import function (`import_captury()`), two functions that project joint-center positions (`project_full_body_to_AP()` and `project_full_body_to_MP()`), and three functions to animate (`animate_global()`, `animate_anatomical()`, and `animate_movement()`).  
+The intended workflow of the six core functions is visualized below.
 ![Intended Workflow Using the `mocapr` package](figures/Intended_Workflow.png)
 
 ### The Sample Data `mocapr_data`
-`mocapr_data` consists of `r length(unique(mocapr::mocapr_data$movement_nr))` movements, each supplied with a number (`movement_nr`) and a short description (`movement_description`). Videos of the movements with an overlay of the track is available at this [YouTube playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ). The videoes are made using the CapturyLive software.
+`mocapr_data` consists of `r length(unique(mocapr::mocapr_data$movement_nr))` movements, each supplied with a number (`movement_nr`) and a short description (`movement_description`). Videos of the movements with an overlay of the track is available at this [YouTube playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ). The videos are made using the CapturyLive software.
 
 The data is also available as raw exports in .csv format, and can be found in the folder "data-raw".
 
@@ -68,7 +61,7 @@ mocapr_data %>%
   nest()
 ```
 
-The format of the data is wide and contains frame by frame joint angles and global joint center positions. Therefore, each joint is typically represented by 6 columns (3 angles and 3 positions). To prevent long repetitve colomn names, all joint related variables are abbreviated according to their side (L|R), joint(A|K|H|S|E|W), and angle|position.    
+The format of the data is wide and contains frame by frame joint angles and global joint center positions. Therefore, each joint is typically represented by 6 columns (3 angles and 3 positions). To prevent long repetitive column names, all joint related variables are abbreviated according to their side (L|R), joint(A|K|H|S|E|W), and angle|position.    
 
 | Side    | Joint        |Angle/Position |
 | :---    | :---         | :---          |    

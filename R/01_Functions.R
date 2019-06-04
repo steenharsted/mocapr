@@ -495,7 +495,12 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1), fps = 50)
+#' \dontrun{
+#' jump_1 <-  dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' mocapr::animate_global(jump_1, nframes = nrow(jump_1), fps = 50)
+#' }
   animate_global <- function(.data, animate = TRUE, ...){
     #   #Make Data Frame
     df <- .data %>%

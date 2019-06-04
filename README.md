@@ -19,12 +19,12 @@ currently, only supports import from [the
 Captury](http://thecaptury.com/) system.
 
 It should be possible to wrangle motion capture data from other systems
-into a format that will allow useage of the functions in this package,
-as long as the data contains frame by frame joint center positions. If
-you have such motion capture data from other systems, and if you are
-willing to share some sample data, I will be happy to make an attempt at
-writing an import function and include both the function and the sample
-data in this package.
+into a format that will allow usage of the functions in this package, as
+long as the data contains frame by frame joint center positions. If you
+have such motion capture data from other systems, and if you are willing
+to share some sample data, I will be happy to make an attempt at writing
+an import function and include both the function and the sample data in
+this package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -78,22 +78,19 @@ inspiration as to how R can be utilized outside of statistics.
 devtools::install_github('steenharsted/mocapr')
 ```
 
+You may have to install additional packages manually that are needed in
+order to run `gganimate` functions.
+
 ### Core Functions
 
-`mocapr` contains 6 core functions and some sample data `mocapr_data`.
-
-``` r
-# Core Functions
-import_captury()
-project_full_body_to_AP()
-project_full_body_to_MP()
-animate_global()
-animate_anatomical()
-animate_movement()
-```
-
-### Intended workflow using the `mocapr` package
-
+`mocapr` contains six core functions and some sample data
+`mocapr_data`.  
+The six core functions are: one import function (`import_captury()`),
+two functions that project joint-center positions
+(`project_full_body_to_AP()` and `project_full_body_to_MP()`), and three
+functions to animate (`animate_global()`, `animate_anatomical()`, and
+`animate_movement()`).  
+The intended workflow of the six core functions is visualized below.
 ![Intended Workflow Using the `mocapr`
 package](figures/Intended_Workflow.png)
 
@@ -104,7 +101,7 @@ package](figures/Intended_Workflow.png)
 of the movements with an overlay of the track is available at this
 [YouTube
 playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
-The videoes are made using the CapturyLive software.
+The videos are made using the CapturyLive software.
 
 The data is also available as raw exports in .csv format, and can be
 found in the folder “data-raw”.
@@ -134,7 +131,7 @@ mocapr_data %>%
 The format of the data is wide and contains frame by frame joint angles
 and global joint center positions. Therefore, each joint is typically
 represented by 6 columns (3 angles and 3 positions). To prevent long
-repetitve colomn names, all joint related variables are abbreviated
+repetitive column names, all joint related variables are abbreviated
 according to their side (L|R), joint(A|K|H|S|E|W), and
 angle|position.
 
