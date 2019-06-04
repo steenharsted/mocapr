@@ -21,8 +21,7 @@ Suggests:
     htmltools,
     covr,
     transformr,
-    png,
-    gifski
+    png
 Imports: 
     tidyr,
     gganimate,
