@@ -6,7 +6,7 @@ mocapr
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/steenharsted/mocapr.svg?token=TWbxTsB8WvZpmvPSsk8j&branch=master)](https://travis-ci.com/steenharsted/mocapr)
+status](https://travis-ci.org/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
 <!-- badges: end -->

@@ -20,7 +20,6 @@ Suggests: magick,
     htmltools,
     covr,
     transformr,
-    av,
     png,
     gifski
 Imports: 
