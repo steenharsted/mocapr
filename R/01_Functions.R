@@ -288,7 +288,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         NS_MPF = (LS_MPF+RS_MPF)/2,
         NS_MPR = (LS_MPR+RS_MPR)/2,
         #Center of cranium
-        NC_MPU = NS_MPU + (NS_MPU-NH_MPU)*0.3,
+        NC_MPU = NS_MPU + (NS_MPU-NH_MPU)*0.4,
         NC_MPF = NS_MPF + (NS_MPF-NH_MPF)*0.5,
         NC_MPR = NS_MPR + (NS_MPR-NH_MPR)*0.3,)
 
@@ -312,21 +312,19 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 
         #Create a larger size for the Torso
         Size_Path = dplyr::case_when(
-          Joint == "NH" ~ 2,
-          TRUE ~ 1),
+          Joint == "NH" ~ 3,
+          TRUE ~ 2),
 
         #Create a larger size for the Cranium
         Size_Point = dplyr::case_when(
           Joint == "NC" ~ 10,
-          TRUE ~ 3)) %>%
+          TRUE ~ 5)) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
       dplyr::arrange(frame, Joint) %>%
 
       #Lets plot it!
-      ggplot2::ggplot(ggplot2::aes(x = value, y = U, group = Side, color = Side))+
-        ggplot2::geom_point(ggplot2::aes(size = Size_Point))+
-        ggplot2::geom_path(ggplot2::aes(size = Size_Path))+
+      ggplot2::ggplot(ggplot2::aes(group = Side, color = Side))+
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
         ggplot2::coord_equal()+
@@ -344,6 +342,9 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     #Animation stuff
     if(animate){
     df_plot <- df_plot +
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U, color = Side, size = Size_Path))+
+      ggplot2::geom_point(ggplot2::aes(x = value, y = U, size = Size_Point))+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 0.75, color = "black")+
       ggplot2::facet_grid(cols = dplyr::vars(Dir))+
       gganimate::transition_time(frame) +
       gganimate::ease_aes('linear')
@@ -351,6 +352,9 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     return(gganimate::animate(df_plot, ...))
     }
     df_plot+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 2)+
+      ggforce::geom_circle(aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), color = "black", size = 1, alpha = 0.8)+
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
 
