@@ -353,7 +353,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     }
     df_plot+
       ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 2)+
-      ggforce::geom_circle(aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
+      ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
       ggplot2::geom_path(ggplot2::aes(x = value, y = U), color = "black", size = 1, alpha = 0.8)+
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
@@ -487,7 +487,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 
     df_plot+
       ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 2)+
-      ggforce::geom_circle(aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
+      ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
       ggplot2::geom_path(ggplot2::aes(x = value, y = U), color = "black", size = 1, alpha = 0.8)+
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
@@ -606,7 +606,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     }
     df_plot+
       ggplot2::geom_path(ggplot2::aes(x = value, y = Y), size = 2)+
-      ggforce::geom_circle(aes(x0 = value, y0 = Y, r = Size_Point*10, fill = Side))+
+      ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = Y, r = Size_Point*10, fill = Side))+
       ggplot2::geom_path(ggplot2::aes(x = value, y = Y), color = "black", size = 1, alpha = 0.8)+
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
