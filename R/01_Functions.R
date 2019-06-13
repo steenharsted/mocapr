@@ -421,7 +421,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         NS_APU = (LS_APU+RS_APU)/2,
         NS_APR = (LS_APR+RS_APR)/2,
         NS_APF = (LS_APF+RS_APF)/2,
-        NC_APU = NS_APU + (NS_APU-NH_APU)*0.3,
+        NC_APU = NS_APU + (NS_APU-NH_APU)*0.4,
         NC_APR = NS_APR + (NS_APR-NH_APR)*0.3,
         NC_APF = NS_APF + (NS_APF-NH_APF)*0.5
       )
@@ -452,15 +452,13 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
         #Create a larger size for the Cranium
         Size_Point = dplyr::case_when(
           Joint == "NC" ~ 10,
-          TRUE ~ 3)) %>%
+          TRUE ~ 5)) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
       dplyr::arrange(frame, Joint) %>%
 
       #Lets plot it!
-      ggplot2::ggplot(ggplot2::aes(x = value, y = U, group = Side, color = Side))+
-        ggplot2::geom_point(ggplot2::aes(size = Size_Point))+
-        ggplot2::geom_path(ggplot2::aes(size = Size_Path))+
+      ggplot2::ggplot(ggplot2::aes(group = Side, color = Side))+
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
         ggplot2::coord_equal()+
@@ -478,6 +476,9 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     #Animation stuff
     if(animate){
     df_plot <- df_plot +
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U, color = Side, size = Size_Path))+
+      ggplot2::geom_point(ggplot2::aes(x = value, y = U, size = Size_Point))+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 0.75, alpha = 0.5, color = "black")+
       ggplot2::facet_grid(cols = dplyr::vars(Dir))+
       gganimate::transition_time(frame) +
       gganimate::ease_aes('linear')
@@ -485,6 +486,9 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
     }
 
     df_plot+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 2)+
+      ggforce::geom_circle(aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = U), color = "black", size = 1, alpha = 0.8)+
       ggplot2::facet_grid(rows = dplyr::vars(Dir), cols = dplyr::vars(frame))
   }
 
