@@ -327,7 +327,6 @@ jump_2 %>%
                      col_facets = frame, 
                      return_plot = TRUE)+
   theme(
-    strip.text.x = element_blank(),#Remove the facet labels above each frame
     legend.position = "none") #Remove the legend
 ```
 

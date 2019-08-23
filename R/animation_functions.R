@@ -7,6 +7,7 @@
 #' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
+#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param ... These arguments are passed to the gganimate::animate() function.
@@ -21,6 +22,7 @@
                                use_geom_point = TRUE,
                                row_facets = NULL,
                                col_facets = NULL,
+                               remove_facet_labels = TRUE,
                                return_plot = FALSE,
                                ...){
 
@@ -93,6 +95,13 @@
           legend.position = "bottom",
           legend.title = ggplot2::element_blank())
 
+    if(remove_facet_labels){
+      df_plot <- df_plot +
+        ggplot2::theme(
+          strip.text.x = ggplot2::element_blank(),
+          strip.text.y = ggplot2::element_blank())
+    }
+
     if(planes_in_rows_or_cols == "rows"){
       rowplanes <- rlang::quo(Dir)
       colplanes <- NULL}
@@ -142,6 +151,7 @@
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
+#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param ... These arguments are passed to the gganimate::animate() function.
 
@@ -155,6 +165,7 @@
                                  use_geom_point = TRUE,
                                  row_facets = NULL,
                                  col_facets = NULL,
+                                 remove_facet_labels = TRUE,
                                  return_plot = FALSE,
                                  ...){
 
@@ -270,6 +281,13 @@
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank())
 
+    if(remove_facet_labels){
+      df_plot <- df_plot +
+        ggplot2::theme(
+          strip.text.x = ggplot2::element_blank(),
+          strip.text.y = ggplot2::element_blank())
+    }
+
     if(planes_in_rows_or_cols == "rows"){
       rowplanes <- rlang::quo(Dir)
       colplanes <- NULL}
@@ -317,6 +335,7 @@
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
+#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param ... These arguments are passed to the gganimate::animate() function.
 #'
@@ -335,6 +354,7 @@
                              use_geom_point = TRUE,
                              row_facets = NULL,
                              col_facets = NULL,
+                             remove_facet_labels = TRUE,
                              return_plot = FALSE,
                              ...){
     #   #Make Data Frame
@@ -417,6 +437,13 @@
         axis.title.x = ggplot2::element_blank(),
         legend.position = "bottom",
         legend.title = ggplot2::element_blank())
+
+    if(remove_facet_labels){
+      df_plot <- df_plot +
+        ggplot2::theme(
+          strip.text.x = ggplot2::element_blank(),
+          strip.text.y = ggplot2::element_blank())
+    }
 
     if(planes_in_rows_or_cols == "rows"){
       rowplanes <- rlang::quo(Dir)

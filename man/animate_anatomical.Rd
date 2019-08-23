@@ -6,7 +6,8 @@
 \usage{
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
-  row_facets = NULL, col_facets = NULL, return_plot = FALSE, ...)
+  row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
+  return_plot = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
@@ -20,6 +21,8 @@ animate_anatomical(.data, planes = c("R", "F"),
 \item{row_facets}{Make additional row-facets in the animation using a given variable. Defaults to NULL.}
 
 \item{col_facets}{Make additional column-facets in the animation using a given variable. Defaults to NULL.}
+
+\item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
 
 \item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
 
