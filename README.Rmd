@@ -17,18 +17,18 @@ The goal of `mocapr` is to provide researchers or clinicians with R functions th
 
 It should be possible to wrangle motion capture data from other systems into a format that will allow usage of the functions in this package, as long as the data contains frame by frame joint center positions. If you have such motion capture data from other systems, and if you are willing to share some sample data, I will be happy to make an attempt at writing an import function and include both the function and the sample data in this package. 
 
-`mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
+`mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2), [`ggforce`](https://ggforce.data-imaginist.com/)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
 The package also contains a sample data set `mocapr_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
 
 While all functions should run without loading other libraries I strongly recommend you load the tidyverse `library(tidyverse)` prior to loading the mocapr library.
 
-This is my first R package. I am sure I have much to learn in this area, but I am less sure of what it is I actually need to learn. Feedback and suggestions for improvement and future developments are **most welcome**. 
+Feedback and suggestions for improvement and future developments are **most welcome**. 
 
 ## Short on the story behind the package
 I am a Ph.d. student at The Department of Sports Science and Clinical Biomechanics, Faculty of Health Sciences at the University of Southern Denmark (SDU). My work is a part of the project “Motor Skills in Pre-Schoolers”([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)), which is led by Lise Hestbæk.  
 In MiPS we follow a cohort of \~950 pre-school children with yearly follow-ups. At each follow-up we collect data using markerless motion capture of the children as they perform a series of jumps and squats. My Ph.d. project revolves around collecting and analyzing this motion capture data, and the code available in this package is a more general form of some of the code I have written so far for use in this project. My initial attempts at approaching the data were made in Stata, but my work significantly picked up speed after I was introduced to R in the summer of 2017, and especially after I discovered the Tidyverse.
 
-I have found R to be completely capable of working with large amounts of motion capture data, and I hope this package can, at least, serve as an inspiration as to how R can be utilized outside of statistics.
+I have found R to be completely capable of working with large amounts of motion capture data, and I hope this package can, at least, serve as an inspiration as to how R can be utilized to work with motion capture data.
 
 ## Installation
 `mocapr` can  be installed directly from github using devtools:
@@ -105,13 +105,21 @@ The global coordinate system refers to a 3D coordinate system (X, Y, and Z axis)
 The `animate_global()` function animates the subject using the global joint center positions. It creates two animations: one in the X and Y plane; and one in the Z and Y plane. If the subject is moving along either the X or the Y axis the viewpoints will essentially be a side view and a front|back view.  
 ```{r jump_1_GP}
 jump_1 %>% 
-  animate_global(nframes = nrow(.), fps = 50)
+  animate_global(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 If the recorded subject moves at an angle to the axis' of the global coordinate system, animations and plots using global joint center positions will have oblique viewpoints. When I performed `jump_2` I both simulated a poor landing on the right knee and made sure that the direction of the jump was oblique to the axis' in the global coordinate system. Therefore, using the `animate_global()` function on `jump_2` produces an animation with oblique viewpoints.
 ```{r jump_2_GP}
 jump_2 %>% 
-  animate_global(nframes = nrow(.), fps = 50)
+  animate_global(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 ### Animating with `animate_movement()` and `animate_anatomical()`
@@ -129,16 +137,25 @@ Lets look again at `jump_2` (the jump that is oblique to the global coordinate s
 jump_2 %>%
   #Project to the movements planes
   project_full_body_to_MP() %>%
+  
   #Animate the movement plane projections
-  animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50, rewind = FALSE)
 ```
 
 ```{r jump_2_AP}
 jump_2 %>% 
   #Project to the anatomical Planes 
   project_full_body_to_AP() %>% 
+  
   #Animate the anatomical projections
-  animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
+  animate_anatomical(
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 *note: the right side appears on the right side in the anatomical animation and on the left side in the movement animation, this is intentional but might change in future versions*. 
@@ -152,17 +169,26 @@ Lets explore the difference between the two types of projections by looking at a
 gait %>%
   #Project to the movements planes
   project_full_body_to_MP() %>%
+  
   #Animate the movement plane projections
-  animate_movement(nframes = nrow(.), fps = 50)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 #### animate_anatomical()  
 ```{r walking_square_AP}
 gait %>% 
   #Project to the anatomical Planes 
-  project_full_body_to_AP() %>% 
+  project_full_body_to_AP() %>%
+  
   #Animate the anatomical projections
-  animate_anatomical(nframes = nrow(.), fps = 50)
+  animate_anatomical(
+    #gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50)
 ```
 
 Now the difference between the two types of animations is evident. `animate_movement()` gives you *fixed viewpoints* (you are standing still and watching the movement) and `animate_anatomical()` *updates your viewpoint for each frame* (you are always watching the subject from the back and the side of the pelvis).
@@ -172,17 +198,22 @@ Now the difference between the two types of animations is evident. `animate_move
 The three animate functions can be used to plot if you supply the argument `return_plot = TRUE`. I suggest you reduce the number of frames before you use the functions to plot.
 
 ```{r show_how_to_plot}
-jump_2 %>% 
+jump_2 %>%
+  
+  #Project to the anatomical Planes
   project_full_body_to_AP() %>% 
+  
+  #Reduce the number of frames in the data
   filter(frame %in% c(100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200)) %>% 
+  
+  #Animate the anatomical projections
   animate_anatomical(planes = c("F"),
                      planes_in_rows_or_cols = c("cols"), 
-                     use_geom_point = FALSE, # use ggforce::geom_circle()
-                     row_facets = NULL, 
                      col_facets = frame, 
                      return_plot = TRUE)+
+  #Remove the legend
   theme(
-    legend.position = "none") #Remove the legend
+    legend.position = "none") 
 ```
 
 
@@ -193,7 +224,13 @@ I find slow-mo effects is best achieved by adding more rows, e.g., `nrow(.)*2`
 capoeira %>% 
   filter(frame > 48 & frame < 223) %>% 
   project_full_body_to_MP() %>% 
-  animate_movement(nframes = nrow(.)*2, fps = 50, width = 600, height = 600)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.)*2, 
+    fps = 50, 
+    width = 600, 
+    height = 600)
 ```
 
 

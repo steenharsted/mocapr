@@ -32,7 +32,8 @@ this package.
 [`dplyr`](https://github.com/tidyverse/dplyr),
 [`stringr`](https://github.com/tidyverse/stringr),
 [`forcats`](https://github.com/tidyverse/forcats)), plot
-([`ggplot2`](https://github.com/tidyverse/ggplot2)), animate
+([`ggplot2`](https://github.com/tidyverse/ggplot2),
+[`ggforce`](https://ggforce.data-imaginist.com/)), animate
 ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
 motion capture data.  
 The package also contains a sample data set `mocapr_data` which is
@@ -43,10 +44,8 @@ While all functions should run without loading other libraries I
 strongly recommend you load the tidyverse `library(tidyverse)` prior to
 loading the mocapr library.
 
-This is my first R package. I am sure I have much to learn in this area,
-but I am less sure of what it is I actually need to learn. Feedback and
-suggestions for improvement and future developments are **most
-welcome**.
+Feedback and suggestions for improvement and future developments are
+**most welcome**.
 
 ## Short on the story behind the package
 
@@ -67,7 +66,8 @@ summer of 2017, and especially after I discovered the Tidyverse.
 
 I have found R to be completely capable of working with large amounts of
 motion capture data, and I hope this package can, at least, serve as an
-inspiration as to how R can be utilized outside of statistics.
+inspiration as to how R can be utilized to work with motion capture
+data.
 
 ## Installation
 
@@ -189,7 +189,11 @@ view and a front|back view.
 
 ``` r
 jump_1 %>% 
-  animate_global(nframes = nrow(.), fps = 50)
+  animate_global(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 ![](README_files/figure-gfm/jump_1_GP-1.gif)<!-- -->
@@ -204,7 +208,11 @@ produces an animation with oblique viewpoints.
 
 ``` r
 jump_2 %>% 
-  animate_global(nframes = nrow(.), fps = 50)
+  animate_global(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 ![](README_files/figure-gfm/jump_2_GP-1.gif)<!-- -->
@@ -249,8 +257,13 @@ and the `animate_anatomical()` functions.
 jump_2 %>%
   #Project to the movements planes
   project_full_body_to_MP() %>%
+  
   #Animate the movement plane projections
-  animate_movement(nframes = nrow(.), fps = 50, rewind = FALSE)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50, rewind = FALSE)
 ```
 
 ![](README_files/figure-gfm/jump_2_MP-1.gif)<!-- -->
@@ -259,8 +272,12 @@ jump_2 %>%
 jump_2 %>% 
   #Project to the anatomical Planes 
   project_full_body_to_AP() %>% 
+  
   #Animate the anatomical projections
-  animate_anatomical(nframes = nrow(.), fps = 50, rewind = FALSE)
+  animate_anatomical(
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 ![](README_files/figure-gfm/jump_2_AP-1.gif)<!-- -->
@@ -286,8 +303,13 @@ looking at a movement that is not unidirectional.
 gait %>%
   #Project to the movements planes
   project_full_body_to_MP() %>%
+  
   #Animate the movement plane projections
-  animate_movement(nframes = nrow(.), fps = 50)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.), 
+    fps = 50)
 ```
 
 ![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
@@ -297,9 +319,13 @@ gait %>%
 ``` r
 gait %>% 
   #Project to the anatomical Planes 
-  project_full_body_to_AP() %>% 
+  project_full_body_to_AP() %>%
+  
   #Animate the anatomical projections
-  animate_anatomical(nframes = nrow(.), fps = 50)
+  animate_anatomical(
+    #gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50)
 ```
 
 ![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
@@ -317,17 +343,22 @@ argument `return_plot = TRUE`. I suggest you reduce the number of frames
 before you use the functions to plot.
 
 ``` r
-jump_2 %>% 
+jump_2 %>%
+  
+  #Project to the anatomical Planes
   project_full_body_to_AP() %>% 
+  
+  #Reduce the number of frames in the data
   filter(frame %in% c(100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200)) %>% 
+  
+  #Animate the anatomical projections
   animate_anatomical(planes = c("F"),
                      planes_in_rows_or_cols = c("cols"), 
-                     use_geom_point = FALSE, # use ggforce::geom_circle()
-                     row_facets = NULL, 
                      col_facets = frame, 
                      return_plot = TRUE)+
+  #Remove the legend
   theme(
-    legend.position = "none") #Remove the legend
+    legend.position = "none") 
 ```
 
 ![](README_files/figure-gfm/show_how_to_plot-1.png)<!-- -->
@@ -342,7 +373,13 @@ find slow-mo effects is best achieved by adding more rows, e.g.,
 capoeira %>% 
   filter(frame > 48 & frame < 223) %>% 
   project_full_body_to_MP() %>% 
-  animate_movement(nframes = nrow(.)*2, fps = 50, width = 600, height = 600)
+  animate_movement(
+    
+    #gganimate options passed via ...
+    nframes = nrow(.)*2, 
+    fps = 50, 
+    width = 600, 
+    height = 600)
 ```
 
 ![](README_files/figure-gfm/show_options-1.gif)<!-- -->
