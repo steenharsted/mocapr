@@ -169,13 +169,21 @@ Now the difference between the two types of animations is evident. `animate_move
 
 
 ## using `mocapr` to plot
-The three animate functions can be used to plot if you supply the argument `animate = FALSE`. In that case the you will get a plot that is faceted on the frames. I suggest you reduce the number of frames before you use the functions to plot.
+The three animate functions can be used to plot if you supply the argument `return_plot = TRUE`. I suggest you reduce the number of frames before you use the functions to plot.
 
 ```{r show_how_to_plot}
 jump_2 %>% 
   project_full_body_to_AP() %>% 
-  filter( frame == 120 | frame == 150 | frame == 165 | frame == 170) %>% 
-  animate_anatomical(animate = FALSE)
+  filter(frame %in% c(100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200)) %>% 
+  animate_anatomical(planes = c("F"),
+                     planes_in_rows_or_cols = c("cols"), 
+                     use_geom_point = FALSE, # use ggforce::geom_circle()
+                     row_facets = NULL, 
+                     col_facets = frame, 
+                     return_plot = TRUE)+
+  theme(
+    strip.text.x = element_blank(),#Remove the facet labels above each frame
+    legend.position = "none") #Remove the legend
 ```
 
 
