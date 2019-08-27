@@ -152,6 +152,11 @@
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
 #' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
+#' @param line_size The size of the lines connecting the joint centers.
+#' @param point_size The size of the joint centers when use_geom_point = TRUE.
+#' @param circle_size The size of the joint centers when use_geom_point = FALSE.
+#' @param head_scale The size of the head relative to the joint-centers.
+#' @param torso_scale The size of the torso line relative to the remaing lines.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param ... These arguments are passed to the gganimate::animate() function.
 
@@ -166,6 +171,11 @@
                                  row_facets = NULL,
                                  col_facets = NULL,
                                  remove_facet_labels = TRUE,
+                                 line_size = 1,
+                                 point_size = 2,
+                                 circle_size = 60,
+                                 head_scale = 1.5,
+                                 torso_scale = 2,
                                  return_plot = FALSE,
                                  ...){
 
@@ -253,14 +263,20 @@
           TRUE ~ "No_side"),
 
         #Create a larger size for the Torso
-        Size_Path = dplyr::case_when(
-          Joint == "NH" ~ 3,
-          TRUE ~ 2),
+        size_path = dplyr::case_when(
+          Joint == "NH" ~ line_size*torso_scale,
+          TRUE ~ line_size),
 
         #Create a larger size for the Cranium
-        Size_Point = dplyr::case_when(
-          Joint == "NC" ~ 7,
-          TRUE ~ 5)) %>%
+        size_point = dplyr::case_when(
+          Joint == "NC" ~ point_size*head_scale,
+          TRUE ~ point_size),
+
+        size_circle = dplyr::case_when(
+          Joint == "NC" ~ circle_size*head_scale,
+          TRUE ~ circle_size),
+
+        ) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
       dplyr::arrange(frame, Joint) %>%
@@ -279,7 +295,10 @@
           legend.position = "bottom",
           legend.title = ggplot2::element_blank(),
           panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+          panel.grid.minor = element_blank())+
+        ggplot2::scale_size(
+          breaks = c(sort(unique(c(point_size, point_size * head_scale, line_size, line_size * torso_scale)))),
+          range = c(min(point_size, line_size), max(point_size * head_scale, line_size * torso_scale)))
 
     if(remove_facet_labels){
       df_plot <- df_plot +
@@ -299,10 +318,9 @@
     #Animation stuff
     if(use_geom_point){
       df_plot <- df_plot +
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U, color = Side, size = Size_Path))+
-            ggplot2::geom_point(ggplot2::aes(x = value, y = U, size = Size_Point))+
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = 1, color = "black")+
-            ggplot2::geom_point(ggplot2::aes(x = value, y = U), size = 2, color = "black")+
+            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
+            ggplot2::geom_point(ggplot2::aes(x = value, y = U, fill = Side, size = size_point), color = "black", shape = 21)+
+            ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = line_size, color = "black", alpha = 0.5)+
             ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
 
       if(return_plot){return(df_plot)}
@@ -312,9 +330,9 @@
       return(gganimate::animate(df_plot, ...))
       }else{
         df_plot <- df_plot +
-          ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = Size_Point*10, fill = Side))+
-          ggplot2::geom_path(ggplot2::aes(x = value, y = U), color = "black", size = 1)+
-          ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = 25), fill = "black", color = "black")+
+          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
+          ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = size_circle, fill = Side), color = "black")+
+          ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = line_size, color = "black", alpha = 0.5)+
           ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
 
         if(return_plot){return(df_plot)}

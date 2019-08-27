@@ -7,7 +7,8 @@
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
   row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  return_plot = FALSE, ...)
+  line_size = 1, point_size = 4, circle_size = 30,
+  head_scale = 1.2, torso_scale = 1.1, return_plot = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
