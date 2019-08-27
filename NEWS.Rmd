@@ -8,6 +8,15 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# mocapr 0.1.0.3
+### Major changes
+* Added the function align_movements()
+* The animate functions now include arguments that allow the user to control the size of point, circles and lines included in the animation or plot
+  + line_size
+  + point_size
+  + circle_size
+  + head_scale
+  + torso_scale
 
 # mocapr 0.1.0.2
 

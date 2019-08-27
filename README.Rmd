@@ -208,6 +208,7 @@ jump_2 %>%
   
   #Animate the anatomical projections
   animate_anatomical(planes = c("F"),
+                     use_geom_point = FALSE, 
                      planes_in_rows_or_cols = c("cols"), 
                      col_facets = frame, 
                      return_plot = TRUE)+
