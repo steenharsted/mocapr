@@ -7,8 +7,8 @@
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
   row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  line_size = 1, point_size = 4, circle_size = 30,
-  head_scale = 1.2, torso_scale = 1.1, return_plot = FALSE, ...)
+  line_size = 1, point_size = 2, circle_size = 60,
+  head_scale = 1.5, torso_scale = 2, return_plot = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
@@ -24,6 +24,16 @@ animate_anatomical(.data, planes = c("R", "F"),
 \item{col_facets}{Make additional column-facets in the animation using a given variable. Defaults to NULL.}
 
 \item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
+
+\item{line_size}{The size of the lines connecting the joint centers.}
+
+\item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
+
+\item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
+
+\item{head_scale}{The size of the head relative to the joint-centers.}
+
+\item{torso_scale}{The size of the torso line relative to the remaing lines.}
 
 \item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
 
