@@ -221,7 +221,6 @@
 
     #Select only Frame number and Joint center positions from the joints we wish to plot.
     df <- df %>%
-
       dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}})
 
 
@@ -260,20 +259,29 @@
           Joint %in% c("RT", "RA", "RK", "RH") ~ "Right Leg",
           Joint %in% c("LS", "LE", "LW") ~ "Left Arm",
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
-          TRUE ~ "No_side"),
+          TRUE ~ "Center"),
+        Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
 
         #Create a larger size for the Torso
         size_path = dplyr::case_when(
           Joint == "NH" ~ line_size*torso_scale,
           TRUE ~ line_size),
 
-        #Create a larger size for the Cranium
+        #Create a larger size for the Cranium and smaller feet
         size_point = dplyr::case_when(
           Joint == "NC" ~ point_size*head_scale,
+          Joint %in% c("LE", "RE") ~ point_size * 0.9,
+          Joint %in% c("LW", "RW") ~ point_size * 0.8,
+          Joint %in% c("LA", "RA") ~ point_size * 0.9,
+          Joint %in% c("LT", "RT") ~ point_size * 0.8,
           TRUE ~ point_size),
 
         size_circle = dplyr::case_when(
           Joint == "NC" ~ circle_size*head_scale,
+          Joint %in% c("LE", "RE") ~ circle_size * 0.9,
+          Joint %in% c("LW", "RW") ~ circle_size * 0.8,
+          Joint %in% c("LA", "RA") ~ circle_size * 0.9,
+          Joint %in% c("LT", "RT") ~ circle_size * 0.8,
           TRUE ~ circle_size),
 
         ) %>%
@@ -296,10 +304,9 @@
           legend.title = ggplot2::element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank())+
-        ggplot2::scale_size(
-          breaks = c(sort(unique(c(point_size, point_size * head_scale, line_size, line_size * torso_scale)))),
-          range = c(min(point_size, line_size), max(point_size * head_scale, line_size * torso_scale)))
+        ggplot2::scale_size_identity()
 
+    # Remove facet labels
     if(remove_facet_labels){
       df_plot <- df_plot +
         ggplot2::theme(
@@ -307,6 +314,7 @@
           strip.text.y = ggplot2::element_blank())
     }
 
+    # How should the planes be faceted (make NULL if no facet is needed)
     if(planes_in_rows_or_cols == "rows"){
       rowplanes <- rlang::quo(Dir)
       colplanes <- NULL}
@@ -314,8 +322,14 @@
       rowplanes <- NULL
       colplanes <- rlang::quo(Dir)}
 
+    if( all(planes == "R") |  all(planes == "F")){
+      rowplanes <- NULL
+      colplanes <- NULL
+    }
+
 
     #Animation stuff
+    # With geom_point
     if(use_geom_point){
       df_plot <- df_plot +
             ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
@@ -329,6 +343,7 @@
             gganimate::ease_aes('linear')
       return(gganimate::animate(df_plot, ...))
       }else{
+        # With geom_circle
         df_plot <- df_plot +
           ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
           ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = size_circle, fill = Side), color = "black")+
