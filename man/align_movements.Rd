@@ -6,13 +6,13 @@
 align_movements() is usefull for preparing tibbles that contain multible movements for animations. The frame numbers in the movements
 will be syncrhonised according to a supplied event. The event will then occur at the same framenumber}
 \usage{
-align_movements(.data, group_var, event_var, event_value,
+align_movements(.data, .group_var, event_var, event_value,
   return_equal_length_groups = TRUE, prolong_event = 1)
 }
 \arguments{
 \item{.data}{A tibble containing multible movements that are grouped by a variable (provided in group_var), and that all contain the same event (provided in event_var and event_value). )}
 
-\item{group_var}{The grouping variable of the movements}
+\item{.group_var}{The grouping variable of the movements. Mulitble variables should be given using unquoted variable names inside c(), e.g., c(group1, group2)}
 
 \item{event_var}{The variable that you wish to align the movements by}
 
@@ -37,5 +37,5 @@ df <- tibble::tibble(
     x = rnorm(n = 23), ID = c(rep(c(1,2), each = 5), 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5),
     aligner = c(NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, NA, NA, NA, "here"))
 
-align_movements(df, group_var = ID, event_var = aligner, event_value = "here", return_equal_length_groups = TRUE, prolong_event = 1)
+align_movements(df, .group_var = ID, event_var = aligner, event_value = "here", return_equal_length_groups = TRUE, prolong_event = 1)
 }

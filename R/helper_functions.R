@@ -3,7 +3,7 @@
 #' will be syncrhonised according to a supplied event. The event will then occur at the same framenumber
 #'
 #' @param .data A tibble containing multible movements that are grouped by a variable (provided in group_var), and that all contain the same event (provided in event_var and event_value). )
-#' @param group_var The grouping variable of the movements
+#' @param .group_var The grouping variable of the movements. Mulitble variables should be given using unquoted variable names inside c(), e.g., c(group1, group2)
 #' @param event_var The variable that you wish to align the movements by
 #' @param event_value The value in even_var that you wish to align the movements by
 #' @param return_equal_length_groups TRUE/FALSE. If the movements are of different lengths. Should the first and last rows of the shorter movements be duplicated? Defaults to TRUE.
@@ -19,8 +19,8 @@
 #'     x = rnorm(n = 23), ID = c(rep(c(1,2), each = 5), 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5),
 #'     aligner = c(NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, NA, NA, NA, "here"))
 #'
-#' align_movements(df, group_var = ID, event_var = aligner, event_value = "here", return_equal_length_groups = TRUE, prolong_event = 1)
-align_movements <- function(.data, group_var, event_var, event_value, return_equal_length_groups = TRUE, prolong_event = 1){
+#' align_movements(df, .group_var = ID, event_var = aligner, event_value = "here", return_equal_length_groups = TRUE, prolong_event = 1)
+align_movements <- function(.data, .group_var, event_var, event_value, return_equal_length_groups = TRUE, prolong_event = 1){
 
   #Ensure prolong_event is a positive integer
   if(prolong_event %%1 != 0 | prolong_event <= 0 ) {
@@ -34,7 +34,7 @@ align_movements <- function(.data, group_var, event_var, event_value, return_equ
 
   df <- .data %>%
     dplyr::ungroup() %>%
-    dplyr::group_by({{group_var}}) %>%
+    dplyr::group_by_at(vars({{.group_var}})) %>%
     dplyr::mutate(
       dummy = dplyr::if_else({{event_var}} == {{event_value}}, 1, 0))
 
@@ -63,7 +63,7 @@ align_movements <- function(.data, group_var, event_var, event_value, return_equ
     dplyr::mutate(
       min_frame_all = min(min_frame_by_group),
       max_frame_all = max(max_frame_by_group)) %>%
-    dplyr::group_by({{group_var}}) %>%
+    dplyr::group_by_at(vars({{.group_var}})) %>%
     mutate(
       duplicate_row = dplyr::case_when(
         frame == min(frame) ~ min_frame_by_group - min_frame_all + 1,
