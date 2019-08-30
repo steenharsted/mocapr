@@ -261,6 +261,7 @@
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
+        Side_frame = paste0(as.character(Side), as.character(frame)),
 
         #Create a larger size for the Torso
         size_path = dplyr::case_when(
@@ -290,7 +291,7 @@
       dplyr::arrange(frame, Joint) %>%
 
       #Lets plot it!
-      ggplot2::ggplot(ggplot2::aes(group = Side, color = Side))+
+      ggplot2::ggplot(ggplot2::aes(group = Side_frame, color = Side))+
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
         ggplot2::coord_equal()+
