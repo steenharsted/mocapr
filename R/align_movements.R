@@ -34,7 +34,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
 
   df <- .data %>%
     dplyr::ungroup() %>%
-    dplyr::group_by_at(vars({{.group_var}})) %>%
+    dplyr::group_by_at(dplyr::vars({{.group_var}})) %>%
     dplyr::mutate(
       dummy = dplyr::if_else({{event_var}} == {{event_value}}, 1, 0))
 
@@ -44,7 +44,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
 
   if(any(!df_test$matches_in_group == 1) ) {
     df_test <- df_test %>%
-      filter(matches_in_group != 1)
+      dplyr::filter(matches_in_group != 1)
     print(df_test)
     print("All groups must contain one and only one match. The above groups contains none or more than one match")
     print("returning error")
@@ -63,8 +63,8 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
     dplyr::mutate(
       min_frame_all = min(min_frame_by_group),
       max_frame_all = max(max_frame_by_group)) %>%
-    dplyr::group_by_at(vars({{.group_var}})) %>%
-    mutate(
+    dplyr::group_by_at(dplyr::vars({{.group_var}})) %>%
+    dplyr::mutate(
       duplicate_row = dplyr::case_when(
         frame == min(frame) ~ min_frame_by_group - min_frame_all + 1,
         frame == max(frame) ~ max_frame_all - max_frame_by_group + 1,
@@ -75,12 +75,12 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
   if(return_equal_length_groups){
     #Create duplicate rows of first and last rows to ensure equal length
     df <- df %>%
-      dplyr::slice(rep(seq_len(n()), duplicate_row)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), duplicate_row)) %>%
 
       #Prolong event
       dplyr::mutate(
         prolong = dplyr::if_else(frame == 0 & dplyr::row_number() == max(dplyr::row_number()[frame == 0]), prolong_event, 1)) %>%
-      dplyr::slice(rep(seq_len(n()), prolong)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), prolong)) %>%
 
       #give new frame numbers
       dplyr::mutate(frame = dplyr::row_number()) %>%
@@ -94,7 +94,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
       #Prolong event
       dplyr::mutate(
         prolong = if_else(frame == 0 & dplyr::row_number() == max(dplyr::row_number()[frame == 0]), prolong_event, 1)) %>%
-      dplyr::slice(rep(seq_len(n()), prolong)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), prolong)) %>%
 
       #give new frame numbers
       dplyr::mutate(
