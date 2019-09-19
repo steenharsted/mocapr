@@ -1,6 +1,7 @@
-#' align_movements()
-#' align_movements() is usefull for preparing tibbles that contain multible movements for animations. The frame numbers in the movements
-#' will be syncrhonised according to a supplied event. The event will then occur at the same framenumber
+#' Time align two or more motion capture recordings containing the same event.
+#'
+#' \code{align_movements()} is usefull for preparing tibbles that contain multible movements for animations. All movements must contain the same event that are supplied with arguments \code{event_var} and \code{event_value}. The frame numbers in the movements
+#' will be syncrhonised according to the supplied event, and the event will occur at the same framenumber for all movements.
 #'
 #' @param .data A tibble containing multible movements that are grouped by a variable (provided in group_var), and that all contain the same event (provided in event_var and event_value). )
 #' @param .group_var The grouping variable of the movements. Mulitble variables should be given using unquoted variable names inside c(), e.g., c(group1, group2)

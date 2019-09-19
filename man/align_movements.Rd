@@ -2,9 +2,7 @@
 % Please edit documentation in R/align_movements.R
 \name{align_movements}
 \alias{align_movements}
-\title{align_movements()
-align_movements() is usefull for preparing tibbles that contain multible movements for animations. The frame numbers in the movements
-will be syncrhonised according to a supplied event. The event will then occur at the same framenumber}
+\title{Time align two or more motion capture recordings containing the same event.}
 \usage{
 align_movements(.data, .group_var, event_var, event_value,
   return_equal_length_groups = TRUE, prolong_event = 1)
@@ -26,9 +24,8 @@ align_movements(.data, .group_var, event_var, event_value,
 An ungrouped tibble.
 }
 \description{
-align_movements()
-align_movements() is usefull for preparing tibbles that contain multible movements for animations. The frame numbers in the movements
-will be syncrhonised according to a supplied event. The event will then occur at the same framenumber
+\code{align_movements()} is usefull for preparing tibbles that contain multible movements for animations. All movements must contain the same event that are supplied with arguments \code{event_var} and \code{event_value}. The frame numbers in the movements
+will be syncrhonised according to the supplied event, and the event will occur at the same framenumber for all movements.
 }
 \examples{
 # Generate data
