@@ -40,11 +40,11 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
 
   #test if all groups contain only 1 match
   df_test  <- df %>%
-    dplyr::summarise(matches_in_group = sum(dummy, na.rm = TRUE))
+    dplyr::summarise(matches_in_group = sum(.data$dummy, na.rm = TRUE))
 
   if(any(!df_test$matches_in_group == 1) ) {
     df_test <- df_test %>%
-      dplyr::filter(matches_in_group != 1)
+      dplyr::filter(.data$matches_in_group != 1)
     print(df_test)
     print("All groups must contain one and only one match. The above groups contains none or more than one match")
     print("returning error")
@@ -55,19 +55,19 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
   # match occurs when dummy == 1
   df <- df %>%
     dplyr::mutate(
-      frame_nr_at_dummy = max(frame[dummy == 1], na.rm = TRUE),
-      frame = frame - frame_nr_at_dummy,
-      min_frame_by_group = min(frame),
-      max_frame_by_group = max(frame)) %>%
+      frame_nr_at_dummy = max(.data$frame[.data$dummy == 1], na.rm = TRUE),
+      frame = .data$frame - .data$frame_nr_at_dummy,
+      min_frame_by_group = min(.data$frame),
+      max_frame_by_group = max(.data$frame)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
-      min_frame_all = min(min_frame_by_group),
-      max_frame_all = max(max_frame_by_group)) %>%
+      min_frame_all = min(.data$min_frame_by_group),
+      max_frame_all = max(.data$max_frame_by_group)) %>%
     dplyr::group_by_at(dplyr::vars({{.group_var}})) %>%
     dplyr::mutate(
       duplicate_row = dplyr::case_when(
-        frame == min(frame) ~ min_frame_by_group - min_frame_all + 1,
-        frame == max(frame) ~ max_frame_all - max_frame_by_group + 1,
+        frame == min(.data$frame) ~ .data$min_frame_by_group - .data$min_frame_all + 1,
+        frame == max(.data$frame) ~ .data$max_frame_all - .data$max_frame_by_group + 1,
         TRUE ~ 1))
 
 
@@ -75,33 +75,33 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
   if(return_equal_length_groups){
     #Create duplicate rows of first and last rows to ensure equal length
     df <- df %>%
-      dplyr::slice(rep(seq_len(dplyr::n()), duplicate_row)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), .data$duplicate_row)) %>%
 
       #Prolong event
       dplyr::mutate(
-        prolong = dplyr::if_else(frame == 0 & dplyr::row_number() == max(dplyr::row_number()[frame == 0]), prolong_event, 1)) %>%
-      dplyr::slice(rep(seq_len(dplyr::n()), prolong)) %>%
+        prolong = dplyr::if_else(.data$frame == 0 & dplyr::row_number() == max(dplyr::row_number()[.data$frame == 0]), prolong_event, 1)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), .data$prolong)) %>%
 
       #give new frame numbers
       dplyr::mutate(frame = dplyr::row_number()) %>%
 
       #remove helper vars and ungroup tibble
-      dplyr::select(-duplicate_row, -dummy, -frame_nr_at_dummy, -min_frame_by_group, -max_frame_by_group, -min_frame_all, -max_frame_all, -prolong) %>%
+      dplyr::select(-.data$duplicate_row, -.data$dummy, -.data$frame_nr_at_dummy, -.data$min_frame_by_group, -.data$max_frame_by_group, -.data$min_frame_all, -.data$max_frame_all, -.data$prolong) %>%
       dplyr::ungroup()}
   else{
     df <- df %>%
 
       #Prolong event
       dplyr::mutate(
-        prolong = if_else(frame == 0 & dplyr::row_number() == max(dplyr::row_number()[frame == 0]), prolong_event, 1)) %>%
-      dplyr::slice(rep(seq_len(dplyr::n()), prolong)) %>%
+        prolong = dplyr::if_else(.data$frame == 0 & dplyr::row_number() == max(dplyr::row_number()[.data$frame == 0]), prolong_event, 1)) %>%
+      dplyr::slice(rep(seq_len(dplyr::n()), .data$prolong)) %>%
 
       #give new frame numbers
       dplyr::mutate(
-        frame = min(frame) + abs(min_frame_all) + dplyr::row_number()) %>%
+        frame = min(.data$frame) + abs(.data$min_frame_all) + dplyr::row_number()) %>%
 
       #remove helper vars and ungroup tibble
-      dplyr::select(-duplicate_row, -dummy, -frame_nr_at_dummy, -min_frame_by_group, -max_frame_by_group, -min_frame_all, -max_frame_all, -prolong) %>%
+      dplyr::select(-.data$duplicate_row, -.data$dummy, -.data$frame_nr_at_dummy, -.data$min_frame_by_group, -.data$max_frame_by_group, -.data$min_frame_all, -.data$max_frame_all, -.data$prolong) %>%
       dplyr::ungroup()}
   df
 }
