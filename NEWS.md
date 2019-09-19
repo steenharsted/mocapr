@@ -1,4 +1,4 @@
-# mocapr 0.0.1.3
+# mocapr 0.0.2
 ### Major changes
 * Added the function align_movements()
 * The animate functions now include arguments that allow the user to control the size of point, circles and lines included in the animation or plot
@@ -8,7 +8,7 @@
   + head_scale
   + torso_scale
 
-# mocapr 0.0.1.2
+# mocapr 0.0.1
 
 ### Major Changes
 * The animate functions now include the following extra arguments:
