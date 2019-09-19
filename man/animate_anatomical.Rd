@@ -7,9 +7,10 @@
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
   row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  line_size = 2, point_size = 4, circle_size = 40,
-  head_scale = 1.5, torso_scale = 1.5, return_data = FALSE,
-  return_plot = FALSE, preserve = NULL, ...)
+  line_colored_size = 2, line_black_size = 2, line_black_alpha = 0.5,
+  point_size = 4, circle_size = 40, head_scale = 1.5,
+  torso_scale = 1.5, return_data = FALSE, return_plot = FALSE,
+  preserve = NULL, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
@@ -26,8 +27,6 @@ animate_anatomical(.data, planes = c("R", "F"),
 
 \item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
 
-\item{line_size}{The size of the lines connecting the joint centers.}
-
 \item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
 
 \item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
@@ -43,6 +42,8 @@ animate_anatomical(.data, planes = c("R", "F"),
 \item{preserve}{Which variables should be preserved. This is usefull if you wish to add additional layers to the animations e.g., geom_text()}
 
 \item{...}{These arguments are passed to the gganimate::animate() function.}
+
+\item{line_size}{The size of the lines connecting the joint centers.}
 }
 \value{
 Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned.
