@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{magrittr::\link[magrittr]{\%>\%}} for details.
+#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
 #'
 #' @name %>%
 #' @rdname pipe
@@ -8,10 +8,4 @@
 #' @export
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
-NULL
-
-
-## usethis namespace: start
-#' @importFrom tibble tibble
-## usethis namespace: end
 NULL
