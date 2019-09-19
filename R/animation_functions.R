@@ -200,7 +200,7 @@
     if(reduce_data) {
       #Select only Frame number and Joint center positions from the joints we wish to plot.
       df <- df %>%
-        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{preserve}})
+        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}})
     }
 
 
