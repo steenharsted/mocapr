@@ -3,6 +3,8 @@ mocapr
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# mocapr
+
 <!-- badges: start -->
 
 [![Travis build
@@ -71,11 +73,12 @@ data.
 
 ## Installation
 
-`mocapr` can be installed directly from github using devtools:
+You can install the development version of `mocapr` from
+[GitHub](https://github.com/) with:
 
 ``` r
-# install.packages('devtools')
-devtools::install_github('steenharsted/mocapr')
+# install.packages("devtools")
+devtools::install_github("steenharsted/mocapr")
 ```
 
 You may have to install additional packages manually that are needed in
@@ -92,14 +95,11 @@ functions to animate (`animate_global()`, `animate_anatomical()`, and
 `animate_movement()`).  
 The intended workflow of the six core functions is visualized below.
 ![Intended Workflow Using the `mocapr`
-package](figures/Intended_Workflow.png)
-
-### The Sample Data `mocapr_data`
-
-`mocapr_data` consists of 6 movements, each supplied with a number
-(`movement_nr`) and a short description (`movement_description`). Videos
-of the movements with an overlay of the track is available at this
-[YouTube
+package](figures/Intended_Workflow.png) \#\#\# The Sample Data
+`mocapr_data` `mocapr_data` consists of 6 movements, each supplied with
+a number (`movement_nr`) and a short description
+(`movement_description`). Videos of the movements with an overlay of the
+track is available at this [YouTube
 playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
 The videos are made using the CapturyLive software.
 
@@ -116,17 +116,17 @@ library(mocapr)
 mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   nest()
+#> # A tibble: 6 x 3
+#> # Groups:   movement_nr, movement_description [6]
+#>   movement_nr movement_description                                     data
+#>         <dbl> <chr>                                           <list<df[,70>
+#> 1           1 standing long jump for maximal performance         [172 x 70]
+#> 2           2 standing long jump with simulated poor landing~    [228 x 70]
+#> 3           3 normal gait in a straight line                     [157 x 70]
+#> 4           4 normal gait in a semi square                       [375 x 70]
+#> 5           5 vertical jump for maximal performance              [143 x 70]
+#> 6           6 caipoera dance                                   [1,269 x 70]
 ```
-
-    ## # A tibble: 6 x 3
-    ##   movement_nr movement_description                            data         
-    ##         <dbl> <chr>                                           <list>       
-    ## 1           1 standing long jump for maximal performance      <tibble [172~
-    ## 2           2 standing long jump with simulated poor landing~ <tibble [228~
-    ## 3           3 normal gait in a straight line                  <tibble [157~
-    ## 4           4 normal gait in a semi square                    <tibble [375~
-    ## 5           5 vertical jump for maximal performance           <tibble [143~
-    ## 6           6 caipoera dance                                  <tibble [1,2~
 
 The format of the data is wide and contains frame by frame joint angles
 and global joint center positions. Therefore, each joint is typically
@@ -196,7 +196,7 @@ jump_1 %>%
     fps = 50)
 ```
 
-![](README_files/figure-gfm/jump_1_GP-1.gif)<!-- -->
+<img src="man/figures/README-jump_1_GP-1.gif" width="100%" />
 
 If the recorded subject moves at an angle to the axis’ of the global
 coordinate system, animations and plots using global joint center
@@ -215,7 +215,7 @@ jump_2 %>%
     fps = 50)
 ```
 
-![](README_files/figure-gfm/jump_2_GP-1.gif)<!-- -->
+<img src="man/figures/README-jump_2_GP-1.gif" width="100%" />
 
 ### Animating with `animate_movement()` and `animate_anatomical()`
 
@@ -266,7 +266,7 @@ jump_2 %>%
     fps = 50, rewind = FALSE)
 ```
 
-![](README_files/figure-gfm/jump_2_MP-1.gif)<!-- -->
+<img src="man/figures/README-jump_2_MP-1.gif" width="100%" />
 
 ``` r
 jump_2 %>% 
@@ -280,7 +280,7 @@ jump_2 %>%
     fps = 50)
 ```
 
-![](README_files/figure-gfm/jump_2_AP-1.gif)<!-- -->
+<img src="man/figures/README-jump_2_AP-1.gif" width="100%" />
 
 *note: the right side appears on the right side in the anatomical
 animation and on the left side in the movement animation, this is
@@ -312,7 +312,7 @@ gait %>%
     fps = 50)
 ```
 
-![](README_files/figure-gfm/walking_square_MP-1.gif)<!-- -->
+<img src="man/figures/README-walking_square_MP-1.gif" width="100%" />
 
 #### animate\_anatomical()
 
@@ -328,7 +328,7 @@ gait %>%
     fps = 50)
 ```
 
-![](README_files/figure-gfm/walking_square_AP-1.gif)<!-- -->
+<img src="man/figures/README-walking_square_AP-1.gif" width="100%" />
 
 Now the difference between the two types of animations is evident.
 `animate_movement()` gives you *fixed viewpoints* (you are standing
@@ -353,6 +353,7 @@ jump_2 %>%
   
   #Animate the anatomical projections
   animate_anatomical(planes = c("F"),
+                     use_geom_point = FALSE, 
                      planes_in_rows_or_cols = c("cols"), 
                      col_facets = frame, 
                      return_plot = TRUE)+
@@ -361,7 +362,7 @@ jump_2 %>%
     legend.position = "none") 
 ```
 
-![](README_files/figure-gfm/show_how_to_plot-1.png)<!-- -->
+<img src="man/figures/README-show_how_to_plot-1.png" width="100%" />
 
 ## Options
 
@@ -382,4 +383,4 @@ capoeira %>%
     height = 600)
 ```
 
-![](README_files/figure-gfm/show_options-1.gif)<!-- -->
+<img src="man/figures/README-show_options-1.gif" width="100%" />

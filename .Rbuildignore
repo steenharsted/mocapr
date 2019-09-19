@@ -6,3 +6,4 @@
 ^figures$
 ^\.travis\.yml$
 ^appveyor\.yml$
+^README\.Rmd$

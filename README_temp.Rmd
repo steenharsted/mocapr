@@ -2,24 +2,16 @@
 title: "mocapr"
 output: github_document
 ---
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
-# mocapr
-
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
 <!-- badges: end -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 The goal of `mocapr` is to provide researchers or clinicians with R functions that can import, plot, animate, and analyse motion capture data. The package is in **the very early experimental stages of development** and is only **minimally effective** in the sense that it, currently, only supports import from [the Captury](http://thecaptury.com/) system.  
 
@@ -39,12 +31,11 @@ In MiPS we follow a cohort of \~950 pre-school children with yearly follow-ups. 
 I have found R to be completely capable of working with large amounts of motion capture data, and I hope this package can, at least, serve as an inspiration as to how R can be utilized to work with motion capture data.
 
 ## Installation
+`mocapr` can  be installed directly from github using devtools:
 
-You can install the development version of `mocapr` from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("steenharsted/mocapr")
+```{r installation, eval=FALSE}
+# install.packages('devtools')
+devtools::install_github('steenharsted/mocapr')
 ```
 You may have to install additional packages manually that are needed in order to run `gganimate` functions.
 
@@ -53,6 +44,7 @@ You may have to install additional packages manually that are needed in order to
 The six core functions are: one import function (`import_captury()`), two functions that project joint-center positions (`project_full_body_to_AP()` and `project_full_body_to_MP()`), and three functions to animate (`animate_global()`, `animate_anatomical()`, and `animate_movement()`).  
 The intended workflow of the six core functions is visualized below.
 ![Intended Workflow Using the `mocapr` package](figures/Intended_Workflow.png)
+
 ### The Sample Data `mocapr_data`
 `mocapr_data` consists of `r length(unique(mocapr::mocapr_data$movement_nr))` movements, each supplied with a number (`movement_nr`) and a short description (`movement_description`). Videos of the movements with an overlay of the track is available at this [YouTube playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ). The videos are made using the CapturyLive software.
 
@@ -241,4 +233,6 @@ capoeira %>%
     width = 600, 
     height = 600)
 ```
+
+
 
