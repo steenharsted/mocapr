@@ -146,33 +146,35 @@
 #' animate_anatomical() animates motioncapture data that is projected onto the anatomical planes of the body using mocapr::project_full_body_to_AP().
 #'
 #' @param .data A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.
-#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
 #' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
-#' @param line_size The size of the lines connecting the joint centers.
+#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
+#' @param line_colored_size The size of the colored lines connecting the joint centers.
+#' @param line_black_size The size of the black lines connecting the joint centers.
+#' @param line_black_alpha The alhpa value of the black lines connecting the joint centers.
 #' @param point_size The size of the joint centers when use_geom_point = TRUE.
 #' @param circle_size The size of the joint centers when use_geom_point = FALSE.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
-#' @param preserve Which variables should be preserved. This is usefull if you wish to add additional layers to the animations e.g., geom_text()
+#' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
 
-#' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned.
+#' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
 #' @examples \dontrun{}
   animate_anatomical <- function(.data,
                                  planes = c("R", "F"),
                                  planes_in_rows_or_cols = c("cols"),
-                                 use_geom_point = TRUE,
                                  row_facets = NULL,
                                  col_facets = NULL,
                                  remove_facet_labels = TRUE,
+                                 use_geom_point = TRUE,
                                  line_colored_size = 2,
                                  line_black_size = 2,
                                  line_black_alpha = 0.5,
@@ -182,52 +184,24 @@
                                  torso_scale = 1.5,
                                  return_data = FALSE,
                                  return_plot = FALSE,
-                                 preserve = NULL,
+                                 reduce_data = FALSE,
                                  ...){
 
-    #Make Data Frame
+    # Prevent jitter. Stabilizie the joint center positions around the center of the hip joints
     df <- .data %>%
-
-      #To prevent jitter this section is inserted. It stabilizies the joint center positions around the center
-      #of the hip joints. This should be made more generic e.g. vars(ends_with("APR"))
       dplyr::mutate(
         Normaliser_R = RH_APR+(LH_APR-RH_APR)/2,
-        Normaliser_F = RH_APF+(LH_APF-RH_APF)/2,
-        #Upper exremities
-        RS_APR = RS_APR-Normaliser_R,
-        LS_APR = LS_APR-Normaliser_R,
-        RE_APR = RE_APR-Normaliser_R,
-        LE_APR = LE_APR-Normaliser_R,
-        RW_APR = RW_APR-Normaliser_R,
-        LW_APR = LW_APR-Normaliser_R,
-        RS_APF = RS_APF-Normaliser_F,
-        LS_APF = LS_APF-Normaliser_F,
-        RE_APF = RE_APF-Normaliser_F,
-        LE_APF = LE_APF-Normaliser_F,
-        RW_APF = RW_APF-Normaliser_F,
-        LW_APF = LW_APF-Normaliser_F,
-        #Lower extremities
-        RH_APR = RH_APR-Normaliser_R,
-        LH_APR = LH_APR-Normaliser_R,
-        RK_APR = RK_APR-Normaliser_R,
-        LK_APR = LK_APR-Normaliser_R,
-        RA_APR = RA_APR-Normaliser_R,
-        LA_APR = LA_APR-Normaliser_R,
-        RT_APR = RT_APR-Normaliser_R,
-        LT_APR = LT_APR-Normaliser_R,
-        RH_APF = RH_APF-Normaliser_F,
-        LH_APF = LH_APF-Normaliser_F,
-        RK_APF = RK_APF-Normaliser_F,
-        LK_APF = LK_APF-Normaliser_F,
-        RA_APF = RA_APF-Normaliser_F,
-        LA_APF = LA_APF-Normaliser_F,
-        RT_APF = RT_APF-Normaliser_F,
-        LT_APF = LT_APF-Normaliser_F)
+        Normaliser_F = RH_APF+(LH_APF-RH_APF)/2) %>%
+      dplyr::mutate_at(dplyr::vars(tidyselect::ends_with("_APR")), ~.-Normaliser_R) %>%
+      dplyr::mutate_at(dplyr::vars(tidyselect::ends_with("_APF")), ~.-Normaliser_F) %>%
+      dplyr::select(-Normaliser_R, -Normaliser_F)
 
 
-    #Select only Frame number and Joint center positions from the joints we wish to plot.
-    df <- df %>%
-      dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{preserve}})
+    if(reduce_data) {
+      #Select only Frame number and Joint center positions from the joints we wish to plot.
+      df <- df %>%
+        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{preserve}})
+    }
 
 
     df <- df %>%
@@ -318,8 +292,8 @@
           axis.title.x = ggplot2::element_blank(),
           legend.position = "bottom",
           legend.title = ggplot2::element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())+
+          panel.grid.major = ggplot2::element_blank(),
+          panel.grid.minor = ggplot2::element_blank())+
         ggplot2::scale_size_identity()
 
     # Remove facet labels
