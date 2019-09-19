@@ -1,14 +1,4 @@
----
-title: "NEWS"
-author: "Steen Harsted"
-date: "23/8/2019"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-# mocapr 0.1.0.3
+# mocapr 0.0.1.3
 ### Major changes
 * Added the function align_movements()
 * The animate functions now include arguments that allow the user to control the size of point, circles and lines included in the animation or plot
@@ -18,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
   + head_scale
   + torso_scale
 
-# mocapr 0.1.0.2
+# mocapr 0.0.1.2
 
 ### Major Changes
 * The animate functions now include the following extra arguments:
