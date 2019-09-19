@@ -157,7 +157,9 @@
 #' @param circle_size The size of the joint centers when use_geom_point = FALSE.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
+#' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
+#' @param preserve Which variables should be preserved. This is usefull if you wish to add additional layers to the animations e.g., geom_text()
 #' @param ... These arguments are passed to the gganimate::animate() function.
 
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned.
@@ -171,12 +173,16 @@
                                  row_facets = NULL,
                                  col_facets = NULL,
                                  remove_facet_labels = TRUE,
-                                 line_size = 1,
-                                 point_size = 2,
-                                 circle_size = 60,
+                                 line_colored_size = 2,
+                                 line_black_size = 2,
+                                 line_black_alpha = 0.5,
+                                 point_size = 4,
+                                 circle_size = 40,
                                  head_scale = 1.5,
-                                 torso_scale = 2,
+                                 torso_scale = 1.5,
+                                 return_data = FALSE,
                                  return_plot = FALSE,
+                                 preserve = NULL,
                                  ...){
 
     #Make Data Frame
@@ -221,7 +227,7 @@
 
     #Select only Frame number and Joint center positions from the joints we wish to plot.
     df <- df %>%
-      dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}})
+      dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{preserve}})
 
 
     df <- df %>%
@@ -240,11 +246,11 @@
 
 
     ## Transform data into long format
-    df_plot <- df %>%
+    df_data <- df %>%
       tidyr::gather(key, value, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"))
 
 
-    df_plot <- df_plot %>%
+    df_data <- df_data %>%
       tidyr::extract(key, into = c("Joint", "Plane", "Dir"), regex = "(.+)_(AP)(.+)") %>%
       tidyr::spread(Dir, value) %>%
       tidyr::gather(Dir, value, R, F) %>%
@@ -264,9 +270,13 @@
         Side_frame = paste0(as.character(Side), as.character(frame)),
 
         #Create a larger size for the Torso
-        size_path = dplyr::case_when(
-          Joint == "NH" ~ line_size*torso_scale,
-          TRUE ~ line_size),
+        size_path_color = dplyr::case_when(
+          Joint == "NH" ~ line_colored_size*torso_scale,
+          TRUE ~ line_colored_size),
+
+        size_path_black = dplyr::case_when(
+          Joint == "NH" ~ line_black_size*torso_scale,
+          TRUE ~ line_black_size),
 
         #Create a larger size for the Cranium and smaller feet
         size_point = dplyr::case_when(
@@ -288,9 +298,14 @@
         ) %>%
 
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
-      dplyr::arrange(frame, Joint) %>%
+      dplyr::arrange(frame, Joint)
 
-      #Lets plot it!
+    if(return_data) {
+      return(df_data)
+    }
+
+    #Lets plot it!
+    df_plot <- df_data %>%
       ggplot2::ggplot(ggplot2::aes(group = Side_frame, color = Side))+
         ggplot2::ylab("Height (mm)")+
         ggplot2::xlab("(mm)")+
@@ -329,13 +344,13 @@
     }
 
 
-    #Animation stuff
+    #Animation and plotting stuff
     # With geom_point
     if(use_geom_point){
       df_plot <- df_plot +
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
+            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
             ggplot2::geom_point(ggplot2::aes(x = value, y = U, fill = Side, size = size_point), color = "black", shape = 21)+
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = line_size, color = "black", alpha = 0.5)+
+            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
             ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
 
       if(return_plot){return(df_plot)}
@@ -346,9 +361,9 @@
       }else{
         # With geom_circle
         df_plot <- df_plot +
-          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path))+
+          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
           ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = size_circle, fill = Side), color = "black")+
-          ggplot2::geom_path(ggplot2::aes(x = value, y = U), size = line_size, color = "black", alpha = 0.5)+
+          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
           ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
 
         if(return_plot){return(df_plot)}

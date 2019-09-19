@@ -7,8 +7,9 @@
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
   row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  line_size = 1, point_size = 2, circle_size = 60,
-  head_scale = 1.5, torso_scale = 2, return_plot = FALSE, ...)
+  line_size = 2, point_size = 4, circle_size = 40,
+  head_scale = 1.5, torso_scale = 1.5, return_data = FALSE,
+  return_plot = FALSE, preserve = NULL, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
@@ -35,7 +36,11 @@ animate_anatomical(.data, planes = c("R", "F"),
 
 \item{torso_scale}{The size of the torso line relative to the remaing lines.}
 
+\item{return_data}{Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.}
+
 \item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
+
+\item{preserve}{Which variables should be preserved. This is usefull if you wish to add additional layers to the animations e.g., geom_text()}
 
 \item{...}{These arguments are passed to the gganimate::animate() function.}
 }

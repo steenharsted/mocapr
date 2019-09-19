@@ -36,7 +36,8 @@ Imports:
     purrr,
     here,
     tibble,
-    ggforce
+    ggforce,
+    rlang
 Depends: R (>= 3.1.0)
 URL: https://github.com/steenharsted/mocapr
 BugReports: https://github.com/steenharsted/mocapr/issues
