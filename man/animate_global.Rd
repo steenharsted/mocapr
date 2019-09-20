@@ -2,22 +2,22 @@
 % Please edit documentation in R/animation_functions.R
 \name{animate_global}
 \alias{animate_global}
-\title{animate_global().
-Please see GitHub README.me for a more detailed description.}
+\title{Animate motioncapture data using global spatial coordinates}
 \usage{
 animate_global(.data, planes = c("X", "Z"),
-  planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
-  row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  return_plot = FALSE, ...)
+  planes_in_rows_or_cols = c("cols"), row_facets = NULL,
+  col_facets = NULL, remove_facet_labels = TRUE,
+  use_geom_point = TRUE, line_colored_size = 1, line_black_size = 1,
+  line_black_alpha = 0.5, point_size = 2, circle_size = 40,
+  head_scale = 1.5, torso_scale = 1.5, return_data = FALSE,
+  return_plot = FALSE, reduce_data = FALSE, ...)
 }
 \arguments{
-\item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}
+\item{.data}{A tibble containing joint center positions with global spatial positions of toes, ankles, knees, hip, shoulder, elbows, wrists.}
 
 \item{planes}{Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").}
 
 \item{planes_in_rows_or_cols}{Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".}
-
-\item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
 
 \item{row_facets}{Make additional row-facets in the animation using a given variable. Defaults to NULL.}
 
@@ -25,16 +25,36 @@ animate_global(.data, planes = c("X", "Z"),
 
 \item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
 
+\item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
+
+\item{line_colored_size}{The size of the colored lines connecting the joint centers.}
+
+\item{line_black_size}{The size of the black lines connecting the joint centers.}
+
+\item{line_black_alpha}{The alhpa value of the black lines connecting the joint centers.}
+
+\item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
+
+\item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
+
+\item{head_scale}{The size of the head relative to the joint-centers.}
+
+\item{torso_scale}{The size of the torso line relative to the remaing lines.}
+
+\item{return_data}{Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.}
+
 \item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
+
+\item{reduce_data}{Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.}
 
 \item{...}{These arguments are passed to the gganimate::animate() function.}
 }
 \value{
-Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
+Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 }
 \description{
-animate_global().
-Please see GitHub README.me for a more detailed description.
+\code{animate_global()} animates motioncapture data using global spatial coordinates.
+Each frame contains a X-Y and Z-Y plot of the captured person. The definitions of X-Y and Z-Y are dictated by the calibration of the system.
 }
 \examples{
 mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame \%in\% c(1, 10, 20, 25)), return_plot = TRUE)
