@@ -24,8 +24,10 @@ align_movements(.data, .group_var, event_var, event_value,
 An ungrouped tibble.
 }
 \description{
-\code{align_movements()} is usefull for preparing tibbles that contain multible movements for animations. All movements must contain the same event that are supplied with arguments \code{event_var} and \code{event_value}. The frame numbers in the movements
-will be syncrhonised according to the supplied event, and the event will occur at the same framenumber for all movements.
+\code{align_movements()} time-aligns the groups in a tibble to an event. All groups (movements) must contain the same event supplied with arguments \code{event_var} and \code{event_value}.
+The event must only occur once within each group.
+The frame numbers in the movements will be syncrhonised according to the supplied event,
+and the event will occur at the same framenumber for all movements.
 }
 \examples{
 # Generate data
