@@ -180,7 +180,7 @@ position of a given joint center inside the global coordinate system.
 The `animate_global()` function animates the subject using the global
 joint center positions. It creates two animations: one in the X and Y
 plane; and one in the Z and Y plane. If the subject is moving along
-either the X or the Y axis the viewpoints will essentially be a side
+either the X or the Z axis the viewpoints will essentially be a side
 view and a front|back view.
 
 ``` r
