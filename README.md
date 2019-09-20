@@ -162,17 +162,13 @@ own.
 Lets first create some sample data:
 
 ``` r
-jump_1 <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 1)
+jump_1 <- filter(mocapr::mocapr_data, movement_nr == 1)
 
-jump_2 <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 2)
+jump_2 <- filter(mocapr::mocapr_data, movement_nr == 2)
 
-gait <-  mocapr::mocapr_data %>% 
-  filter(movement_nr == 4)
+gait <-  filter(mocapr::mocapr_data, movement_nr == 4)
 
-capoeira <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 6)
+capoeira <- filter(mocapr::mocapr_data, movement_nr == 6)
 ```
 
 ### Animating with `animate_global()`
@@ -191,7 +187,7 @@ view and a front|back view.
 jump_1 %>% 
   animate_global(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
     fps = 50)
 ```
@@ -210,7 +206,7 @@ produces an animation with oblique viewpoints.
 jump_2 %>% 
   animate_global(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
     fps = 50)
 ```
@@ -255,15 +251,17 @@ and the `animate_anatomical()` functions.
 
 ``` r
 jump_2 %>%
-  #Project to the movements planes
+  
+  # Project to the movements planes
   project_full_body_to_MP() %>%
   
-  #Animate the movement plane projections
+  # Animate the movement plane projections
   animate_movement(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.),
-    fps = 50, rewind = FALSE)
+    fps = 50, rewind = FALSE
+    )
 ```
 
 <img src="man/figures/README-jump_2_MP-1.gif" width="100%" />
@@ -301,15 +299,17 @@ looking at a movement that is not unidirectional.
 
 ``` r
 gait %>%
-  #Project to the movements planes
+  
+  # Project to the movements planes
   project_full_body_to_MP() %>%
   
-  #Animate the movement plane projections
+  # Animate the movement plane projections
   animate_movement(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
-    fps = 50)
+    fps = 50
+    )
 ```
 
 <img src="man/figures/README-walking_square_MP-1.gif" width="100%" />
@@ -317,15 +317,18 @@ gait %>%
 #### animate\_anatomical()
 
 ``` r
-gait %>% 
-  #Project to the anatomical Planes 
+gait %>%
+  
+  # Project to the anatomical Planes 
   project_full_body_to_AP() %>%
   
-  #Animate the anatomical projections
+  # Animate the anatomical projections
   animate_anatomical(
-    #gganimate options passed via ...
+    
+    # gganimate options passed via ...
     nframes = nrow(.),
-    fps = 50)
+    fps = 50
+    )
 ```
 
 <img src="man/figures/README-walking_square_AP-1.gif" width="100%" />
@@ -345,21 +348,20 @@ before you use the functions to plot.
 ``` r
 jump_2 %>%
   
-  #Project to the anatomical Planes
+  # Project to the anatomical Planes
   project_full_body_to_AP() %>% 
   
-  #Reduce the number of frames in the data
-  filter(frame %in% c(100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200)) %>% 
+  # Reduce the number of frames in the data
+  filter(frame %in% c(100, 120, 140, 150, 170, 180)) %>% 
   
-  #Animate the anatomical projections
+  # Animate the anatomical projections
   animate_anatomical(planes = c("F"),
                      use_geom_point = FALSE, 
                      planes_in_rows_or_cols = c("cols"), 
-                     col_facets = frame, 
-                     return_plot = TRUE)+
-  #Remove the legend
-  theme(
-    legend.position = "none") 
+                     col_facets = frame,
+                     line_black_size = 1,
+                     line_black_alpha = 1,
+                     return_plot = TRUE)
 ```
 
 <img src="man/figures/README-show_how_to_plot-1.png" width="100%" />
@@ -378,9 +380,7 @@ capoeira %>%
     
     #gganimate options passed via ...
     nframes = nrow(.)*2, 
-    fps = 50, 
-    width = 600, 
-    height = 600)
+    fps = 50)
 ```
 
 <img src="man/figures/README-show_options-1.gif" width="100%" />

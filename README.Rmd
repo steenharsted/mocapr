@@ -95,27 +95,23 @@ The focus of this tutorial is on plotting and animating motion capture data. For
 ## Animating Motion Capture Data With `mocapr`
 Lets first create some sample data:
 ```{r create_data}
-jump_1 <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 1)
+jump_1 <- filter(mocapr::mocapr_data, movement_nr == 1)
 
-jump_2 <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 2)
+jump_2 <- filter(mocapr::mocapr_data, movement_nr == 2)
 
-gait <-  mocapr::mocapr_data %>% 
-  filter(movement_nr == 4)
+gait <-  filter(mocapr::mocapr_data, movement_nr == 4)
 
-capoeira <- mocapr::mocapr_data %>% 
-  filter(movement_nr == 6)
+capoeira <- filter(mocapr::mocapr_data, movement_nr == 6)
 ```
 
 ### Animating with `animate_global()`
 The global coordinate system refers to a 3D coordinate system (X, Y, and Z axis) that is created and oriented during the setup and calibration of many motion capture systems. Global joint center positions refer to the position of a given joint center inside the global coordinate system.  
-The `animate_global()` function animates the subject using the global joint center positions. It creates two animations: one in the X and Y plane; and one in the Z and Y plane. If the subject is moving along either the X or the Y axis the viewpoints will essentially be a side view and a front|back view.  
+The `animate_global()` function animates the subject using the global joint center positions. It creates two animations: one in the X and Y plane; and one in the Z and Y plane. If the subject is moving along either the X or the Z axis the viewpoints will essentially be a side view and a front|back view.  
 ```{r jump_1_GP}
 jump_1 %>% 
   animate_global(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
     fps = 50)
 ```
@@ -125,7 +121,7 @@ If the recorded subject moves at an angle to the axis' of the global coordinate 
 jump_2 %>% 
   animate_global(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
     fps = 50)
 ```
@@ -143,15 +139,17 @@ These functions are best explained by looking at animations.
 Lets look again at `jump_2` (the jump that is oblique to the global coordinate system), and animate the jump using the `animate_movement()` and the `animate_anatomical()` functions.
 ```{r jump_2_MP}
 jump_2 %>%
-  #Project to the movements planes
+  
+  # Project to the movements planes
   project_full_body_to_MP() %>%
   
-  #Animate the movement plane projections
+  # Animate the movement plane projections
   animate_movement(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.),
-    fps = 50, rewind = FALSE)
+    fps = 50, rewind = FALSE
+    )
 ```
 
 ```{r jump_2_AP}
@@ -175,28 +173,33 @@ Lets explore the difference between the two types of projections by looking at a
 #### animate_movement()  
 ```{r walking_square_MP}
 gait %>%
-  #Project to the movements planes
+  
+  # Project to the movements planes
   project_full_body_to_MP() %>%
   
-  #Animate the movement plane projections
+  # Animate the movement plane projections
   animate_movement(
     
-    #gganimate options passed via ...
+    # gganimate options passed via ...
     nframes = nrow(.), 
-    fps = 50)
+    fps = 50
+    )
 ```
 
 #### animate_anatomical()  
 ```{r walking_square_AP}
-gait %>% 
-  #Project to the anatomical Planes 
+gait %>%
+  
+  # Project to the anatomical Planes 
   project_full_body_to_AP() %>%
   
-  #Animate the anatomical projections
+  # Animate the anatomical projections
   animate_anatomical(
-    #gganimate options passed via ...
+    
+    # gganimate options passed via ...
     nframes = nrow(.),
-    fps = 50)
+    fps = 50
+    )
 ```
 
 Now the difference between the two types of animations is evident. `animate_movement()` gives you *fixed viewpoints* (you are standing still and watching the movement) and `animate_anatomical()` *updates your viewpoint for each frame* (you are always watching the subject from the back and the side of the pelvis).
@@ -208,28 +211,27 @@ The three animate functions can be used to plot if you supply the argument `retu
 ```{r show_how_to_plot}
 jump_2 %>%
   
-  #Project to the anatomical Planes
+  # Project to the anatomical Planes
   project_full_body_to_AP() %>% 
   
-  #Reduce the number of frames in the data
-  filter(frame %in% c(100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200)) %>% 
+  # Reduce the number of frames in the data
+  filter(frame %in% c(100, 120, 140, 150, 170, 180)) %>% 
   
-  #Animate the anatomical projections
+  # Animate the anatomical projections
   animate_anatomical(planes = c("F"),
                      use_geom_point = FALSE, 
                      planes_in_rows_or_cols = c("cols"), 
-                     col_facets = frame, 
-                     return_plot = TRUE)+
-  #Remove the legend
-  theme(
-    legend.position = "none") 
+                     col_facets = frame,
+                     line_black_size = 1,
+                     line_black_alpha = 1,
+                     return_plot = TRUE)
 ```
 
 
 ## Options
 the width and height arguments can be used to specify width and height
 I find slow-mo effects is best achieved by adding more rows, e.g., `nrow(.)*2`
-```{r show_options}
+```{r show_options, fig.asp=0.5, fig.width=10}
 capoeira %>% 
   filter(frame > 48 & frame < 223) %>% 
   project_full_body_to_MP() %>% 
@@ -237,8 +239,6 @@ capoeira %>%
     
     #gganimate options passed via ...
     nframes = nrow(.)*2, 
-    fps = 50, 
-    width = 600, 
-    height = 600)
+    fps = 50)
 ```
 
