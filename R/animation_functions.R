@@ -186,6 +186,18 @@
                                  return_plot = FALSE,
                                  reduce_data = FALSE,
                                  ...){
+    # Avoid "No visible binding for global variable ...." in check
+    RH_APR <- LH_APR <- RH_APF <- LH_APF <- RH_APU <- LH_APU <- NULL
+    RK_APR <- LK_APR <- RK_APF <- LK_APF <- RK_APU <- LK_APU <- NULL
+    RA_APR <- LA_APR <- RA_APF <- LA_APF <- RA_APU <- LA_APU <- NULL
+    RT_APR <- LT_APR <- RT_APF <- LT_APF <- RT_APU <- LT_APU <- NULL
+    RS_APR <- LS_APR <- RS_APF <- LS_APF <- RS_APU <- LS_APU <- NULL
+    NS_APR <- NS_APF <- NS_APU <- NULL
+    NH_APR <- NH_APF <- NH_APU <- NULL
+    Normaliser_R <- Normaliser_F <- NULL
+    frame <- key <- value <- Dir <- R <- Joint <- Side <- Side_frame <- U <- NULL
+    size_path_color <- size_point <- size_path_black <- size_circle <- NULL
+
 
     # Prevent jitter. Stabilizie the joint center positions around the center of the hip joints
     df <- .data %>%
