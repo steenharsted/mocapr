@@ -499,8 +499,13 @@
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
-  #' @examples
-#' mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame %in% c(1, 10, 20, 25)), return_plot = TRUE)
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- dplyr::filter(df, frame %in% c(1, 50, 75, 100))
+#' mocapr::animate_global(df,
+#'                        planes_in_rows_or_cols = "rows",
+#'                        col_facets = frame,
+#'                        return_plot = TRUE)
 #' \dontrun{
 #' jump_1 <-  dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 #' mocapr::animate_global(jump_1, nframes = nrow(jump_1), fps = 50)

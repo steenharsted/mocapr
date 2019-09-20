@@ -57,7 +57,12 @@ Defaults to an animated gif. Different outputs can be achieved by passing differ
 Each frame contains a X-Y and Z-Y plot of the captured person. The definitions of X-Y and Z-Y are dictated by the calibration of the system.
 }
 \examples{
-mocapr::animate_global(dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame \%in\% c(1, 10, 20, 25)), return_plot = TRUE)
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df <- dplyr::filter(df, frame \%in\% c(1, 50, 75, 100))
+mocapr::animate_global(df,
+                       planes_in_rows_or_cols = "rows",
+                       col_facets = frame,
+                       return_plot = TRUE)
 \dontrun{
 jump_1 <-  dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 mocapr::animate_global(jump_1, nframes = nrow(jump_1), fps = 50)
