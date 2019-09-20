@@ -9,3 +9,4 @@
 ^appveyor\.yml$
 ^README\.Rmd$
 ^.github$
+^manuel_test$
