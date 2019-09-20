@@ -5,9 +5,12 @@
 \title{Animate motioncapture data in the planes of the movement.}
 \usage{
 animate_movement(.data, planes = c("R", "F"),
-  planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
-  row_facets = NULL, col_facets = NULL, remove_facet_labels = TRUE,
-  return_plot = FALSE, ...)
+  planes_in_rows_or_cols = c("cols"), row_facets = NULL,
+  col_facets = NULL, remove_facet_labels = TRUE,
+  use_geom_point = TRUE, line_colored_size = 1, line_black_size = 1,
+  line_black_alpha = 0.5, point_size = 1.5, circle_size = 40,
+  head_scale = 2, torso_scale = 1.5, return_data = FALSE,
+  return_plot = FALSE, reduce_data = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_MP() function.}
@@ -16,17 +19,13 @@ animate_movement(.data, planes = c("R", "F"),
 
 \item{planes_in_rows_or_cols}{Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".}
 
-\item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
-
 \item{row_facets}{Make additional row-facets in the animation using a given variable. Defaults to NULL.}
 
 \item{col_facets}{Make additional column-facets in the animation using a given variable. Defaults to NULL.}
 
 \item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
 
-\item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
-
-\item{...}{These arguments are passed to the gganimate::animate() function.}
+\item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
 
 \item{line_colored_size}{The size of the colored lines connecting the joint centers.}
 
@@ -44,7 +43,11 @@ animate_movement(.data, planes = c("R", "F"),
 
 \item{return_data}{Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.}
 
+\item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
+
 \item{reduce_data}{Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.}
+
+\item{...}{These arguments are passed to the gganimate::animate() function.}
 }
 \value{
 Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
@@ -56,5 +59,27 @@ The definitions of front and side are dictated by a direction going from the pos
 at the last frame of the movement.
 }
 \examples{
-\dontrun{}
+# Prepare data
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df <- project_full_body_to_MP(df)
+df <- dplyr::filter(df, frame \%in\% c(1, 50, 100, 150, 200))
+
+# Return wrangled data
+mocapr::animate_movement(df, return_data = TRUE)
+
+# Return plot factted on frame
+mocapr::animate_movement(df,
+  return_plot = TRUE,
+  planes_in_rows_or_cols = "rows",
+  col_facets = frame
+  )
+
+# Same as above, but use ggforce::geom_circle()
+mocapr::animate_movement(df,
+  return_plot = TRUE,
+  use_geom_point = FALSE,
+  planes_in_rows_or_cols = "rows",
+  col_facets = frame
+  )
+
 }
