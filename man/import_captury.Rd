@@ -21,5 +21,6 @@ LKF, global Y coordinate of the right hip joint is RHY).\cr
 Please see the GitHub README.me for a more detailed description.
 }
 \examples{
-\dontrun{}
+path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
+import_captury(path)
 }
