@@ -16,6 +16,15 @@
 import_captury <- function(filename, frames_pr_second = 50){
   print("This function imports captury data csv as it was exported prior to version 0.0.156, for newer exports use import_captury_csv()")
 
+  # Avoid "No visible binding for global variable ..." when performing check()
+  X1 <- X3 <- X4 <- X5 <- X6 <- X7 <- X8 <- X9 <- NULL
+  X13 <- X14 <- X15 <- X19 <- NULL
+  X20 <- X21 <- X25 <- X26 <- X27 <- X31 <- X32 <- X33 <- X37 <- X38 <- X39 <- NULL
+  X43 <- X44 <- X45 <- X49 <- X50 <- X51 <- X52 <- X54 <- X55 <- X56 <- X57 <- X58 <- X59 <-  NULL
+  X60 <- X61 <- X62 <- X63 <- X64 <- X65 <- X66 <- X67 <- X68 <- X69 <- X73 <- X74 <- X75 <- X76 <- X78 <- X79 <- NULL
+  X80 <- X81 <- X82 <- X83 <- X84 <- X85 <- X86 <- X87 <- X88 <- X89 <- X90 <- NULL
+  LKF <- RKF <- frame <- LHX <- RHX <- LHY <- RHY <- LHZ <- RHZ <- mocap_system <- time_seconds <- NULL
+
   #Name Variables----
   df <-
     suppressWarnings(
