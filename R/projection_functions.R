@@ -86,6 +86,7 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
 #'
 #' @return A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
+#' @importFrom rlang :=
 #' @export
 #'
 #' @examples
