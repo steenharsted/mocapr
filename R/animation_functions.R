@@ -15,7 +15,7 @@
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples\dontrun{}
   animate_movement <- function(.data,
                                planes = c("R", "F"),
                                planes_in_rows_or_cols = c("cols"),
@@ -143,7 +143,10 @@
 
 
 ##Animate antomical (Function)----
-#' animate_anatomical() animates motioncapture data that is projected onto the anatomical planes of the body using mocapr::project_full_body_to_AP().
+#' Animate motioncapture data in the anatomical planes
+#'
+#' \code{animate_anatomical()} animates motioncapture data that is projected onto the anatomical planes of the body using \code{mocapr::project_full_body_to_AP()}.
+#' Each frame contains a front and side view of the animated person. The definitions of front and side are dictated by the orientation of the pelvis.
 #'
 #' @param .data A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.
 #' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
@@ -167,7 +170,18 @@
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' # Prepare data
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- mocapr::project_full_body_to_AP(df)
+#' df <- dplyr::filter(df, frame %in% c(1, 50, 100, 150, 200))
+#'
+#' # Create a facetted plot
+#' animate_anatomical(df,
+#'               planes_in_rows_or_cols = "rows",
+#'               use_geom_point = FALSE,
+#'               return_plot = TRUE,
+#'               col_facets = frame)
   animate_anatomical <- function(.data,
                                  planes = c("R", "F"),
                                  planes_in_rows_or_cols = c("cols"),
@@ -186,6 +200,7 @@
                                  return_plot = FALSE,
                                  reduce_data = FALSE,
                                  ...){
+
     # Avoid "No visible binding for global variable ...." in check
     RH_APR <- LH_APR <- RH_APF <- LH_APF <- RH_APU <- LH_APU <- NULL
     RK_APR <- LK_APR <- RK_APF <- LK_APF <- RK_APU <- LK_APU <- NULL

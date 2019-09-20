@@ -2,7 +2,7 @@
 % Please edit documentation in R/animation_functions.R
 \name{animate_anatomical}
 \alias{animate_anatomical}
-\title{animate_anatomical() animates motioncapture data that is projected onto the anatomical planes of the body using mocapr::project_full_body_to_AP().}
+\title{Animate motioncapture data in the anatomical planes}
 \usage{
 animate_anatomical(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), row_facets = NULL,
@@ -53,8 +53,19 @@ animate_anatomical(.data, planes = c("R", "F"),
 Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 }
 \description{
-animate_anatomical() animates motioncapture data that is projected onto the anatomical planes of the body using mocapr::project_full_body_to_AP().
+\code{animate_anatomical()} animates motioncapture data that is projected onto the anatomical planes of the body using \code{mocapr::project_full_body_to_AP()}.
+Each frame contains a front and side view of the animated person. The definitions of front and side are dictated by the orientation of the pelvis.
 }
 \examples{
-\dontrun{}
+# Prepare data
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df <- mocapr::project_full_body_to_AP(df)
+df <- dplyr::filter(df, frame \%in\% c(1, 50, 100, 150, 200))
+
+# Create a facetted plot
+animate_anatomical(df,
+              planes_in_rows_or_cols = "rows",
+              use_geom_point = FALSE,
+              return_plot = TRUE,
+              col_facets = frame)
 }
