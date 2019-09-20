@@ -22,5 +22,6 @@ The pre-specified joint centers are the following from the left and right side: 
 Please see the GitHub README.md fpr a more detailed description.
 }
 \examples{
-\dontrun{}
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+project_full_body_to_MP(df)
 }

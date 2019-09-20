@@ -29,5 +29,6 @@ by the project_single_joint_to_MP() function where the planes stay the same thro
 Please see the GitHub README.me for a more detailed description.
 }
 \examples{
-\dontrun{}
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+project_single_joint_to_AP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
 }

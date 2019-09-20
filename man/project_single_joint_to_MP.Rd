@@ -26,5 +26,7 @@ the position of the hip joint centers at the first frame to the position of the 
 more in-depth explanation.
 }
 \examples{
-\dontrun{}
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+project_single_joint_to_MP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
+
 }

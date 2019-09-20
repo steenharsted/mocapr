@@ -15,11 +15,21 @@
 #' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
 #'
 #' @return A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
+#' @importFrom rlang :=
 #' @export
 #'
 #' @examples
-#' \dontrun{}
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' project_single_joint_to_AP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
 project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
+
+  # Avoid "No visible binding for global variable ..." when performing check()
+  RHX <- RHZ <- LHX <- LHZ <- HAX <- HAY <- HAZ <- NULL
+  AP_U_Y <- AP_U_Z <- AP_U_X <- NULL
+  AP_R_Z <- AP_R_Y <- AP_R_X <- NULL
+  FX <- FY <- FZ <- F_magnitude <- NULL
+  AP_F_Z <- AP_F_Y <- AP_F_X <- NULL
+
   Y <- dplyr::enquo(Y)
   X <- dplyr::enquo(X)
   Z <- dplyr::enquo(Z)
@@ -78,8 +88,24 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @return A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' project_single_joint_to_MP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
+#'
 project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
+
+  # Avoid "No visible binding for global variable ..." when performing check()
+  HAX <- HAY <- HAZ <- NULL
+  key <- value <- NULL
+  HAX_Last <- HAX_First <- HAZ_Last <- HAZ_First <- NULL
+  MPU_Y <- MPU_Z <- MPU_X <- NULL
+  MPF_Y <- MPF_Z <- MPF_X <- NULL
+  MPR_Y <- MPR_Z <- MPR_X <- NULL
+  SX <- SY <- SZ <- NULL
+  S_magnitude <- NULL
+  frame <- NULL
+
+  # Capture (enquo) arguments
   Y <- dplyr::enquo(Y)
   X <- dplyr::enquo(X)
   Z <- dplyr::enquo(Z)
@@ -148,8 +174,18 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @return A tibble with the positions of the pre-specied joint-centers in the movement planes.
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' project_full_body_to_MP(df)
 project_full_body_to_MP <- function(.data){
+
+  # Avoid "No visible binding for global variable ..." when performing check()
+  LSY <- LSX <- LSZ <- LEY <- LEX <- LEZ <- LWY <- LWX <- LWZ <- NULL
+  RSY <- RSX <- RSZ <- REY <- REX <- REZ <- RWY <- RWX <- RWZ <- NULL
+  LKY <- LKX <- LKZ <- LHY <- LHX <- LHZ <- LAY <- LAX <- LAZ <- LTY <- LTX <- LTZ <- NULL
+  RKY <- RKX <- RKZ <- RHY <- RHX <- RHZ <- RAY <- RAX <- RAZ <- RTY <- RTX <- RTZ <- NULL
+
+
   dplyr::bind_cols(.data,
                    #Upper extremity
                    project_single_joint_to_MP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS"),
@@ -180,8 +216,17 @@ project_full_body_to_MP <- function(.data){
 #' @return A tibble with the positions of the pre-specied joint-centers in the anatomical planes.
 #' @export
 #'
-#' @examples \dontrun{}
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' project_full_body_to_AP(df)
 project_full_body_to_AP <- function(.data){
+
+  # Avoid "No visible binding for global variable ..." when performing check()
+  LSY <- LSX <- LSZ <- LEY <- LEX <- LEZ <- LWY <- LWX <- LWZ <- NULL
+  RSY <- RSX <- RSZ <- REY <- REX <- REZ <- RWY <- RWX <- RWZ <- NULL
+  LKY <- LKX <- LKZ <- LHY <- LHX <- LHZ <- LAY <- LAX <- LAZ <- LTY <- LTX <- LTZ <- NULL
+  RKY <- RKX <- RKZ <- RHY <- RHX <- RHZ <- RAY <- RAX <- RAZ <- RTY <- RTX <- RTZ <- NULL
+
   dplyr::bind_cols(.data,
                    #Upper extremity
                    project_single_joint_to_AP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS"),
