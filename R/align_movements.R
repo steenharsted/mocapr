@@ -18,11 +18,25 @@
 #' @examples
 #' # Generate data
 #' df <- tibble::tibble(
-#'     frame = c(rep(seq(1:5), 2), 1, 2, 3, 4, 101, 102, 103, 104, 105, 106, 401, 402, 403),
-#'     x = rnorm(n = 23), ID = c(rep(c(1,2), each = 5), 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5),
-#'     aligner = c(NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, "here", NA, NA, NA, NA, NA, "here", NA, NA, NA, NA, NA, "here"))
-#'
-#' align_movements(df, .group_var = ID, event_var = aligner, event_value = "here", return_equal_length_groups = TRUE, prolong_event = 1)
+#'     frame = c(rep(seq(1:5), 2), 1, 2, 3, 4,
+#'               101, 102, 103, 104, 105, 106,
+#'               401, 402, 403),
+#'     x = rnorm(n = 23),
+#'     ID = c(rep(c(1,2), each = 5),
+#'            3, 3, 3, 3, 4, 4, 4,
+#'            4, 4, 4, 5, 5, 5),
+#'     aligner = c(NA, "here", NA, NA, NA,
+#'                 NA, NA, "here", NA, NA,
+#'                 "here", NA, NA, NA, NA,
+#'                 NA, "here", NA, NA, NA,
+#'                 NA, NA, "here"))
+#' # Align movements
+#' align_movements(df,
+#'                 .group_var = ID,
+#'                 event_var = aligner,
+#'                 event_value = "here",
+#'                 return_equal_length_groups = TRUE,
+#'                 prolong_event = 1)
 align_movements <- function(.data, .group_var, event_var, event_value, return_equal_length_groups = TRUE, prolong_event = 1){
 
   #Ensure prolong_event is a positive integer
