@@ -10,3 +10,4 @@
 ^README\.Rmd$
 ^.github$
 ^manuel_test$
+^README_cache$
