@@ -2,8 +2,7 @@
 % Please edit documentation in R/animation_functions.R
 \name{animate_movement}
 \alias{animate_movement}
-\title{animate_movement().
-Please see GitHub README.me for a more detailed description.}
+\title{Animate motioncapture data in the planes of the movement.}
 \usage{
 animate_movement(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), use_geom_point = TRUE,
@@ -11,7 +10,7 @@ animate_movement(.data, planes = c("R", "F"),
   return_plot = FALSE, ...)
 }
 \arguments{
-\item{.data}{A tibble containing joint center positions in the movement plane generated using the project_to_MP() function.}
+\item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_MP() function.}
 
 \item{planes}{Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").}
 
@@ -28,13 +27,33 @@ animate_movement(.data, planes = c("R", "F"),
 \item{return_plot}{Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::}
 
 \item{...}{These arguments are passed to the gganimate::animate() function.}
+
+\item{line_colored_size}{The size of the colored lines connecting the joint centers.}
+
+\item{line_black_size}{The size of the black lines connecting the joint centers.}
+
+\item{line_black_alpha}{The alhpa value of the black lines connecting the joint centers.}
+
+\item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
+
+\item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
+
+\item{head_scale}{The size of the head relative to the joint-centers.}
+
+\item{torso_scale}{The size of the torso line relative to the remaing lines.}
+
+\item{return_data}{Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.}
+
+\item{reduce_data}{Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.}
 }
 \value{
-Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If animate = FALSE a ggplot plot is returned.
+Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 }
 \description{
-animate_movement().
-Please see GitHub README.me for a more detailed description.
+\code{animate_movement()} animates motioncapture data that is projected onto the planes of the movment using \code{mocapr::project_full_body_to_MP()}.
+Each frame contains a view from the side and front of the direction of movement.
+The definitions of front and side are dictated by a direction going from the position of the subject at first frame to the position of the subject
+at the last frame of the movement.
 }
 \examples{
 \dontrun{}
