@@ -2,18 +2,25 @@
 % Please edit documentation in R/jump_functions.R
 \name{add_jump_length_and_height}
 \alias{add_jump_length_and_height}
-\title{add_jump_length_and_height()}
+\title{Calculate measures of jump length and jump height}
 \usage{
 add_jump_length_and_height(.data)
 }
 \arguments{
-\item{.data}{A tibble containing motioncapture data from a squat in the format used in the mocapr package.}
+\item{.data}{A tibble containing motion-capture data from a jump.\cr
+The data must contain the following columns:
+\enumerate{
+\item \code{jump_events} You can create this column using \code{add_jump_events()}
+\item \code{marks} A character column containg one or more of the values "TOL", "TOR", "TOB", AND one or more of the values "FFL", "FFR", "FFB"
+\item Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
+\item Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
+}}
 }
 \value{
 A tibble
 }
 \description{
-add_jump_length_and_height()
+Adds the columns \code{jump_length} and \code{jump_height} to a tibble containg mocap data of a jump.
 }
 \examples{
 \dontrun{}
