@@ -41,6 +41,10 @@
 #'                        col_facets = phase)
 add_jump_events <- function(.data){
 
+  # Avoid "No visible binding for global variable ..." when performing check()
+  LHY <- RHY <- marks <- frame <- phase <- .HAY <- NULL
+  HAY_during_TAKE_OFF <- HAY_during_LANDING <- NULL
+
   # Function
   df <- .data %>%
     # Generate the averaged hip height
@@ -133,17 +137,33 @@ add_jump_events <- function(.data){
 }
 
 # add_jump_length_and_jump_height ----
-#' add_jump_length_and_height()
+#' Calculate measures of jump length and jump height
 #'
-#' @param .data A tibble containing motioncapture data from a squat in the format used in the mocapr package.
+#' Adds the columns \code{jump_length} and \code{jump_height} to a tibble containg mocap data of a jump.
+#' @param .data A tibble containing motion-capture data from a jump.\cr
+#' The data must contain the following columns:
+#' 1. \code{jump_events} You can create this column using \code{add_jump_events()}
+#' 1. \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
+#' 1. Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
+#' 1. Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
 #'
-#' @return A tibble
+#' @return The tibble suplied in \code{.data} argument with the added columns \code{jump_length} and \code{jump_height} both measures are in cm.
 #' @export
 #'
 #' @examples
-#' \dontrun{}
+#' # Prepare data
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- dplyr::select(df, frame, marks, LHY, RHY, LAX, LAZ, RAX, RAZ)
+#' df <- add_jump_events(df)
+#'
+#' add_jump_length_and_height(df)
+#'
 add_jump_length_and_height <- function(.data){
 
+  # Avoid "No visible binding for global variable ..." when running check()
+  LAZ <- LAX <- RAZ <- RAX <- LHY <- RHY <- jump_events <- phase <- NULL
+
+  # Function
   df_1 <- .data %>%
     dplyr::filter(jump_events == "toe_off" |  jump_events == "flat_foot")
 
@@ -155,40 +175,40 @@ add_jump_length_and_height <- function(.data){
   if(df_1$marks[1] == "TOB"){
     start <- df_1 %>%
       dplyr::summarise(
-        start_X = (first(LAX) + first(RAX)) / 2,
-        start_Z = (first(LAZ) + first(RAZ)) / 2)
+        start_X = (dplyr::first(LAX) + dplyr::first(RAX)) / 2,
+        start_Z = (dplyr::first(LAZ) + dplyr::first(RAZ)) / 2)
   }
   if(df_1$marks[1] == "TOL"){
     start <- df_1 %>%
       dplyr::summarise(
-        start_X = first(LAX),
-        start_Z = first(LAZ))
+        start_X = dplyr::first(LAX),
+        start_Z = dplyr::first(LAZ))
   }
   if(df_1$marks[1] == "TOR"){
     start <- df_1 %>%
       dplyr::summarise(
-        start_X = first(RAX),
-        start_Z = first(RAZ))
+        start_X = dplyr::first(RAX),
+        start_Z = dplyr::first(RAZ))
   }
   #Define end point
   # The value df_1$marks[2] tells what foot or if both has flat-foot contact first when landing
   if(df_1$marks[2] == "FFB"){
     end <- df_1 %>%
       dplyr::summarise(
-        end_X = (last(LAX) + last(RAX)) / 2,
-        end_Z = (last(LAZ) + last(RAZ)) / 2)
+        end_X = (dplyr::last(LAX) + dplyr::last(RAX)) / 2,
+        end_Z = (dplyr::last(LAZ) + dplyr::last(RAZ)) / 2)
   }
   if(df_1$marks[2] == "FFL"){
     end <- df_1 %>%
       dplyr::summarise(
-        end_X = last(LAX),
-        end_Z = last(LAZ))
+        end_X = dplyr::last(LAX),
+        end_Z = dplyr::last(LAZ))
   }
   if(df_1$marks[2] == "FFR"){
     end <- df_1 %>%
       dplyr::summarise(
-        end_X = last(RAX),
-        end_Z = last(RAZ))
+        end_X = dplyr::last(RAX),
+        end_Z = dplyr::last(RAZ))
   }
 
   #Calculate Jump Height Value

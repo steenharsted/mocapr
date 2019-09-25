@@ -11,17 +11,23 @@ add_jump_length_and_height(.data)
 The data must contain the following columns:
 \enumerate{
 \item \code{jump_events} You can create this column using \code{add_jump_events()}
-\item \code{marks} A character column containg one or more of the values "TOL", "TOR", "TOB", AND one or more of the values "FFL", "FFR", "FFB"
+\item \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
 \item Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
 \item Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
 }}
 }
 \value{
-A tibble
+The tibble suplied in \code{.data} argument with the added columns \code{jump_length} and \code{jump_height} both measures are in cm.
 }
 \description{
 Adds the columns \code{jump_length} and \code{jump_height} to a tibble containg mocap data of a jump.
 }
 \examples{
-\dontrun{}
+# Prepare data
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df <- dplyr::select(df, frame, marks, LHY, RHY, LAX, LAZ, RAX, RAZ)
+df <- add_jump_events(df)
+
+add_jump_length_and_height(df)
+
 }
