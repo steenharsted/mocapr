@@ -15,7 +15,8 @@ status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?b
 
 The goal of `mocapr` is to provide researchers or clinicians with R
 functions that can import, plot, animate, and analyse motion capture
-data. The package is in**the early experimental stages of development**.
+data. The package is in **the early experimental stages of
+development**.
 
 `mocapr`, currently, supports import from [the
 Captury](http://thecaptury.com/) system, but is capable of working with
@@ -23,10 +24,9 @@ motioncapture data from other systems as long as the data contain frame
 by frame global spatial joint-center positions. If the data contains
 these positions it is possible to wrangle the data into a format that
 will allow usage of the functions in this package. If you have such
-motion capture data from other systems, and if you are willing to share
-some sample data, I will be happy to make an attempt at writing an
-import function and include both the function and the sample data in
-this package.
+motion capture data from other systems, I will be happy to make an
+attempt at writing an import function and include the function in this
+package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -196,9 +196,9 @@ jump_1 %>%
 
 If the recorded subject moves at an angle to the axis’ of the global
 coordinate system, animations and plots using global joint center
-positions will have oblique viewpoints. When I performed `jump_2` I both
-simulated a poor landing on the right knee and made sure that the
-direction of the jump was oblique to the axis’ in the global coordinate
+positions will have oblique viewpoints. `jump_2` contains a simulated
+poor landing on the right knee, but the direction of the movement occurs
+at an oblique angle to the X and Z axis’ in the global coordinate
 system. Therefore, using the `animate_global()` function on `jump_2`
 produces an animation with oblique viewpoints.
 
@@ -219,7 +219,7 @@ In many cases, out of axis movement and oblique viewpoints are easy to
 prevent. In these cases the `animate_global()` function might be
 sufficient, but in other cases, such as working with with pre-school
 children, out of axis movement is difficult to prevent without
-interfering in the spontaneous movements of the subject. Oblique
+interfering with the spontaneous movements of the subject. Oblique
 viewpoints may also stem from differences in the orientation of the
 global coordinate system between motion capture systems or between
 different setups of the same motion-capture system.

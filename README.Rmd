@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
+  fig.asp = 0.5, 
+  fig.width = 10,
   out.width = "100%"
 )
 ```
@@ -22,9 +24,9 @@ knitr::opts_chunk$set(
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
 <!-- badges: end -->
 
-The goal of `mocapr` is to provide researchers or clinicians with R functions that can import, plot, animate, and analyse motion capture data. The package is in**the early experimental stages of development**. 
+The goal of `mocapr` is to provide researchers or clinicians with R functions that can import, plot, animate, and analyse motion capture data. The package is in **the early experimental stages of development**. 
 
-`mocapr`, currently, supports import from [the Captury](http://thecaptury.com/) system, but is capable of working with motioncapture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems, and if you are willing to share some sample data, I will be happy to make an attempt at writing an import function and include both the function and the sample data in this package. 
+`mocapr`, currently, supports import from [the Captury](http://thecaptury.com/) system, but is capable of working with motioncapture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in this package. 
 
 
 `mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2), [`ggforce`](https://ggforce.data-imaginist.com/)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
@@ -118,7 +120,7 @@ jump_1 %>%
     fps = 50)
 ```
 
-If the recorded subject moves at an angle to the axis' of the global coordinate system, animations and plots using global joint center positions will have oblique viewpoints. When I performed `jump_2` I both simulated a poor landing on the right knee and made sure that the direction of the jump was oblique to the axis' in the global coordinate system. Therefore, using the `animate_global()` function on `jump_2` produces an animation with oblique viewpoints.
+If the recorded subject moves at an angle to the axis' of the global coordinate system, animations and plots using global joint center positions will have oblique viewpoints. `jump_2` contains a simulated poor landing on the right knee, but the direction of the movement occurs at an oblique angle to the X and Z axis' in the global coordinate system. Therefore, using the `animate_global()` function on `jump_2` produces an animation with oblique viewpoints.
 ```{r jump_2_GP}
 jump_2 %>% 
   animate_global(
@@ -129,7 +131,7 @@ jump_2 %>%
 ```
 
 ### Animating with `animate_movement()` and `animate_anatomical()`
-In many cases, out of axis movement and oblique viewpoints are easy to prevent. In these cases the `animate_global()` function might be sufficient, but in other cases, such as working with with pre-school children, out of axis movement is difficult to prevent without interfering in the spontaneous movements of the subject. Oblique viewpoints may also stem from differences in the orientation of the global coordinate system between motion capture systems or between different setups of the same motion-capture system.
+In many cases, out of axis movement and oblique viewpoints are easy to prevent. In these cases the `animate_global()` function might be sufficient, but in other cases, such as working with with pre-school children, out of axis movement is difficult to prevent without interfering with the spontaneous movements of the subject. Oblique viewpoints may also stem from differences in the orientation of the global coordinate system between motion capture systems or between different setups of the same motion-capture system.
   
 For the purpose of analyzing or interpreting motions, oblique viewpoints are, in general, less optimal. This creates a need for animation and plotting functions that are free from the orientation of the global coordinate system, and instead focused on either the subject itself or the direction of the movement the subject is performing.
 `mocapr` solves this challenge by providing two functions that projects the global joint center positions onto the planes of the movement direction (`project_full_body_to_MP()`) or the anatomical planes the subject (`project_full_body_to_AP()`). You can think of these functions as functions that creates new coordinate systems that are just **shifted/tilted** version of the global coordinate system, such that animations that use the joint center positions in the new coordinate systems will have viewpoints that are directly in front of and to the side of the direction of the movement (`animate_movement()`) or the person (`animate_anatomical()`).
