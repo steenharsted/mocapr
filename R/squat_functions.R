@@ -4,18 +4,19 @@
 #'
 #' \code{add_squat_events()} takes a tibble as the only argument, and returns the tible with three extra columns usefull for further analysis.
 #' The three extra columns are: "squat_events", "phase", and "squat_depth".
-#' The tibble must contain motioncapture data in format used in mocapr package,
+#' The tibble must contain motioncapture data with the columns \code{frame}, \code{LHY}, and \code{RHY}
 #' and the captured motion must be a squat. Please note that the function will not fail if the movement is not a squat.
 #'
 #'
-#' @param .data A tibble containing motioncapture data from a squat in the format used in the mocapr package.
+#' @param .data A tibble containing motioncapture data from a squat and the columns \code{frame}, \code{LHY}, and \code{RHY}.
 #'
-#' @return A tibble with three added columns. "squat_events", "phase", and "squat_depth"
+#' @return A tibble with three added columns. \code{squat_events}, \code{phase}, and \code{squat_depth}. \code{squat_depth} is given in cm.
 #' @export
 #'
 #' @examples
 #' # Prepare data
 #' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame > 20, frame < 70)
+#' df <- dplyr::select(df, frame, LHY, RHY)
 #'
 #' add_squat_events(df)
 add_squat_events <- function(.data){
@@ -46,7 +47,7 @@ add_squat_events <- function(.data){
 
     #Calculate squat depth
     dplyr::mutate(
-      squat_depth       = (dplyr::first(RHY)+dplyr::first(LHY)) - min(LHY+RHY),
+      squat_depth       = ((dplyr::first(RHY)+dplyr::first(LHY)) - min(LHY+RHY))/10,
 
       #find the mid_point in descent (the point where the child is halfway down)
       #this is the frame were squat_descent is half the size of squat_depth
