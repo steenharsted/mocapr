@@ -7,20 +7,21 @@
 add_squat_events(.data)
 }
 \arguments{
-\item{.data}{A tibble containing motioncapture data from a squat in the format used in the mocapr package.}
+\item{.data}{A tibble containing motioncapture data from a squat and the columns \code{frame}, \code{LHY}, and \code{RHY}.}
 }
 \value{
-A tibble with three added columns. "squat_events", "phase", and "squat_depth"
+A tibble with three added columns. \code{squat_events}, \code{phase}, and \code{squat_depth}. \code{squat_depth} is given in cm.
 }
 \description{
 \code{add_squat_events()} takes a tibble as the only argument, and returns the tible with three extra columns usefull for further analysis.
 The three extra columns are: "squat_events", "phase", and "squat_depth".
-The tibble must contain motioncapture data in format used in mocapr package,
+The tibble must contain motioncapture data with the columns \code{frame}, \code{LHY}, and \code{RHY}
 and the captured motion must be a squat. Please note that the function will not fail if the movement is not a squat.
 }
 \examples{
 # Prepare data
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame > 20, frame < 70)
+df <- dplyr::select(df, frame, LHY, RHY)
 
 add_squat_events(df)
 }
