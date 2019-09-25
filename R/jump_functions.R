@@ -7,6 +7,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{}
 add_jump_events <- function(.data){
   df <- .data
 
@@ -103,6 +104,7 @@ add_jump_events <- function(.data){
 #' @export
 #'
 #' @examples
+#' \dontrun{}
 add_jump_length_and_height <- function(.data){
 
   df_1 <- .data %>%
