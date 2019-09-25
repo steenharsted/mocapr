@@ -1,47 +1,83 @@
 # add_jump_events----
-#' add_jump_events()
+#' Divide a jump into phases
 #'
-#' @param .data A tibble containing motioncapture data from a squat in the format used in the mocapr package.
+#' \code{add_jump_events} uses average hip joint-center height and supplied events to divide a jump into 9 phases.
+#' This division is useful for further analyis of the individual phases in the jump.
+#' The numerical values in \code{phase} column correspond to:
+#' 1. Descending phase of the preparation
+#' 1. The deepest postion in the preparation phase
+#' 1. The ascending phase of the preparation (push-off)
+#' 1. Toe off - the last fase with contact between the feet and the ground
+#' 1. Hang time.
+#' 1. Impact
+#' 1. Descending phase of the landing.
+#' 1. Deepest position of the landing.
+#' 1. Ascending phase of the landing.
 #'
-#' @return A tibble
+#' @param .data A tibble containing motioncapture data from a jump. The data must contain:\cr
+#' * \code{LHY} and \code{RHY} columns containg global spatial joint-center positions of the left and right hip\cr
+#' * A \code{frame} column\cr
+#' * A \code{marks} column with values descring toe off events (TOL = toe off of left foot, TOR = toe off of right foot, TOB = toe off from both feet),
+#' and impact events (FFL = flat foot contact with left foot, FFR = flat foot contact with right foot, FFB = flat foot contact with both feet).
+#'
+#' @return The tibble supplied in the \code{.data argument}, with the added columns \code{phase} and \code{jump_events}
 #' @export
 #'
 #' @examples
-#' \dontrun{}
+#' # Prepare data
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- dplyr::select(df, frame, marks, LHY, RHY)
+#'
+#' add_jump_events(df)
+#'
+#' # A plot displaying the phases
+#' df2 <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df2 <- add_jump_events(df2)
+#'
+#' mocapr::animate_global(df2,
+#'                        planes = "X",
+#'                        remove_facet_labels = FALSE,
+#'                        return_plot = TRUE,
+#'                        col_facets = phase)
 add_jump_events <- function(.data){
-  df <- .data
+
+  # Function
+  df <- .data %>%
+    # Generate the averaged hip height
+    dplyr::mutate(.HAY = (LHY+RHY)/2)
 
   #Create a small dataframe that only contains rows with toe off events (TO[L|R|B])
   TOE_OFF <- df %>%
-    dplyr::filter(str_detect(marks, 'TO')) %>%
+    dplyr::filter(stringr::str_detect(marks, 'TO')) %>%
     dplyr::filter(marks == dplyr::last(marks) | marks == dplyr::first(marks)) %>%
     dplyr::select(frame, marks) %>%
     dplyr::arrange(frame)
 
+
   ## If toe off of the feet happens simultaneously, add a second row identical to the first row
   if(nrow(TOE_OFF) == 1){
     TOE_OFF <- TOE_OFF %>%
-      dplyr::slice(rep(1:n(), each=2))
+      dplyr::slice(rep(1:dplyr::n(), each=2))
   }
 
   #Create a small dataframe that only contains rows with flat foot events (FF[L|R|B])
   FLAT_FOOT <- df %>%
-    dplyr::filter(str_detect(marks, 'FF')) %>%
-    dplyr::filter(marks == first(marks) | marks == last(marks)) %>%
+    dplyr::filter(stringr::str_detect(marks, 'FF')) %>%
+    dplyr::filter(marks == dplyr::first(marks) | marks == dplyr::last(marks)) %>%
     dplyr::select(frame, marks) %>%
     dplyr::arrange(frame)
 
   ## If flat foot contact of the feet happens simultaneously, add a second row identical to the first row
   if(nrow(FLAT_FOOT) == 1){
     FLAT_FOOT <- FLAT_FOOT %>%
-      dplyr::slice(rep(1:n(), each=2))
+      dplyr::slice(rep(1:dplyr::n(), each=2))
   }
 
   ##create jump_events so that last TO[L|R|B] will be toe off and
   ##first FF[L|R|B] will be flat_foot
   df <- df %>%
     dplyr::mutate(
-      jump_events = case_when(
+      jump_events = dplyr::case_when(
         frame == TOE_OFF[[2,1]] ~ "toe_off",
         frame == TOE_OFF[[1,1]] ~ "first_toe_off",
         frame == FLAT_FOOT[[1,1]] ~ "flat_foot",
@@ -55,7 +91,7 @@ add_jump_events <- function(.data){
   df <- df %>%
     #Define 4 (toe_off) and 6 (flat_foot)
     dplyr::mutate(
-      phase = case_when(
+      phase = dplyr::case_when(
         jump_events == "toe_off" ~ 4,
         jump_events == "flat_foot" ~ 6,
         TRUE ~ 5)) %>%
@@ -63,35 +99,36 @@ add_jump_events <- function(.data){
     #time before 4 as 3 and
     #time after 6 as 7
     dplyr::mutate(
-      phase = case_when(
+      phase = dplyr::case_when(
         frame < frame[phase == 4] ~ 3,
         frame > frame[phase == 6] ~ 7,
         TRUE ~ phase)) %>%
     #Find the lowest position in phase 3 and give it value 2
     #Find the lowest position in phase 7 and give it value 8
-    mutate(
+    dplyr::mutate(
       #Generate HAY at
-      HAY_during_TAKE_OFF = ifelse(phase == 3, HAY, 10000),
-      HAY_during_LANDING = ifelse(phase == 7, HAY, 10000),
+      HAY_during_TAKE_OFF = ifelse(phase == 3, .HAY, 10000),
+      HAY_during_LANDING = ifelse(phase == 7, .HAY, 10000),
       phase = ifelse(HAY_during_TAKE_OFF == min(HAY_during_TAKE_OFF), 2, phase),
       phase = ifelse(HAY_during_LANDING == min(HAY_during_LANDING), 8, phase)) %>%
     #Assign:
     #time before 2 as 1
     #time after 8 as 9
     dplyr::mutate(
-      phase = case_when(
+      phase = dplyr::case_when(
         frame < frame[phase == 2] ~ 1,
         frame > frame[phase == 8] ~ 9,
         TRUE ~ phase)) %>%
     dplyr::select(-HAY_during_TAKE_OFF, -HAY_during_LANDING) %>%
     dplyr::mutate(
-      jump_events = case_when(
-        phase == 5 & HAY == max(HAY[phase ==5]) ~ "highest_pos",
+      jump_events = dplyr::case_when(
+        phase == 5 & .HAY == max(.HAY[phase ==5]) ~ "highest_pos",
         phase == 2 ~ "deepest_prep",
         phase == 8 ~ "deepest_land",
         TRUE ~ jump_events
-      )
-    )
+        ))
+  df <- df %>% dplyr::select(-.HAY)
+
   df
 }
 

@@ -2,19 +2,50 @@
 % Please edit documentation in R/jump_functions.R
 \name{add_jump_events}
 \alias{add_jump_events}
-\title{add_jump_events()}
+\title{Divide a jump into phases}
 \usage{
 add_jump_events(.data)
 }
 \arguments{
-\item{.data}{A tibble containing motioncapture data from a squat in the format used in the mocapr package.}
+\item{.data}{A tibble containing motioncapture data from a jump. The data must contain:\cr
+\itemize{
+\item \code{LHY} and \code{RHY} columns containg global spatial joint-center positions of the left and right hip\cr
+\item A \code{frame} column\cr
+\item A \code{marks} column with values descring toe off events (TOL = toe off of left foot, TOR = toe off of right foot, TOB = toe off from both feet),
+and impact events (FFL = flat foot contact with left foot, FFR = flat foot contact with right foot, FFB = flat foot contact with both feet).
+}}
 }
 \value{
-A tibble
+The tibble supplied in the \code{.data argument}, with the added columns \code{phase} and \code{jump_events}
 }
 \description{
-add_jump_events()
+\code{add_jump_events} uses average hip joint-center height and supplied events to divide a jump into 9 phases.
+This division is useful for further analyis of the individual phases in the jump.
+The numerical values in \code{phase} column correspond to:
+\enumerate{
+\item Descending phase of the preparation
+\item The deepest postion in the preparation phase
+\item The ascending phase of the preparation (push-off)
+\item Toe off - the last fase with contact between the feet and the ground
+\item Hang time.
+\item Impact
+\item Descending phase of the landing.
+\item Deepest position of the landing.
+\item Ascending phase of the landing.
+}
 }
 \examples{
-\dontrun{}
+# Prepare data
+df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df <- dplyr::select(df, frame, marks, LHY, RHY)
+add_jump_events(df)
+
+# A plot displaying the phases
+df2 <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+df2 <- add_jump_events(df2)
+mocapr::animate_global(df2,
+                       planes = "X",
+                       remove_facet_labels = FALSE,
+                       return_plot = TRUE,
+                       col_facets = phase)
 }
