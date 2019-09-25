@@ -14,7 +14,17 @@
 #' @export
 #'
 #' @examples
+#' # Prepare data
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame > 20, frame < 70)
+#'
+#' add_squat_events(df)
 add_squat_events <- function(.data){
+
+  #Avoid "No visible binding for global variable ..." when performing check
+  LHY <- RHY <- frame <- NULL
+  squat_events <- phase <- squat_depth <- squat_descent <- squat_descent_rel <- NULL
+
+
   #This function add three variabels to the data
   # squat_events ("mid_point", "deepest_point")
   # phase (1,2,3)
