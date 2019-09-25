@@ -15,17 +15,17 @@ status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?b
 
 The goal of `mocapr` is to provide researchers or clinicians with R
 functions that can import, plot, animate, and analyse motion capture
-data. The package is in **the very early experimental stages of
-development** and is only **minimally effective** in the sense that it,
-currently, only supports import from [the
-Captury](http://thecaptury.com/) system.
+data. The package is in**the early experimental stages of development**.
 
-It should be possible to wrangle motion capture data from other systems
-into a format that will allow usage of the functions in this package, as
-long as the data contains frame by frame joint center positions. If you
-have such motion capture data from other systems, and if you are willing
-to share some sample data, I will be happy to make an attempt at writing
-an import function and include both the function and the sample data in
+`mocapr`, currently, supports import from [the
+Captury](http://thecaptury.com/) system, but is capable of working with
+motioncapture data from other systems as long as the data contain frame
+by frame global spatial joint-center positions. If the data contains
+these positions it is possible to wrangle the data into a format that
+will allow usage of the functions in this package. If you have such
+motion capture data from other systems, and if you are willing to share
+some sample data, I will be happy to make an attempt at writing an
+import function and include both the function and the sample data in
 this package.
 
 `mocapr` uses a series of tidyverse packages to import
@@ -359,8 +359,6 @@ jump_2 %>%
                      use_geom_point = FALSE, 
                      planes_in_rows_or_cols = c("cols"), 
                      col_facets = frame,
-                     line_black_size = 1,
-                     line_black_alpha = 1,
                      return_plot = TRUE)
 ```
 
