@@ -1,6 +1,18 @@
-# mocapr 0.0.2
+# mocapr 0.0.1.9003
 ### Major changes
-* Added the function align_movements()
+* Added the functions  
+  + align_movements()  
+  + add_frontal_plane_knee_angle()  
+  + add_frontal_plane_projection_angle()  
+  + add_frontal_plane_knee_deviation()  
+  + add_knee_ankle_hip_ratios()  
+  + add_jump_length_and_height()  
+  + add_jump_events()  
+  + add_squat_events()  
+
+* Added the sample data set
+  + mocapr_synthetic_data
+
 * The animate functions now include arguments that allow the user to control the size of point, circles and lines included in the animation or plot
   + line_size
   + point_size
