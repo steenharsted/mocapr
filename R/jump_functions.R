@@ -142,10 +142,10 @@ add_jump_events <- function(.data){
 #' Adds the columns \code{jump_length} and \code{jump_height} to a tibble containg mocap data of a jump.
 #' @param .data A tibble containing motion-capture data from a jump.\cr
 #' The data must contain the following columns:
-#' 1. \code{jump_events} You can create this column using \code{add_jump_events()}
-#' 1. \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
-#' 1. Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
-#' 1. Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
+#' * \code{jump_events} You can create this column using \code{add_jump_events()}
+#' * \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
+#' * Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
+#' * Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
 #'
 #' @return The tibble suplied in \code{.data} argument with the added columns \code{jump_length} and \code{jump_height} both measures are in cm.
 #' @export
