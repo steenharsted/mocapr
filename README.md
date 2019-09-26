@@ -25,8 +25,8 @@ by frame global spatial joint-center positions. If the data contains
 these positions it is possible to wrangle the data into a format that
 will allow usage of the functions in this package. If you have such
 motion capture data from other systems, I will be happy to make an
-attempt at writing an import function and include the function in this
-package.
+attempt at writing an import function and include the function in future
+versions of this package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -84,22 +84,49 @@ devtools::install_github("steenharsted/mocapr")
 You may have to install additional packages manually that are needed in
 order to run `gganimate` functions.
 
-### Core Functions
+### Functions and objects in `mocapr`
 
-`mocapr` contains six core functions and some sample data
-`mocapr_data`.  
-The six core functions are: one import function (`import_captury()`),
-two functions that project joint-center positions
-(`project_full_body_to_AP()` and `project_full_body_to_MP()`), and three
-functions to animate (`animate_global()`, `animate_anatomical()`, and
-`animate_movement()`).  
-The intended workflow of the six core functions is visualized below.
-![Intended Workflow Using the `mocapr`
-package](figures/Intended_Workflow.png) \#\#\# The Sample Data
-`mocapr_data` `mocapr_data` consists of 6 movements, each supplied with
-a number (`movement_nr`) and a short description
-(`movement_description`). Videos of the movements with an overlay of the
-track is available at this [YouTube
+  - **Import Functions:**
+      - `import_captury()`
+  - **Projection functions**
+      - `project_full_body_to_AP()`
+      - `project_full_body_to_MP()`
+  - **Animation and plotting functions**
+      - `animate_global()`
+      - `animate_anatomical()`
+      - `animate_movement()`
+  - **Helper functions for animations**
+      - `align_movements()`
+  - **Kinematics in the anatomical frontal plane**
+      - `add_frontal_plane_knee_angle()`
+      - `add_frontal_plane_projection_angle()`
+      - `add_frontal_plane_knee_deviation()`
+      - `add_knee_ankle_hip_ratios()`
+  - **Built in data sets**
+      - `mocapr_data`
+      - `mocapr_synthetic_data`
+  - **Movement specific functions**
+      - `add_jump_length_and_height()`
+      - `add_jump_events()`
+      - `add_squat_events()`
+
+The functions and datasets have descriptions and examples that can be
+explored using `help(function_name)` or `?function_name`.
+
+The intended workflow using the above functions and supplied datasets is
+visualized below. ![](figures/mocapr_namespace.png)
+
+### The built in datasets
+
+`mocapr` contains two sample data sets `mocapr_data` and
+`mocapr_synthetic_data`
+
+#### mocapr\_data
+
+`mocapr_data` consists of 6 movements, each supplied with a number
+(`movement_nr`) and a short description (`movement_description`). Videos
+of the movements with an overlay of the track is available at this
+[YouTube
 playlist](https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ).
 The videos are made using the CapturyLive software.
 
@@ -156,6 +183,14 @@ The focus of this tutorial is on plotting and animating motion capture
 data. For this we only need the joint center positions. I will not
 discuss the joint angles further, but feel free to explore them on your
 own.
+
+#### `mocapr_synthetic_data`
+
+Is artificial data generated via a script. It only contains spatial
+joint-center positions in the anatomical planes. `mocapr_synthetic_data`
+is intended to display how the frontal plane kinematics work, and also
+to display sitations where they are likely to fail due to planar
+cross-talk.
 
 ## Animating Motion Capture Data With `mocapr`
 
