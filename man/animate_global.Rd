@@ -15,7 +15,7 @@ animate_global(.data, planes = c("X", "Z"),
 \arguments{
 \item{.data}{A tibble containing joint center positions with global spatial positions of toes, ankles, knees, hip, shoulder, elbows, wrists.}
 
-\item{planes}{Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").}
+\item{planes}{Planes to animate. Must be one or both of c("X", "Z"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").}
 
 \item{planes_in_rows_or_cols}{Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".}
 
