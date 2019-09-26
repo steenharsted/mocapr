@@ -478,7 +478,7 @@
 #' Each frame contains a X-Y and Z-Y plot of the captured person. The definitions of X-Y and Z-Y are dictated by the calibration of the system.
 #'
 #' @param .data A tibble containing joint center positions with global spatial positions of toes, ankles, knees, hip, shoulder, elbows, wrists.
-#' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
+#' @param planes Planes to animate. Must be one or both of c("X", "Z"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
