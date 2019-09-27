@@ -19,6 +19,12 @@
 #' df <- dplyr::select(df, frame, LHY, RHY)
 #'
 #' add_squat_events(df)
+#'
+#' df2 <- data.frame(
+#'                   frame = seq(1:11),
+#'                   LHY = c(100, 95, 90, 85, 80, 75, 70, 65, 60, 80, 100),
+#'                   RHY = c(100, 95, 90, 85, 80, 75, 70, 65, 60, 80, 100))
+#' add_squat_events(df2)
 add_squat_events <- function(.data){
 
   #Avoid "No visible binding for global variable ..." when performing check
@@ -51,7 +57,7 @@ add_squat_events <- function(.data){
 
       #find the mid_point in descent (the point where the child is halfway down)
       #this is the frame were squat_descent is half the size of squat_depth
-      squat_descent     = dplyr::if_else(phase == 1, squat_depth - ((LHY+RHY) - min(LHY+RHY)), 0),
+      squat_descent     = dplyr::if_else(phase == 1, squat_depth - (((LHY+RHY) - min(LHY+RHY)))/10, 0),
       squat_descent_rel = squat_depth / squat_descent) %>%
     dplyr::mutate(
       #find the row were squat_descent is closest to being half the size of squat_depth and
