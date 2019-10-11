@@ -24,4 +24,10 @@ df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1, frame > 20, frame < 7
 df <- dplyr::select(df, frame, LHY, RHY)
 
 add_squat_events(df)
+
+df2 <- data.frame(
+                  frame = seq(1:11),
+                  LHY = c(100, 95, 90, 85, 80, 75, 70, 65, 60, 80, 100),
+                  RHY = c(100, 95, 90, 85, 80, 75, 70, 65, 60, 80, 100))
+add_squat_events(df2)
 }
