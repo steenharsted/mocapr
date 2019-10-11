@@ -8,6 +8,6 @@ test_that("animate_anatomical() returns data correctly", {
       reduce_data = TRUE
     )
 
-  expect_equal(df[[1,4]], 92.910629)
+  expect_equal(round(df[[1,4]], 4), 80.2525)
 
 })
