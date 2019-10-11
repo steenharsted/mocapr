@@ -14,7 +14,7 @@ The tibble supplied in the .data argument with two extra columns (LFPPA and RFPP
 }
 \description{
 \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble.
-\cr\cr\emph{Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve movements where the height of hip joint is
+\cr\cr\emph{Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
 not involve deep positions of the pelvis (e.g. single-leg squats, gait etc.). \cr Please see examples for further detail.}
