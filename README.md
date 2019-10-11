@@ -200,11 +200,11 @@ cross-talk.
 Lets first create some sample data:
 
 ``` r
-jump_1 <- filter(mocapr::mocapr_data, movement_nr == 1)
+jump_1 <- filter(mocapr::mocapr_data, movement_nr == 2)
 
 jump_2 <- filter(mocapr::mocapr_data, movement_nr == 3)
 
-gait <-  filter(mocapr::mocapr_data, movement_nr == 5)
+gait <-  filter(mocapr::mocapr_data, movement_nr == 6)
 
 capoeira <- filter(mocapr::mocapr_data, movement_nr == 9)
 ```
