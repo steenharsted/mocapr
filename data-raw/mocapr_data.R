@@ -2,30 +2,41 @@
 mocapr_data <- tibble::tibble(
   file = list.files(here::here("data-raw"), pattern = ".csv")) %>%
   dplyr::mutate(
-    data = purrr::map(.x = file, .f = ~import_captury(here::here("data-raw", .x)))) %>%
+    data = purrr::map(.x = file, .f = ~mocapr::import_captury(here::here("data-raw", .x)))) %>%
   dplyr::mutate(
+    file = stringr::str_match(file,  pattern = "(?<=shots_).*(?=_unknown)"),
     movement_description = dplyr::case_when(
-      file == "caipoera.csv" ~ "caipoera dance",
-      file == "gait_1.csv" ~ "normal gait in a straight line",
-      file == "gait_2.csv" ~ "normal gait in a semi square",
-      file == "standing_long_jump_1.csv" ~ "standing long jump for maximal performance",
-      file == "standing_long_jump_2.csv" ~ "standing long jump with simulated poor landing technique of the right lower extremity",
-      file == "vertical_jump.csv" ~ "vertical jump for maximal performance",
+      file == "Capoeira_1" ~ "capoeira dance",
+      file == "Gait_1_straight" ~ "normal gait in a straight line",
+      file == "Gait_2_square" ~ "normal gait in a semi square",
+      file == "Gait_3_drop_foot" ~ "gait with simulated drop foot",
+      file == "Gait_4_int_rot" ~ "gait with simulated internal rotation",
+      file == "SBJ_1" ~ "standing long jump for maximal performance",
+      file == "SBJ_2" ~ "standing long jump with simulated poor landing technique of the right lower extremity",
+      file == "VJ_1" ~ "vertical jump for maximal performance",
       TRUE ~ "No information"
     )) %>%
   dplyr::mutate(
     movement_nr = dplyr::case_when(
-      file == "caipoera.csv" ~ 6,
-      file == "vertical_jump.csv" ~ 5,
-      file == "gait_1.csv" ~ 3,
-      file == "gait_2.csv" ~ 4,
-      file == "standing_long_jump_1.csv" ~ 1,
-      file == "standing_long_jump_2.csv" ~ 2,
+      file == "Capoeira_1" ~ 8,
+      file == "Gait_1_straight" ~ 4,
+      file == "Gait_2_square" ~ 5,
+      file == "Gait_3_drop_foot" ~ 6,
+      file == "Gait_4_int_rot" ~ 7,
+      file == "SBJ_1" ~ 1,
+      file == "SBJ_2" ~ 2,
+      file == "VJ_1" ~ 3,
       TRUE ~ NA_real_
     )) %>%
+
+  # Change marks columns to character vectors
+  dplyr::mutate(
+    data = purrr::map(data, ~dplyr::mutate(.x, marks = as.character(marks)))) %>%
+
+  # select, arrange, and unnest
   dplyr::select(movement_nr, movement_description, data) %>%
   dplyr::arrange(movement_nr) %>%
-  tidyr::unnest()
+  tidyr::unnest(cols = c(data))
 
 usethis::use_data(mocapr_data, overwrite = TRUE)
 
