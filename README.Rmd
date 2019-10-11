@@ -7,7 +7,7 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  cache = TRUE,
+  cache = FALSE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
@@ -132,11 +132,11 @@ Lets first create some sample data:
 ```{r create_data}
 jump_1 <- filter(mocapr::mocapr_data, movement_nr == 1)
 
-jump_2 <- filter(mocapr::mocapr_data, movement_nr == 2)
+jump_2 <- filter(mocapr::mocapr_data, movement_nr == 3)
 
-gait <-  filter(mocapr::mocapr_data, movement_nr == 4)
+gait <-  filter(mocapr::mocapr_data, movement_nr == 5)
 
-capoeira <- filter(mocapr::mocapr_data, movement_nr == 6)
+capoeira <- filter(mocapr::mocapr_data, movement_nr == 9)
 ```
 
 ### Animating with `animate_global()`
@@ -260,9 +260,68 @@ jump_2 %>%
                      return_plot = TRUE)
 ```
 
+## Animating and plotting multible movements
+`mocapr` utilizes the powerful faceting features of `ggplot2`. This means that you can plot and animate mulitple movements next to eachother. This is especially usefull if you wish to visualize variation in movement patterns (test-retest or pre-post treatment scenarios).
 
-## Options
-the width and height arguments can be used to specify width and height
+When you animate multiple movements the movements will only rarely have the same duration. `mocapr` allows you to align such movements based on a key event via the function `align_movements()`
+
+The below example aligns and animates two standing broad jumps. The jumps are aligned on the frame containing the impact frame.
+
+```{r show_align_movments}
+mocapr_data %>% 
+  filter(movement_nr %in% c(1,2)) %>% 
+  
+  align_movements(
+    .group_var = movement_nr,  # The column that contains the grouping
+    event_var = marks, # The column that contains the key event
+    event_value = "FFB",  # The value specifying the key event in the event_var column
+    prolong_event = 25  #  Nr. of frames you would like to "freeze" the key event
+    ) %>% 
+  
+  
+  animate_global(
+    row_facets = movement_nr,
+    
+    # gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50)
+```
+
+
+When plotting, it is less of an issue if the recordings are of differing duration, but you need to select the frames of importance in some other way.
+
+The below example takes two jumps, divide the jumps into phases using the `add_jump_events()` function and then filters individual frames based on the phases.
+
+```{r}
+mocapr_data %>% 
+  
+  # Take two jumps
+  filter(movement_nr %in% c(1,3)) %>% 
+  group_by(movement_nr) %>% 
+  
+  # Add jump phases and events
+  group_modify(~add_jump_events(.x)) %>% 
+  group_modify(~project_full_body_to_AP(.x)) %>%
+  
+  # Keep only single frame events and highest position in jump
+  filter(
+    phase %in% c(2, 4, 6, 8) | CGY == max(CGY)) %>% 
+  
+  animate_anatomical(
+    row_facets = movement_nr,
+    col_facets = phase,
+    return_plot = TRUE,
+    
+    # Just styling options
+    use_geom_point = FALSE,
+    line_colored_size = 1.2,
+    line_black_size = 1,
+    line_black_alpha = 1)
+```
+
+
+
+## Adjust the speed of the animation
 I find slow-mo effects is best achieved by adding more rows, e.g., `nrow(.)*2`
 ```{r show_options, fig.asp=0.5, fig.width=10}
 capoeira %>% 

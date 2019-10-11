@@ -123,7 +123,7 @@ visualized below. ![](figures/mocapr_namespace.png)
 
 #### mocapr\_data
 
-`mocapr_data` consists of 6 movements, each supplied with a number
+`mocapr_data` consists of 9 movements, each supplied with a number
 (`movement_nr`) and a short description (`movement_description`). Videos
 of the movements with an overlay of the track is available at this
 [YouTube
@@ -143,16 +143,19 @@ library(mocapr)
 mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   nest()
-#> # A tibble: 6 x 3
-#> # Groups:   movement_nr, movement_description [6]
+#> # A tibble: 9 x 3
+#> # Groups:   movement_nr, movement_description [9]
 #>   movement_nr movement_description                                     data
 #>         <dbl> <chr>                                           <list<df[,70>
-#> 1           1 standing long jump for maximal performance         [172 x 70]
-#> 2           2 standing long jump with simulated poor landing~    [228 x 70]
-#> 3           3 normal gait in a straight line                     [157 x 70]
-#> 4           4 normal gait in a semi square                       [375 x 70]
-#> 5           5 vertical jump for maximal performance              [143 x 70]
-#> 6           6 caipoera dance                                   [1,269 x 70]
+#> 1           1 standing long jump for maximal performance         [135 x 70]
+#> 2           2 standing long jump for maximal performance         [152 x 70]
+#> 3           3 standing long jump with simulated poor landing~    [169 x 70]
+#> 4           4 vertical jump for maximal performance              [143 x 70]
+#> 5           5 gait normal in a straight line                     [157 x 70]
+#> 6           6 gait normal in a semi square                       [375 x 70]
+#> 7           7 gait with simulated drop foot                      [191 x 70]
+#> 8           8 gait with simulated internal rotation              [255 x 70]
+#> 9           9 capoeira dance                                   [1,269 x 70]
 ```
 
 The format of the data is wide and contains frame by frame joint angles
@@ -199,11 +202,11 @@ Lets first create some sample data:
 ``` r
 jump_1 <- filter(mocapr::mocapr_data, movement_nr == 1)
 
-jump_2 <- filter(mocapr::mocapr_data, movement_nr == 2)
+jump_2 <- filter(mocapr::mocapr_data, movement_nr == 3)
 
-gait <-  filter(mocapr::mocapr_data, movement_nr == 4)
+gait <-  filter(mocapr::mocapr_data, movement_nr == 5)
 
-capoeira <- filter(mocapr::mocapr_data, movement_nr == 6)
+capoeira <- filter(mocapr::mocapr_data, movement_nr == 9)
 ```
 
 ### Animating with `animate_global()`
@@ -399,10 +402,82 @@ jump_2 %>%
 
 <img src="man/figures/README-show_how_to_plot-1.png" width="100%" />
 
-## Options
+## Animating and plotting multible movements
 
-the width and height arguments can be used to specify width and height I
-find slow-mo effects is best achieved by adding more rows, e.g.,
+`mocapr` utilizes the powerful faceting features of `ggplot2`. This
+means that you can plot and animate mulitple movements next to
+eachother. This is especially usefull if you wish to visualize variation
+in movement patterns (test-retest or pre-post treatment scenarios).
+
+When you animate multiple movements the movements will only rarely have
+the same duration. `mocapr` allows you to align such movements based on
+a key event via the function `align_movements()`
+
+The below example aligns and animates two standing broad jumps. The
+jumps are aligned on the frame containing the impact frame.
+
+``` r
+mocapr_data %>% 
+  filter(movement_nr %in% c(1,2)) %>% 
+  
+  align_movements(
+    .group_var = movement_nr,  # The column that contains the grouping
+    event_var = marks, # The column that contains the key event
+    event_value = "FFB",  # The value specifying the key event in the event_var column
+    prolong_event = 25  #  Nr. of frames you would like to "freeze" the key event
+    ) %>% 
+  
+  
+  animate_global(
+    row_facets = movement_nr,
+    
+    # gganimate options passed via ...
+    nframes = nrow(.),
+    fps = 50)
+```
+
+<img src="man/figures/README-show_align_movments-1.gif" width="100%" />
+
+When plotting, it is less of an issue if the recordings are of differing
+duration, but you need to select the frames of importance in some other
+way.
+
+The below example takes two jumps, divide the jumps into phases using
+the `add_jump_events()` function and then filters individual frames
+based on the phases.
+
+``` r
+mocapr_data %>% 
+  
+  # Take two jumps
+  filter(movement_nr %in% c(1,3)) %>% 
+  group_by(movement_nr) %>% 
+  
+  # Add jump phases and events
+  group_modify(~add_jump_events(.x)) %>% 
+  group_modify(~project_full_body_to_AP(.x)) %>%
+  
+  # Keep only single frame events and highest position in jump
+  filter(
+    phase %in% c(2, 4, 6, 8) | CGY == max(CGY)) %>% 
+  
+  animate_anatomical(
+    row_facets = movement_nr,
+    col_facets = phase,
+    return_plot = TRUE,
+    
+    # Just styling options
+    use_geom_point = FALSE,
+    line_colored_size = 1.2,
+    line_black_size = 1,
+    line_black_alpha = 1)
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+## Adjust the speed of the animation
+
+I find slow-mo effects is best achieved by adding more rows, e.g.,
 `nrow(.)*2`
 
 ``` r
