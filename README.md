@@ -11,12 +11,14 @@ mocapr
 status](https://travis-ci.org/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
+[![Codecov test
+coverage](https://codecov.io/gh/steenharsted/mocapr/branch/master/graph/badge.svg)](https://codecov.io/gh/steenharsted/mocapr?branch=master)
 <!-- badges: end -->
 
-The goal of `mocapr` is to provide researchers or clinicians with R
-functions that can import, plot, animate, and analyse motion capture
-data. The package is in **the early experimental stages of
-development**.
+The goal of `mocapr` is to help researchers and clinicians work with
+motion capture data within R by providing R functions that can import,
+plot, animate, and analyse motion capture data. The package is in **the
+early experimental stages of development**.
 
 `mocapr`, currently, supports import from [the
 Captury](http://thecaptury.com/) system, but is capable of working with
@@ -53,9 +55,9 @@ Feedback and suggestions for improvement and future developments are
 
 I am a Ph.d. student at The Department of Sports Science and Clinical
 Biomechanics, Faculty of Health Sciences at the University of Southern
-Denmark (SDU). My work is a part of the project “Motor Skills in
-Pre-Schoolers”([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)),
-which is led by Lise Hestbæk.  
+Denmark (SDU). My work is a part of the project â€œMotor Skills in
+Pre-Schoolersâ€([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)),
+which is led by Lise HestbÃ¦k.  
 In MiPS we follow a cohort of \~950 pre-school children with yearly
 follow-ups. At each follow-up we collect data using markerless motion
 capture of the children as they perform a series of jumps and squats. My
@@ -143,19 +145,16 @@ library(mocapr)
 mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   nest()
-#> # A tibble: 9 x 3
-#> # Groups:   movement_nr, movement_description [9]
+#> # A tibble: 6 x 3
+#> # Groups:   movement_nr, movement_description [6]
 #>   movement_nr movement_description                                     data
 #>         <dbl> <chr>                                           <list<df[,70>
-#> 1           1 standing long jump for maximal performance         [135 x 70]
-#> 2           2 standing long jump for maximal performance         [152 x 70]
-#> 3           3 standing long jump with simulated poor landing~    [169 x 70]
-#> 4           4 vertical jump for maximal performance              [143 x 70]
-#> 5           5 gait normal in a straight line                     [157 x 70]
-#> 6           6 gait normal in a semi square                       [375 x 70]
-#> 7           7 gait with simulated drop foot                      [191 x 70]
-#> 8           8 gait with simulated internal rotation              [255 x 70]
-#> 9           9 capoeira dance                                   [1,269 x 70]
+#> 1           1 standing long jump for maximal performance         [172 x 70]
+#> 2           2 standing long jump with simulated poor landing~    [228 x 70]
+#> 3           3 normal gait in a straight line                     [157 x 70]
+#> 4           4 normal gait in a semi square                       [375 x 70]
+#> 5           5 vertical jump for maximal performance              [143 x 70]
+#> 6           6 caipoera dance                                   [1,269 x 70]
 ```
 
 The format of the data is wide and contains frame by frame joint angles

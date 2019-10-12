@@ -7,7 +7,7 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  cache = FALSE,
+  cache = TRUE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
@@ -22,9 +22,10 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/steenharsted/mocapr.svg?branch=master)](https://travis-ci.org/steenharsted/mocapr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
+[![Codecov test coverage](https://codecov.io/gh/steenharsted/mocapr/branch/master/graph/badge.svg)](https://codecov.io/gh/steenharsted/mocapr?branch=master)
 <!-- badges: end -->
 
-The goal of `mocapr` is to provide researchers or clinicians with R functions that can import, plot, animate, and analyse motion capture data. The package is in **the early experimental stages of development**. 
+The goal of `mocapr` is to help researchers and clinicians work with motion capture data within R by providing R functions that can import, plot, animate, and analyse motion capture data. The package is in **the early experimental stages of development**. 
 
 `mocapr`, currently, supports import from [the Captury](http://thecaptury.com/) system, but is capable of working with motioncapture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in future versions of this package. 
 
@@ -37,7 +38,7 @@ While all functions should run without loading other libraries I strongly recomm
 Feedback and suggestions for improvement and future developments are **most welcome**. 
 
 ## Short on the story behind the package
-I am a Ph.d. student at The Department of Sports Science and Clinical Biomechanics, Faculty of Health Sciences at the University of Southern Denmark (SDU). My work is a part of the project “Motor Skills in Pre-Schoolers”([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)), which is led by Lise Hestbæk.  
+I am a Ph.d. student at The Department of Sports Science and Clinical Biomechanics, Faculty of Health Sciences at the University of Southern Denmark (SDU). My work is a part of the project â€œMotor Skills in Pre-Schoolersâ€([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)), which is led by Lise HestbÃ¦k.  
 In MiPS we follow a cohort of \~950 pre-school children with yearly follow-ups. At each follow-up we collect data using markerless motion capture of the children as they perform a series of jumps and squats. My Ph.d. project revolves around collecting and analyzing this motion capture data, and the code available in this package is a more general form of some of the code I have written so far for use in this project. My initial attempts at approaching the data were made in Stata, but my work significantly picked up speed after I was introduced to R in the summer of 2017, and especially after I discovered the Tidyverse.
 
 I have found R to be completely capable of working with large amounts of motion capture data, and I hope this package can, at least, serve as an inspiration as to how R can be utilized to work with motion capture data.

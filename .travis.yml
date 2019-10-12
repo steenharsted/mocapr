@@ -3,7 +3,7 @@ language: R
 cache: packages
 sudo: true
 
-warnings_are_errors: false
+warnings_are_errors: true
 
 env:
   global:
@@ -34,3 +34,7 @@ matrix:
   - r: devel
   - r: release
   - r: oldrel
+
+after_success:
+  - Rscript -e 'covr::codecov()'
+
