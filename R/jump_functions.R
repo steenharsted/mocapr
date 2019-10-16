@@ -45,6 +45,28 @@ add_jump_events <- function(.data){
   LHY <- RHY <- marks <- frame <- phase <- .HAY <- NULL
   HAY_during_TAKE_OFF <- HAY_during_LANDING <- NULL
 
+  # Test if marks contain the needed elements
+  .test <-
+    data.frame(
+      marks = unique(.data$marks)
+      ) %>%
+    dplyr::mutate(
+      toe_offs = dplyr::if_else(marks == "TOB", 2, 0, missing = 0),
+      impacts = dplyr::if_else(marks == "FFB", 2, 0, missing =0 ),
+      toe_offs = dplyr::if_else(marks %in% c("TOL", "TOR"), 1, toe_offs),
+      impacts = dplyr::if_else(marks %in% c("FFL", "FFR"), 1, impacts)
+      ) %>%
+    dplyr::summarise_if(is.numeric, sum)
+
+  if(.test[["toe_offs"]] != 2) {
+    stop("add_jump_events() requires the column marks to contain one row with ´TOB´, or one row with `TOL` and one row with `TOR`")
+  }
+
+  if(.test[["impacts"]] != 2) {
+    stop("add_jump_events() requires the column marks to contain one row with ´FFB´, or one row with `FFL` and one row with `FFR`")
+  }
+
+
   # Function
   df <- .data %>%
     # Generate the averaged hip height
