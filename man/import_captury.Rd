@@ -20,6 +20,12 @@ Import_Captury() takes the filepath and filename of a .csv file containg motion 
 LKF, global Y coordinate of the right hip joint is RHY).\cr
 Please see the GitHub README.me for a more detailed description.
 }
+\section{Note}{
+
+This function imports Captury .csv files as they are exported from CapturyLive version 0.0.168 and earlier. Newer versions have a different layout
+and should be imported using \code{\link{import_captury_csv()}}.
+}
+
 \examples{
 path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
 import_captury(path)
