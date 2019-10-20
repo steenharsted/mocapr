@@ -3,10 +3,10 @@
 \docType{data}
 \name{mocapr_data}
 \alias{mocapr_data}
-\title{Motion Capture Data of 6 Different Movements}
+\title{Motion Capture Data of Various Movements}
 \format{A \code{tibble}
 \describe{
-\item{movement_nr}{A variable for easy reference of the 6 movements in the dataset}
+\item{movement_nr}{A variable for easy reference of the movements in the dataset}
 \item{movement_description}{A short description of the movement being performed}
 \item{frame}{Frame number}
 \item{time_seconds}{Passed time in seconds from begining of the recording}
@@ -17,12 +17,12 @@ or the GitHub \href{https://github.com/steenharsted/mocapr}{README.md} for more 
 mocapr_data
 }
 \description{
-\code{mocapr_data} contains motion catpure data of 6 movements.The format of the data is wide
+\code{mocapr_data} contains motion catpure data of a number of movements.The format of the data is wide
 and contains frame by frame joint angles and global joint center positions.
 Each joint is typically represented by 6 columns (3 angles and 3 positions).
 All joint related variables are abbreviated according to their side (L|R),
 joint(A|K|H|S|E|W), and angle/position.\cr
-Please see GitHub README.md for more information.
+Please see \href{https://github.com/steenharsted/mocapr}{GitHub README.md} for more information.
 }
 \references{
 See video footage of the movements \href{https://www.youtube.com/playlist?list=PLMjrjny4Ymmd1nSGHU0A6dWfEWjBxc-VQ}{here}.\cr

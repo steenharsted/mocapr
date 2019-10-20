@@ -1,0 +1,32 @@
+#' mocapr: An R package to plot, animate and analyze motion capture data
+#'
+#' The mocapr package provides 6 groups of functions and 2 built in data sets.
+#'
+#' @section Import Functions:
+#' \code{\link{import_captury}}\cr
+#' @section Projection functions:
+#' \code{\link{project_full_body_to_AP}}\cr
+#' \code{\link{project_full_body_to_MP}}\cr
+#' @section Animation and plotting functions:
+#' \code{\link{animate_global}}\cr
+#' \code{\link{animate_anatomical}}\cr
+#' \code{\link{animate_movement}}\cr
+#' @section Helper functions for animations:
+#' \code{\link{align_movements}}\cr
+#' @section Kinematics in the anatomical frontal plane:
+#' \code{\link{add_frontal_plane_knee_angle}}\cr
+#' \code{\link{add_frontal_plane_projection_angle}}\cr
+#' \code{\link{add_frontal_plane_knee_deviation}}\cr
+#' \code{\link{add_knee_ankle_hip_ratios}}\cr
+#' @section Movement specific functions:
+#' \code{\link{add_jump_length_and_height}}\cr
+#' \code{\link{add_jump_events}}\cr
+#' \code{\link{add_squat_events}}\cr
+#' @section Built in data sets:
+#' \code{\link{mocapr_data}}\cr
+#' \code{\link{mocapr_synthetic_data}}\cr
+#'
+#' @docType package
+#' @name mocapr
+NULL
+#> NULL
