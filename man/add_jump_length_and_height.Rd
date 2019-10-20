@@ -10,7 +10,7 @@ add_jump_length_and_height(.data)
 \item{.data}{A tibble containing motion-capture data from a jump.\cr
 The data must contain the following columns:
 \itemize{
-\item \code{jump_events} You can create this column using \code{add_jump_events()}
+\item \code{jump_events} You can create this column using \code{\link{add_jump_events}}
 \item \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
 \item Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
 \item Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
