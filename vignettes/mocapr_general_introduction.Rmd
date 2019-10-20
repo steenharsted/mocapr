@@ -1,0 +1,20 @@
+---
+title: "mocapr general introduction"
+author: "Steen Harsted"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{mocapr: general introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(mocapr)
+```
