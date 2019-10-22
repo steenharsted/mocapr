@@ -15,20 +15,19 @@ status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?b
 coverage](https://codecov.io/gh/steenharsted/mocapr/branch/master/graph/badge.svg)](https://codecov.io/gh/steenharsted/mocapr?branch=master)
 <!-- badges: end -->
 
-The goal of `mocapr` is to help researchers and clinicians work with
-motion capture data within R by providing R functions that can import,
-plot, animate, and analyse motion capture data. The package is in **the
-early experimental stages of development**.
+The goal of `mocapr` is to help researchers and clinicians to work with
+motion capture data in R by providing functions that can import, plot,
+animate, and analyse motion capture data. The package is in **the early
+experimental stages of development**.
 
-`mocapr`, currently, supports import from [the
-Captury](http://thecaptury.com/) system, but is capable of working with
-motioncapture data from other systems as long as the data contain frame
-by frame global spatial joint-center positions. If the data contains
-these positions it is possible to wrangle the data into a format that
-will allow usage of the functions in this package. If you have such
-motion capture data from other systems, I will be happy to make an
-attempt at writing an import function and include the function in future
-versions of this package.
+`mocapr`, supports import from [the Captury](http://thecaptury.com/)
+system, but is capable of working with motion capture data from other
+systems as long as the data contain frame by frame global spatial
+joint-center positions. If the data contains these positions it is
+possible to wrangle the data into a format that will allow usage of the
+functions in this package. If you have such motion capture data from
+other systems, I will be happy to make an attempt at writing an import
+function and include the function in future versions of this package.
 
 `mocapr` uses a series of tidyverse packages to import
 ([`readr`](https://github.com/tidyverse/readr),
@@ -40,13 +39,13 @@ versions of this package.
 [`ggforce`](https://ggforce.data-imaginist.com/)), animate
 ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse
 motion capture data.  
-The package also contains a sample data set `mocapr_data` which is
-generated using some of the above packages as well as
-[`purrr`](https://github.com/tidyverse/purrr).
+The package also contains two sample data sets `mocapr_data` and
+`mocapr_synthetic_data` which is generated using some of the above
+packages as well as [`purrr`](https://github.com/tidyverse/purrr).
 
 While all functions should run without loading other libraries I
-strongly recommend you load the tidyverse `library(tidyverse)` prior to
-loading the mocapr library.
+recommend you also load the tidyverse `library(tidyverse)` when loading
+the mocapr library.
 
 Feedback and suggestions for improvement and future developments are
 **most welcome**.
@@ -55,9 +54,10 @@ Feedback and suggestions for improvement and future developments are
 
 I am a Ph.d. student at The Department of Sports Science and Clinical
 Biomechanics, Faculty of Health Sciences at the University of Southern
-Denmark (SDU). My work is a part of the project â€œMotor Skills in
-Pre-Schoolersâ€([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)),
-which is led by Lise HestbÃ¦k.  
+Denmark (SDU). My work is a part of the project Motor Skills in
+Pre-Schoolers
+([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)), which
+is led by Lise Hestbæk.  
 In MiPS we follow a cohort of \~950 pre-school children with yearly
 follow-ups. At each follow-up we collect data using markerless motion
 capture of the children as they perform a series of jumps and squats. My
