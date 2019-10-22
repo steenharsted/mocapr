@@ -117,7 +117,12 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
   #Create movement plane (MP)
   MP <- .data %>%
     dplyr::filter(frame == min(frame) | frame == max(frame) ) %>%
-    dplyr::select(frame, HAX, HAY, HAZ) %>%
+    dplyr::select(frame, LHX, LHY, LHZ, RHX, RHY, RHZ) %>%
+    dplyr::mutate(
+      HAX = (LHX+RHX)/2,
+      HAY = (LHY+RHY)/2,
+      HAZ = (LHZ+RHZ)/2) %>%
+    dplyr::select(-LHX, -LHY, -LHZ, -RHX, -RHY, -RHZ) %>%
     tidyr::gather(key, value, -frame) %>%
     dplyr::mutate(
       frame = dplyr::case_when(
