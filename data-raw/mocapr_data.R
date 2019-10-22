@@ -15,6 +15,8 @@ mocapr_data <- tibble::tibble(
       file == "SBJ_2" ~ "standing long jump for maximal performance",
       file == "SBJ_3" ~ "standing long jump with simulated poor landing technique of the right lower extremity",
       file == "VJ_1" ~ "vertical jump for maximal performance",
+      file == "Lunge_1" ~ "forward lunge normal",
+      file == "Squat_1" ~ "squat normal",
       TRUE ~ "No information"
     )) %>%
   dplyr::mutate(
@@ -28,6 +30,8 @@ mocapr_data <- tibble::tibble(
       file == "SBJ_2" ~ 2,
       file == "SBJ_3" ~ 3,
       file == "VJ_1" ~ 4,
+      file == "Lunge_1" ~ 10,
+      file == "Squat_1" ~ 11,
       TRUE ~ NA_real_
     )) %>%
 
@@ -40,8 +44,17 @@ mocapr_data <- tibble::tibble(
   dplyr::arrange(movement_nr) %>%
   tidyr::unnest(cols = c(data)) %>%
 
-  #remove the first part of movement_nr_2 as it is irrelevant
-  dplyr::filter(!(movement_nr == 3 & frame < 60))
+  # remove the first part of movement_nr_2 as it is irrelevant
+  dplyr::filter(!(movement_nr == 3 & frame < 60)) %>%
+
+  # Correct Toe data in movement_nr 10 as it is 0 in all frame
+  dplyr::mutate(
+    LTX = dplyr::if_else(movement_nr == 10, LAX, LTX),
+    LTY = dplyr::if_else(movement_nr == 10, LAY, LTY),
+    LTZ = dplyr::if_else(movement_nr == 10, LAZ, LTZ),
+    RTX = dplyr::if_else(movement_nr == 10, RAX, RTX),
+    RTY = dplyr::if_else(movement_nr == 10, RAY, RTY),
+    RTZ = dplyr::if_else(movement_nr == 10, RAZ, RTZ))
 
 usethis::use_data(mocapr_data, overwrite = TRUE)
 
