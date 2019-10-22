@@ -1,5 +1,3 @@
-# tmp <- tempfile()
-# tmp2 <- tempfile()
 
 test_that("project_single_joint_to_MP fails when .method is not correct", {
   df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 11)
@@ -11,11 +9,11 @@ test_that("project_single_joint_to_MP fails when .method is not correct", {
 test_that("project_single_joint_to_MP works when .method is 'first_last'", {
   df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 11)
 
-  expect_known_value(project_single_joint_to_MP(df, LSX, LSY, LSZ, "LS", .method = "first_last"), tmp)
+  expect_known_value(project_single_joint_to_MP(df, LSX, LSY, LSZ, "LS", .method = "first_last"), here::here("tests", "testthat", "reference_files", "first_last"))
 })
 
 test_that("project_single_joint_to_MP works when .method is 'first_dist'", {
   df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 11)
-  expect_known_value(project_single_joint_to_MP(df, LSX, LSY, LSZ, "LS", .method = "first_dist"), tmp2)
+  expect_known_value(project_single_joint_to_MP(df, LSX, LSY, LSZ, "LS", .method = "first_dist"), here::here("tests", "testthat", "reference_files", "first_dist"))
 
 })
