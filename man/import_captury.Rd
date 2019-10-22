@@ -23,7 +23,7 @@ Please see the GitHub README.me for a more detailed description.
 \section{Note}{
 
 This function imports Captury .csv files as they are exported from CapturyLive version 0.0.168 and earlier. Newer versions have a different layout
-and should be imported using \code{\link{import_captury_csv()}}.
+and should be imported using \code{import_captury_csv()}.
 }
 
 \examples{
