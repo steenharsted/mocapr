@@ -7,7 +7,7 @@
 #' Please see the GitHub README.me for a more detailed description.
 #' @section Note:
 #' This function imports Captury .csv files as they are exported from CapturyLive version 0.0.168 and earlier. Newer versions have a different layout
-#' and should be imported using \code{\link{import_captury_csv()}}.
+#' and should be imported using \code{import_captury_csv()}.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Captury system
 #' @param frames_pr_second Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.
