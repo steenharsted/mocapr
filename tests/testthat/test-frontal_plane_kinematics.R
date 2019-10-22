@@ -41,9 +41,9 @@ test_that("add_frontal_plane_projection_angle", {
 })
 
 
-# Frontal Plane Knee Deviation
+# Ratios Deviation
 
-test_that("add_frontal_plane_knee_deviation works", {
+test_that("add_knee_ankle_hip_ratios works", {
  df <- data.frame(
                   LH_APR = c( 10, 10, 10,  0, 10, 20),
                   LK_APR = c( 10, 10, 10, 10, 10, 10),
@@ -58,7 +58,7 @@ test_that("add_frontal_plane_knee_deviation works", {
                   RK_APU = c( 10, 10, 10, 10, 10, 10),
                   RA_APU = c(  0,  0,  0,  0,  0,  0))
 
- df <- add_knee_anke_hip_ratios(df)
+ df <- add_knee_ankle_hip_ratios(df)
 
   expect_equal(df$KHR, c(1, 1, 1, 1, 1, 1))
   expect_equal(df$AHR, c(1, 1, 1, 4, 4, 5))
@@ -68,9 +68,9 @@ test_that("add_frontal_plane_knee_deviation works", {
 
 
 
-# add_knee_ankle_hip_ratios
+# Frontal plane knee deviation
 
-test_that("add_knee_ankle_hip_ratios", {
+test_that("add_frontal_plane_knee_deviation works", {
   df <- data.frame(
     LH_APR = c(10,10,10, 0,10,20),
     LK_APR = c(10,10,10,10,10,10),

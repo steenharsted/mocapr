@@ -235,12 +235,12 @@ add_frontal_plane_knee_deviation <- function(.data){
 #' @examples
 #' # Prepare data
 #'df <- dplyr::filter(mocapr::mocapr_synthetic_data, sample == 1)
-#'add_knee_anke_hip_ratios(df)
+#'add_knee_ankle_hip_ratios(df)
 #'
 #'# The ratio measures are unaffected by the depth of the pelvis.
 #'
 #'df2 <- dplyr::filter(mocapr::mocapr_synthetic_data, sample == 2)
-#'df2 <- add_knee_anke_hip_ratios(df2)
+#'df2 <- add_knee_ankle_hip_ratios(df2)
 #'animate_anatomical(df2,
 #'                   planes = "R",
 #'                   return_plot = TRUE,

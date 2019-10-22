@@ -36,7 +36,7 @@ The mocapr package provides 6 groups of functions and 2 built in data sets.
 \code{\link{add_frontal_plane_knee_angle}}\cr
 \code{\link{add_frontal_plane_projection_angle}}\cr
 \code{\link{add_frontal_plane_knee_deviation}}\cr
-\code{\link{add_knee_anke_hip_ratios}}\cr
+\code{\link{add_knee_ankle_hip_ratios}}\cr
 }
 
 \section{Movement specific functions}{
