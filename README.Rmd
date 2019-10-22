@@ -309,10 +309,11 @@ mocapr_data %>%
     phase %in% c(2, 4, 6, 8) | CGY == max(CGY)) %>% 
   
   animate_anatomical(
-    row_facets = movement_nr,
-    col_facets = phase,
-    return_plot = TRUE,
-    
+    planes = "F",             # Show only the forward plane, change to "R for the forward plane. Remove for both planes
+    row_facets = movement_nr, # Facet the two movements in two rows
+    col_facets = phase,       # Facet the phases in columns
+    return_plot = TRUE,       # Return a plot
+
     # Just styling options
     use_geom_point = FALSE,
     line_colored_size = 1.2,
