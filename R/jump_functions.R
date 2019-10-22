@@ -44,6 +44,7 @@ add_jump_events <- function(.data){
   # Avoid "No visible binding for global variable ..." when performing check()
   LHY <- RHY <- marks <- frame <- phase <- .HAY <- NULL
   HAY_during_TAKE_OFF <- HAY_during_LANDING <- NULL
+  toe_offs <- impacts <- NULL
 
   # Test if marks contain the needed elements
   .test <-
@@ -59,11 +60,11 @@ add_jump_events <- function(.data){
     dplyr::summarise_if(is.numeric, sum)
 
   if(.test[["toe_offs"]] != 2) {
-    stop("add_jump_events() requires the column marks to contain one row with ´TOB´, or one row with `TOL` and one row with `TOR`")
+    stop("add_jump_events() requires the column marks to contain one row with 'TOB', or one row with 'TOL' and one row with 'TOR'")
   }
 
   if(.test[["impacts"]] != 2) {
-    stop("add_jump_events() requires the column marks to contain one row with ´FFB´, or one row with `FFL` and one row with `FFR`")
+    stop("add_jump_events() requires the column marks to contain one row with 'FFB', or one row with 'FFL' and one row with 'FFR'")
   }
 
 
