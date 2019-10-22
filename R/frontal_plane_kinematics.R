@@ -252,7 +252,7 @@ add_frontal_plane_knee_deviation <- function(.data){
 #'                   x = mean(value), y= max(U)+20), color = "black", size = 3)+
 #'ggplot2::geom_text(ggplot2::aes(label = paste0("KAR: ", round(KAR, 2)),
 #'                   x = mean(value), y= max(U)+10), color = "black", size = 3)
-add_knee_anke_hip_ratios <- function(.data){
+add_knee_ankle_hip_ratios <- function(.data){
   # Avoid "No visible binding for global variable ..." when running check()
   LH_APU <- LK_APU <- LA_APU <- LH_APR <- LK_APR <- LA_APR <- NULL
   RH_APU <- RK_APU <- RA_APU <- RH_APR <- RK_APR <- RA_APR <- NULL
