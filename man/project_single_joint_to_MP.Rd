@@ -4,7 +4,8 @@
 \alias{project_single_joint_to_MP}
 \title{project_single_joint_to_MP()}
 \usage{
-project_single_joint_to_MP(.data, Y, X, Z, New_Name = "New")
+project_single_joint_to_MP(.data, Y, X, Z, New_Name = "New",
+  .method = "first_last")
 }
 \arguments{
 \item{.data}{A tibble containing the global 3D positions of the joint given in the parameters X, Y, Z and the 3D  positions of both hip joints.}
@@ -16,6 +17,12 @@ project_single_joint_to_MP(.data, Y, X, Z, New_Name = "New")
 \item{Z}{The name of the global Z coordinate column of the joint you wish to project to the movement plane}
 
 \item{New_Name}{The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
+
+\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?\cr
+\itemize{
+\item \code{first_last} the projection will be created by using the first and the last frame of the recording.\cr
+\item \code{first_dist} the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.
+}}
 }
 \value{
 A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'

@@ -84,6 +84,9 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @param X The name of the global X coordinate column of the joint you wish to project to the movement plane
 #' @param Z The name of the global Z coordinate column of the joint you wish to project to the movement plane
 #' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
+#' @param .method Must be one of `c("first_last", "first_dist")`.\cr What method shall be used to create the projection?\cr
+#' * `first_last` the projection will be created by using the first and the last frame of the recording.\cr
+#' * `first_dist` the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.
 #'
 #' @return A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
 #' @importFrom rlang :=
@@ -93,9 +96,14 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 #' project_single_joint_to_MP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
 #'
-project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
+project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New", .method = "first_last"){
+
+  if(!(.method %in% c("first_last", "first_dist"))) {
+    stop(".method needs to be either 'first_last' or 'first_dist'")
+  }
 
   # Avoid "No visible binding for global variable ..." when performing check()
+  LHX <- LHY <- LHZ <- RHX <- RHY <- RHZ <-NULL
   HAX <- HAY <- HAZ <- NULL
   key <- value <- NULL
   HAX_Last <- HAX_First <- HAZ_Last <- HAZ_First <- NULL
@@ -105,6 +113,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
   SX <- SY <- SZ <- NULL
   S_magnitude <- NULL
   frame <- NULL
+  distance <- NULL
 
   # Capture (enquo) arguments
   Y <- dplyr::enquo(Y)
@@ -115,26 +124,56 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
   New_R <- paste0(New_Name, "_MPR")
 
   #Create movement plane (MP)
-  MP <- .data %>%
-    dplyr::filter(frame == min(frame) | frame == max(frame) ) %>%
-    dplyr::select(frame, LHX, LHY, LHZ, RHX, RHY, RHZ) %>%
-    dplyr::mutate(
-      HAX = (LHX+RHX)/2,
-      HAY = (LHY+RHY)/2,
-      HAZ = (LHZ+RHZ)/2) %>%
-    dplyr::select(-LHX, -LHY, -LHZ, -RHX, -RHY, -RHZ) %>%
-    tidyr::gather(key, value, -frame) %>%
-    dplyr::mutate(
-      frame = dplyr::case_when(
-        frame == min(frame) ~ "First",
-        frame == max(frame) ~ "Last")) %>%
-    dplyr::mutate(key = paste0(key, "_", frame)) %>%
-    dplyr::select(-frame) %>%
-    tidyr::spread(key, value) %>%
-    dplyr::summarise(
-      Y = 1,
-      X = ( HAX_Last - HAX_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ),
-      Z = ( HAZ_Last - HAZ_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ))
+
+  #USING FIRST AND LAST FRAME
+  if(.method == "first_last"){
+    MP <- .data %>%
+      dplyr::filter(frame == min(frame) | frame == max(frame) ) %>%
+      dplyr::select(frame, LHX, LHY, LHZ, RHX, RHY, RHZ) %>%
+      dplyr::mutate(
+        HAX = (LHX+RHX)/2,
+        HAY = (LHY+RHY)/2,
+        HAZ = (LHZ+RHZ)/2) %>%
+      dplyr::select(-LHX, -LHY, -LHZ, -RHX, -RHY, -RHZ) %>%
+      tidyr::gather(key, value, -frame) %>%
+      dplyr::mutate(
+        frame = dplyr::case_when(
+          frame == min(frame) ~ "First",
+          frame == max(frame) ~ "Last")) %>%
+      dplyr::mutate(key = paste0(key, "_", frame)) %>%
+      dplyr::select(-frame) %>%
+      tidyr::spread(key, value) %>%
+      dplyr::summarise(
+        Y = 1,
+        X = ( HAX_Last - HAX_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ),
+        Z = ( HAZ_Last - HAZ_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ))
+  }
+
+  #USING LONGEST DISTANCE FROM FIRST FRAME
+  if(.method == "first_dist"){
+    MP <- .data %>%
+      dplyr::select(frame, LHX, LHY, LHZ, RHX, RHY, RHZ) %>%
+      dplyr::mutate(
+        HAX = (LHX+RHX)/2,
+        HAY = (LHY+RHY)/2,
+        HAZ = (LHZ+RHZ)/2) %>%
+      dplyr::mutate(
+        distance = sqrt((HAX - HAX[frame == min(frame)])^2+(HAY - HAY[frame == min(frame)])^2+(HAZ - HAZ[frame == min(frame)])^2)) %>%
+      dplyr::filter(frame == min(frame) | distance == max(distance)) %>%
+      dplyr::select(-LHX, -LHY, -LHZ, -RHX, -RHY, -RHZ, -distance) %>%
+      tidyr::gather(key, value, -frame) %>%
+      dplyr::mutate(
+        frame = dplyr::case_when(
+          frame == min(frame) ~ "First",
+          frame == max(frame) ~ "Last")) %>%
+      dplyr::mutate(key = paste0(key, "_", frame)) %>%
+      dplyr::select(-frame) %>%
+      tidyr::spread(key, value) %>%
+      dplyr::summarise(
+        Y = 1,
+        X = ( HAX_Last - HAX_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ),
+        Z = ( HAZ_Last - HAZ_First ) / sqrt( (HAX_Last - HAX_First)^2 + (HAZ_Last - HAZ_First)^2 ))
+  }
 
   #Create MP directions (forward positive, Up positive)
   data <- .data %>%
@@ -169,13 +208,14 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
   return(data)
 }
 
-
-#' project_full_body_to_MP()
+#' Project global joint positions to the planes of the movement
+#'
 #' project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.
 #' The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
 #' Please see the GitHub README.md fpr a more detailed description.
 #'
 #' @param .data A tibble containing 3D positions of the following left and right joints: toe, ankle, knee, hip, wrist, elbow, and shoulder
+#' @inheritParams project_single_joint_to_MP
 #'
 #' @return A tibble with the positions of the pre-specied joint-centers in the movement planes.
 #' @export
@@ -183,7 +223,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New"){
 #' @examples
 #' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 #' project_full_body_to_MP(df)
-project_full_body_to_MP <- function(.data){
+project_full_body_to_MP <- function(.data, .method = "first_last"){
 
   # Avoid "No visible binding for global variable ..." when performing check()
   LSY <- LSX <- LSZ <- LEY <- LEX <- LEZ <- LWY <- LWX <- LWZ <- NULL
@@ -194,21 +234,21 @@ project_full_body_to_MP <- function(.data){
 
   dplyr::bind_cols(.data,
                    #Upper extremity
-                   project_single_joint_to_MP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS"),
-                   project_single_joint_to_MP(.data, Y=LEY, X=LEX, Z=LEZ, New_Name = "LE"),
-                   project_single_joint_to_MP(.data, Y=LWY, X=LWX, Z=LWZ, New_Name = "LW"),
-                   project_single_joint_to_MP(.data, Y=RSY, X=RSX, Z=RSZ, New_Name = "RS"),
-                   project_single_joint_to_MP(.data, Y=REY, X=REX, Z=REZ, New_Name = "RE"),
-                   project_single_joint_to_MP(.data, Y=RWY, X=RWX, Z=RWZ, New_Name = "RW"),
+                   project_single_joint_to_MP(.data, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS", .method = .method),
+                   project_single_joint_to_MP(.data, Y=LEY, X=LEX, Z=LEZ, New_Name = "LE", .method = .method),
+                   project_single_joint_to_MP(.data, Y=LWY, X=LWX, Z=LWZ, New_Name = "LW", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RSY, X=RSX, Z=RSZ, New_Name = "RS", .method = .method),
+                   project_single_joint_to_MP(.data, Y=REY, X=REX, Z=REZ, New_Name = "RE", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RWY, X=RWX, Z=RWZ, New_Name = "RW", .method = .method),
                    #Lower extremity
-                   project_single_joint_to_MP(.data,Y=LKY, X=LKX, Z=LKZ, New_Name = "LK"),
-                   project_single_joint_to_MP(.data,Y=LHY, X=LHX, Z=LHZ, New_Name = "LH"),
-                   project_single_joint_to_MP(.data,Y=LAY, X=LAX, Z=LAZ, New_Name = "LA"),
-                   project_single_joint_to_MP(.data,Y=LTY, X=LTX, Z=LTZ, New_Name = "LT"),
-                   project_single_joint_to_MP(.data,Y=RKY, X=RKX, Z=RKZ, New_Name = "RK"),
-                   project_single_joint_to_MP(.data,Y=RHY, X=RHX, Z=RHZ, New_Name = "RH"),
-                   project_single_joint_to_MP(.data,Y=RAY, X=RAX, Z=RAZ, New_Name = "RA"),
-                   project_single_joint_to_MP(.data,Y=RTY, X=RTX, Z=RTZ, New_Name = "RT"))
+                   project_single_joint_to_MP(.data, Y=LKY, X=LKX, Z=LKZ, New_Name = "LK", .method = .method),
+                   project_single_joint_to_MP(.data, Y=LHY, X=LHX, Z=LHZ, New_Name = "LH", .method = .method),
+                   project_single_joint_to_MP(.data, Y=LAY, X=LAX, Z=LAZ, New_Name = "LA", .method = .method),
+                   project_single_joint_to_MP(.data, Y=LTY, X=LTX, Z=LTZ, New_Name = "LT", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RKY, X=RKX, Z=RKZ, New_Name = "RK", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RHY, X=RHX, Z=RHZ, New_Name = "RH", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RAY, X=RAX, Z=RAZ, New_Name = "RA", .method = .method),
+                   project_single_joint_to_MP(.data, Y=RTY, X=RTX, Z=RTZ, New_Name = "RT", .method = .method))
 }
 
 

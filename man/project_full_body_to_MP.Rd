@@ -2,21 +2,23 @@
 % Please edit documentation in R/projection_functions.R
 \name{project_full_body_to_MP}
 \alias{project_full_body_to_MP}
-\title{project_full_body_to_MP()
-project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.
-The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
-Please see the GitHub README.md fpr a more detailed description.}
+\title{Project global joint positions to the planes of the movement}
 \usage{
-project_full_body_to_MP(.data)
+project_full_body_to_MP(.data, .method = "first_last")
 }
 \arguments{
 \item{.data}{A tibble containing 3D positions of the following left and right joints: toe, ankle, knee, hip, wrist, elbow, and shoulder}
+
+\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?\cr
+\itemize{
+\item \code{first_last} the projection will be created by using the first and the last frame of the recording.\cr
+\item \code{first_dist} the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.
+}}
 }
 \value{
 A tibble with the positions of the pre-specied joint-centers in the movement planes.
 }
 \description{
-project_full_body_to_MP()
 project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.
 The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
 Please see the GitHub README.md fpr a more detailed description.
