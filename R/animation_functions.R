@@ -11,6 +11,7 @@
 #' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
 #' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
 #' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
+#' @param subject Column that contains subject ID. Is only needed if more than one subject is present in the same frame.
 #' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
 #' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param line_colored_size The size of the colored lines connecting the joint centers.
@@ -24,7 +25,7 @@
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
-
+#'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
@@ -57,6 +58,7 @@
                                planes_in_rows_or_cols = c("cols"),
                                row_facets = NULL,
                                col_facets = NULL,
+                               subject = NULL,
                                remove_facet_labels = TRUE,
                                use_geom_point = TRUE,
                                line_colored_size = 1,
@@ -89,7 +91,7 @@
     if(reduce_data) {
       #Select only Frame number and Joint center positions from the joints we wish to plot.
       df <- df %>%
-        dplyr::select(frame, dplyr::ends_with("_MPR"), dplyr::ends_with("_MPU"), dplyr::ends_with("_MPF"), {{row_facets}}, {{col_facets}})
+        dplyr::select(frame, dplyr::ends_with("_MPR"), dplyr::ends_with("_MPU"), dplyr::ends_with("_MPF"), {{row_facets}}, {{col_facets}}, {{subject}})
     }
 
 
@@ -129,7 +131,7 @@
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
-        Side_frame = paste0(as.character(Side), as.character(frame)),
+        Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
 
         #Create a larger size for the Torso
         size_path_color = dplyr::case_when(
@@ -262,7 +264,9 @@
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
-
+#'
+#' @inheritParams animate_movement
+#'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
@@ -283,6 +287,7 @@
                                  planes_in_rows_or_cols = c("cols"),
                                  row_facets = NULL,
                                  col_facets = NULL,
+                                 subject = NULL,
                                  remove_facet_labels = TRUE,
                                  use_geom_point = TRUE,
                                  line_colored_size = 2,
@@ -323,7 +328,7 @@
     if(reduce_data) {
       #Select only Frame number and Joint center positions from the joints we wish to plot.
       df <- df %>%
-        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}})
+        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{subject}})
     }
 
 
@@ -364,7 +369,7 @@
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
-        Side_frame = paste0(as.character(Side), as.character(frame)),
+        Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
 
         #Create a larger size for the Torso
         size_path_color = dplyr::case_when(
@@ -495,7 +500,9 @@
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
-
+#'
+#' @inheritParams animate_movement
+#'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
 #'
@@ -515,6 +522,7 @@ animate_global <- function(.data,
                              planes_in_rows_or_cols = c("cols"),
                              row_facets = NULL,
                              col_facets = NULL,
+                             subject = NULL,
                              remove_facet_labels = TRUE,
                              use_geom_point = TRUE,
                              line_colored_size = 1,
@@ -544,7 +552,7 @@ animate_global <- function(.data,
     if(reduce_data) {
       # Select only Frame number and Joint center positions from the joints we wish to plot.
       df <-  df %>%
-        dplyr::select(frame, {{row_facets}}, {{col_facets}},
+        dplyr::select(frame, {{row_facets}}, {{col_facets}}, {{subject}},
                     LTX, LTY, LTZ, LAX, LAY, LAZ, LKX, LKY, LKZ, LHX, LHY, LHZ,
                     RTX, RTY, RTZ, RAX, RAY, RAZ,RKX, RKY, RKZ, RHX, RHY, RHZ,
                     LWX, LWY, LWZ, LEX, LEY, LEZ, LSX, LSY, LSZ,
@@ -594,7 +602,7 @@ animate_global <- function(.data,
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
-        Side_frame = paste0(as.character(Side), as.character(frame)),
+        Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
 
         #Create a larger size for the Torso
         size_path_color = dplyr::case_when(

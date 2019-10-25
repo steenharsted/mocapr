@@ -6,7 +6,7 @@
 \usage{
 animate_global(.data, planes = c("X", "Z"),
   planes_in_rows_or_cols = c("cols"), row_facets = NULL,
-  col_facets = NULL, remove_facet_labels = TRUE,
+  col_facets = NULL, subject = NULL, remove_facet_labels = TRUE,
   use_geom_point = TRUE, line_colored_size = 1, line_black_size = 1,
   line_black_alpha = 0.5, point_size = 2, circle_size = 40,
   head_scale = 1.5, torso_scale = 1.5, return_data = FALSE,
@@ -22,6 +22,8 @@ animate_global(.data, planes = c("X", "Z"),
 \item{row_facets}{Make additional row-facets in the animation using a given variable. Defaults to NULL.}
 
 \item{col_facets}{Make additional column-facets in the animation using a given variable. Defaults to NULL.}
+
+\item{subject}{Column that contains subject ID. Is only needed if more than one subject is present in the same frame.}
 
 \item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
 
