@@ -1,7 +1,8 @@
 # mocapr 0.0.1.9004
 ### Major changes
 * project_single_joint_to_MP() and project_full_body_to_MP() now has the argument .method to support different ways of projecting data.
-* add unit tests and package coverage
+* added unit tests and package coverage
+* mocapr_data now contains 11 movements
 
 # mocapr 0.0.1.9003
 ### Major changes

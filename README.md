@@ -125,7 +125,7 @@ visualized below. ![](figures/mocapr_namespace.png)
 
 #### mocapr\_data
 
-`mocapr_data` consists of 9 movements, each supplied with a number
+`mocapr_data` consists of 11 movements, each supplied with a number
 (`movement_nr`) and a short description (`movement_description`). Videos
 of the movements with an overlay of the track is available at this
 [YouTube
@@ -145,16 +145,21 @@ library(mocapr)
 mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   nest()
-#> # A tibble: 6 x 3
-#> # Groups:   movement_nr, movement_description [6]
-#>   movement_nr movement_description                                     data
-#>         <dbl> <chr>                                           <list<df[,70>
-#> 1           1 standing long jump for maximal performance         [172 x 70]
-#> 2           2 standing long jump with simulated poor landing~    [228 x 70]
-#> 3           3 normal gait in a straight line                     [157 x 70]
-#> 4           4 normal gait in a semi square                       [375 x 70]
-#> 5           5 vertical jump for maximal performance              [143 x 70]
-#> 6           6 caipoera dance                                   [1,269 x 70]
+#> # A tibble: 11 x 3
+#> # Groups:   movement_nr, movement_description [11]
+#>    movement_nr movement_description                                    data
+#>          <dbl> <chr>                                          <list<df[,70>
+#>  1           1 standing long jump for maximal performance        [135 x 70]
+#>  2           2 standing long jump for maximal performance        [152 x 70]
+#>  3           3 standing long jump with simulated poor landin~    [169 x 70]
+#>  4           4 vertical jump for maximal performance             [143 x 70]
+#>  5           5 gait normal in a straight line                    [157 x 70]
+#>  6           6 gait normal in a semi square                      [375 x 70]
+#>  7           7 gait with simulated drop foot                     [191 x 70]
+#>  8           8 gait with simulated internal rotation             [255 x 70]
+#>  9           9 capoeira dance                                  [1,269 x 70]
+#> 10          10 forward lunge normal                              [176 x 70]
+#> 11          11 squat normal                                      [165 x 70]
 ```
 
 The format of the data is wide and contains frame by frame joint angles
