@@ -7,10 +7,12 @@
 animate_movement(.data, planes = c("R", "F"),
   planes_in_rows_or_cols = c("cols"), row_facets = NULL,
   col_facets = NULL, subject = NULL, remove_facet_labels = TRUE,
-  use_geom_point = TRUE, line_colored_size = 1, line_black_size = 1,
-  line_black_alpha = 0.5, point_size = 1.5, circle_size = 40,
-  head_scale = 2, torso_scale = 1.5, return_data = FALSE,
-  return_plot = FALSE, reduce_data = FALSE, ...)
+  use_geom_point = TRUE, line_colored = TRUE, line_colored_size = 1,
+  line_colored_alpha = 1, line_black = TRUE, line_black_size = 1,
+  line_black_alpha = 0.5, point = TRUE, point_size = 1.5,
+  circle_size = 40, point_alpha = 1, head_scale = 2,
+  torso_scale = 1.5, return_data = FALSE, return_plot = FALSE,
+  reduce_data = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_MP() function.}
@@ -25,19 +27,29 @@ animate_movement(.data, planes = c("R", "F"),
 
 \item{subject}{Column that contains subject ID. Is only needed if more than one subject is present in the same frame.}
 
-\item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
+\item{remove_facet_labels}{Remove the facet labels. Defaults to \code{TRUE}.}
 
 \item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
 
+\item{line_colored}{Shall the joints be connected by colored lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
+
 \item{line_colored_size}{The size of the colored lines connecting the joint centers.}
+
+\item{line_colored_alpha}{The alpha value of the colored lines connecting the joint centers.}
+
+\item{line_black}{Shall the joints be connected by black lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
 
 \item{line_black_size}{The size of the black lines connecting the joint centers.}
 
 \item{line_black_alpha}{The alhpa value of the black lines connecting the joint centers.}
 
-\item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
+\item{point}{Shall the joint centers be marked by points? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
 
-\item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
+\item{point_size}{The size of the joint centers when \code{use_geom_point = TRUE}.}
+
+\item{circle_size}{The size of the joint centers when \code{use_geom_point = FALSE}.}
+
+\item{point_alpha}{The alpha of the points or circles that mark the joint centers.}
 
 \item{head_scale}{The size of the head relative to the joint-centers.}
 

@@ -7,10 +7,12 @@
 animate_global(.data, planes = c("X", "Z"),
   planes_in_rows_or_cols = c("cols"), row_facets = NULL,
   col_facets = NULL, subject = NULL, remove_facet_labels = TRUE,
-  use_geom_point = TRUE, line_colored_size = 1, line_black_size = 1,
-  line_black_alpha = 0.5, point_size = 2, circle_size = 40,
-  head_scale = 1.5, torso_scale = 1.5, return_data = FALSE,
-  return_plot = FALSE, reduce_data = FALSE, ...)
+  use_geom_point = TRUE, line_colored = TRUE, line_colored_size = 1,
+  line_colored_alpha = 1, line_black = TRUE, line_black_size = 1,
+  line_black_alpha = 0.5, point = TRUE, point_size = 2,
+  circle_size = 40, point_alpha = 1, head_scale = 1.5,
+  torso_scale = 1.5, return_data = FALSE, return_plot = FALSE,
+  reduce_data = FALSE, ...)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions with global spatial positions of toes, ankles, knees, hip, shoulder, elbows, wrists.}
@@ -25,19 +27,29 @@ animate_global(.data, planes = c("X", "Z"),
 
 \item{subject}{Column that contains subject ID. Is only needed if more than one subject is present in the same frame.}
 
-\item{remove_facet_labels}{Remove the facet labels. Defaults to TRUE.}
+\item{remove_facet_labels}{Remove the facet labels. Defaults to \code{TRUE}.}
 
 \item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
 
+\item{line_colored}{Shall the joints be connected by colored lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
+
 \item{line_colored_size}{The size of the colored lines connecting the joint centers.}
+
+\item{line_colored_alpha}{The alpha value of the colored lines connecting the joint centers.}
+
+\item{line_black}{Shall the joints be connected by black lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
 
 \item{line_black_size}{The size of the black lines connecting the joint centers.}
 
 \item{line_black_alpha}{The alhpa value of the black lines connecting the joint centers.}
 
-\item{point_size}{The size of the joint centers when use_geom_point = TRUE.}
+\item{point}{Shall the joint centers be marked by points? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.}
 
-\item{circle_size}{The size of the joint centers when use_geom_point = FALSE.}
+\item{point_size}{The size of the joint centers when \code{use_geom_point = TRUE}.}
+
+\item{circle_size}{The size of the joint centers when \code{use_geom_point = FALSE}.}
+
+\item{point_alpha}{The alpha of the points or circles that mark the joint centers.}
 
 \item{head_scale}{The size of the head relative to the joint-centers.}
 
@@ -49,7 +61,7 @@ animate_global(.data, planes = c("X", "Z"),
 
 \item{reduce_data}{Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.}
 
-\item{...}{These arguments are passed to the gganimate::animate() function.}
+\item{...}{These arguments are passed to \code{\link[gganimate]{animate}}.}
 }
 \value{
 Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.

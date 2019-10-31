@@ -8,23 +8,20 @@
 #'
 #' @param .data A tibble containing joint center positions in the anatomical planes generated using the project_to_MP() function.
 #' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
-#' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
-#' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
-#' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
-#' @param subject Column that contains subject ID. Is only needed if more than one subject is present in the same frame.
-#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
-#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param line_colored_size The size of the colored lines connecting the joint centers.
 #' @param line_black_size The size of the black lines connecting the joint centers.
-#' @param line_black_alpha The alhpa value of the black lines connecting the joint centers.
-#' @param point_size The size of the joint centers when use_geom_point = TRUE.
-#' @param circle_size The size of the joint centers when use_geom_point = FALSE.
+#' @param point_size The size of the joint centers when \code{use_geom_point = TRUE}.
+#' @param circle_size The size of the joint centers when \code{use_geom_point = FALSE}.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
+#'
+#' @inheritParams mocap_plot_basic
+#' @inheritParams mocap_plot_avatar
+#' @inheritParams mocap_finish_animation
 #'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
@@ -61,11 +58,16 @@
                                subject = NULL,
                                remove_facet_labels = TRUE,
                                use_geom_point = TRUE,
+                               line_colored = TRUE,
                                line_colored_size = 1,
+                               line_colored_alpha = 1,
+                               line_black = TRUE,
                                line_black_size = 1,
                                line_black_alpha = 0.5,
+                               point = TRUE,
                                point_size = 1.5,
                                circle_size = 40,
+                               point_alpha = 1,
                                head_scale = 2,
                                torso_scale = 1.5,
                                return_data = FALSE,
@@ -171,74 +173,32 @@
     }
 
 
-    #Lets plot it!
-    df_plot <- df_data %>%
-      ggplot2::ggplot(ggplot2::aes(group = Side_frame, color = Side))+
-      ggplot2::ylab("Height (mm)")+
-      ggplot2::xlab("(mm)")+
-      ggplot2::coord_equal()+
-      ggplot2::guides(size = FALSE)+
-      ggplot2::theme_bw()+
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.ticks.x = ggplot2::element_blank(),
-        axis.title.x = ggplot2::element_blank(),
-        legend.position = "bottom",
-        legend.title = ggplot2::element_blank(),
-        panel.grid.major = ggplot2::element_blank())+
-      ggplot2::scale_size_identity()
+    # Basic plot setup
+    df_plot <- mocapr::mocap_plot_basic(df_data,
+                                        planes = {{planes}},
+                                        planes_in_rows_or_cols = {{planes_in_rows_or_cols}},
+                                        row_facets = {{row_facets}},
+                                        col_facets = {{col_facets}},
+                                        subject = {{subject}},
+                                        remove_facet_labels = {{remove_facet_labels}},
+                                        remove_grid = FALSE)
 
-    # Remove facet labels
-    if(remove_facet_labels){
-      df_plot <- df_plot +
-        ggplot2::theme(
-          strip.text.x = ggplot2::element_blank(),
-          strip.text.y = ggplot2::element_blank())
+    # Add avatar
+    df_plot <- mocapr::mocap_plot_avatar(df_plot,
+                                         use_geom_point = {{use_geom_point}},
+                                         line_colored = {{line_colored}},
+                                         line_colored_alpha = {{line_colored_alpha}},
+                                         line_black = {{line_black}},
+                                         line_black_alpha = {{line_black_alpha}},
+                                         point = {{point}},
+                                         point_alpha = {{point_alpha}})
+
+    if(return_plot){return(df_plot)}
+
+    # Animate it
+    mocap_finish_animation(df_plot, ...)
+
     }
-
-    # How should the planes be faceted (make NULL if no facet is needed)
-    if(planes_in_rows_or_cols == "rows"){
-      rowplanes <- rlang::quo(Dir)
-      colplanes <- NULL}
-    if(planes_in_rows_or_cols == "cols"){
-      rowplanes <- NULL
-      colplanes <- rlang::quo(Dir)}
-
-    if( all(planes == "R") |  all(planes == "F")){
-      rowplanes <- NULL
-      colplanes <- NULL
-    }
-
-
-    #Animation and plotting stuff
-    # With geom_point
-    if(use_geom_point){
-      df_plot <- df_plot +
-        ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
-        ggplot2::geom_point(ggplot2::aes(x = value, y = U, fill = Side, size = size_point), color = "black", shape = 21)+
-        ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
-        ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
-
-      if(return_plot){return(df_plot)}
-      df_plot <- df_plot+
-        gganimate::transition_time(frame)+
-        gganimate::ease_aes('linear')
-      return(gganimate::animate(df_plot, ...))
-    }else{
-      # With geom_circle
-      df_plot <- df_plot +
-        ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
-        ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = size_circle, fill = Side), color = "black")+
-        ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
-        ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
-
-      if(return_plot){return(df_plot)}
-      df_plot <- df_plot+
-        gganimate::transition_time(frame)+
-        gganimate::ease_aes('linear')
-      return(gganimate::animate(df_plot, ...))
-    }
-  }
 
 ##Animate antomical (Function)----
 #' Animate motioncapture data in the anatomical planes
@@ -248,16 +208,10 @@
 #'
 #' @param .data A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.
 #' @param planes Planes to animate. Must be one or both of c("R", "F"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
-#' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
-#' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
-#' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
-#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
-#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param line_colored_size The size of the colored lines connecting the joint centers.
 #' @param line_black_size The size of the black lines connecting the joint centers.
-#' @param line_black_alpha The alhpa value of the black lines connecting the joint centers.
-#' @param point_size The size of the joint centers when use_geom_point = TRUE.
-#' @param circle_size The size of the joint centers when use_geom_point = FALSE.
+#' @param point_size The size of the joint centers when \code{use_geom_point = TRUE}.
+#' @param circle_size The size of the joint centers when \code{use_geom_point = FALSE}.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
@@ -265,7 +219,9 @@
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
 #' @param ... These arguments are passed to the gganimate::animate() function.
 #'
-#' @inheritParams animate_movement
+#' @inheritParams mocap_plot_basic
+#' @inheritParams mocap_plot_avatar
+#' @inheritParams mocap_finish_animation
 #'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
@@ -290,11 +246,16 @@
                                  subject = NULL,
                                  remove_facet_labels = TRUE,
                                  use_geom_point = TRUE,
+                                 line_colored = TRUE,
                                  line_colored_size = 2,
+                                 line_colored_alpha = 1,
+                                 line_black = TRUE,
                                  line_black_size = 2,
                                  line_black_alpha = 0.5,
+                                 point = TRUE,
                                  point_size = 4,
                                  circle_size = 40,
+                                 point_alpha = 1,
                                  head_scale = 1.5,
                                  torso_scale = 1.5,
                                  return_data = FALSE,
@@ -406,74 +367,29 @@
       return(df_data)
     }
 
-    #Lets plot it!
-    df_plot <- df_data %>%
-      ggplot2::ggplot(ggplot2::aes(group = Side_frame, color = Side))+
-        ggplot2::ylab("Height (mm)")+
-        ggplot2::xlab("(mm)")+
-        ggplot2::coord_equal()+
-        ggplot2::guides(size = FALSE)+
-        ggplot2::theme_bw()+
-        ggplot2::theme(
-          axis.text.x = ggplot2::element_blank(),
-          axis.ticks.x = ggplot2::element_blank(),
-          axis.title.x = ggplot2::element_blank(),
-          legend.position = "bottom",
-          legend.title = ggplot2::element_blank(),
-          panel.grid.major = ggplot2::element_blank(),
-          panel.grid.minor = ggplot2::element_blank())+
-        ggplot2::scale_size_identity()
+    # Basic plot setup
+    df_plot <- mocapr::mocap_plot_basic(df_data,
+                                        planes = {{planes}},
+                                        planes_in_rows_or_cols = {{planes_in_rows_or_cols}},
+                                        row_facets = {{row_facets}},
+                                        col_facets = {{col_facets}},
+                                        subject = {{subject}},
+                                        remove_facet_labels = {{remove_facet_labels}})
 
-    # Remove facet labels
-    if(remove_facet_labels){
-      df_plot <- df_plot +
-        ggplot2::theme(
-          strip.text.x = ggplot2::element_blank(),
-          strip.text.y = ggplot2::element_blank())
-    }
+    # Add avatar
+    df_plot <- mocapr::mocap_plot_avatar(df_plot,
+                                         use_geom_point = {{use_geom_point}},
+                                         line_colored = {{line_colored}},
+                                         line_colored_alpha = {{line_colored_alpha}},
+                                         line_black = {{line_black}},
+                                         line_black_alpha = {{line_black_alpha}},
+                                         point = {{point}},
+                                         point_alpha = {{point_alpha}})
 
-    # How should the planes be faceted (make NULL if no facet is needed)
-    if(planes_in_rows_or_cols == "rows"){
-      rowplanes <- rlang::quo(Dir)
-      colplanes <- NULL}
-    if(planes_in_rows_or_cols == "cols"){
-      rowplanes <- NULL
-      colplanes <- rlang::quo(Dir)}
+    if(return_plot){return(df_plot)}
 
-    if( all(planes == "R") |  all(planes == "F")){
-      rowplanes <- NULL
-      colplanes <- NULL
-    }
-
-
-    #Animation and plotting stuff
-    # With geom_point
-    if(use_geom_point){
-      df_plot <- df_plot +
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
-            ggplot2::geom_point(ggplot2::aes(x = value, y = U, fill = Side, size = size_point), color = "black", shape = 21)+
-            ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
-            ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
-
-      if(return_plot){return(df_plot)}
-      df_plot <- df_plot+
-            gganimate::transition_time(frame)+
-            gganimate::ease_aes('linear')
-      return(gganimate::animate(df_plot, ...))
-      }else{
-        # With geom_circle
-        df_plot <- df_plot +
-          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_color))+
-          ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = U, r = size_circle, fill = Side), color = "black")+
-          ggplot2::geom_path(ggplot2::aes(x = value, y = U, size = size_path_black), color = "black", alpha = line_black_alpha)+
-          ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
-
-        if(return_plot){return(df_plot)}
-        df_plot <- df_plot+
-          gganimate::transition_time(frame)+
-          gganimate::ease_aes('linear')
-        return(gganimate::animate(df_plot, ...))
-      }
+    # Animate it
+    mocap_finish_animation(df_plot, ...)
   }
 
 #Animate Global----
@@ -484,24 +400,20 @@
 #'
 #' @param .data A tibble containing joint center positions with global spatial positions of toes, ankles, knees, hip, shoulder, elbows, wrists.
 #' @param planes Planes to animate. Must be one or both of c("X", "Z"). The planes are created by combining the suplied direction with the up-direction. Defaults to c("R", "F").
-#' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
-#' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
-#' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
-#' @param remove_facet_labels Remove the facet labels. Defaults to TRUE.
-#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param line_colored_size The size of the colored lines connecting the joint centers.
 #' @param line_black_size The size of the black lines connecting the joint centers.
-#' @param line_black_alpha The alhpa value of the black lines connecting the joint centers.
-#' @param point_size The size of the joint centers when use_geom_point = TRUE.
-#' @param circle_size The size of the joint centers when use_geom_point = FALSE.
+#' @param point_size The size of the joint centers when \code{use_geom_point = TRUE}.
+#' @param circle_size The size of the joint centers when \code{use_geom_point = FALSE}.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
-#' @param ... These arguments are passed to the gganimate::animate() function.
+#' @param ... These arguments are passed to \code{\link[gganimate]{animate}}.
 #'
-#' @inheritParams animate_movement
+#' @inheritParams mocap_plot_basic
+#' @inheritParams mocap_plot_avatar
+#' @inheritParams mocap_finish_animation
 #'
 #' @return Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
 #' @export
@@ -525,11 +437,16 @@ animate_global <- function(.data,
                              subject = NULL,
                              remove_facet_labels = TRUE,
                              use_geom_point = TRUE,
+                             line_colored = TRUE,
                              line_colored_size = 1,
+                             line_colored_alpha = 1,
+                             line_black = TRUE,
                              line_black_size = 1,
                              line_black_alpha = 0.5,
+                             point = TRUE,
                              point_size = 2,
                              circle_size = 40,
+                             point_alpha = 1,
                              head_scale = 1.5,
                              torso_scale = 1.5,
                              return_data = FALSE,
@@ -639,29 +556,90 @@ animate_global <- function(.data,
       return(df_data)
     }
 
-    #Lets plot it!
-    df_plot <- df_data %>%
-      ggplot2::ggplot(ggplot2::aes(group = Side_frame, color = Side))+
-      ggplot2::ylab("Height (mm)")+
-      ggplot2::xlab("(mm)")+
-      ggplot2::coord_equal()+
-      ggplot2::guides(size = FALSE)+
-      ggplot2::theme_bw()+
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.ticks.x = ggplot2::element_blank(),
-        axis.title.x = ggplot2::element_blank(),
-        legend.position = "bottom",
-        legend.title = ggplot2::element_blank())+
-      ggplot2::scale_size_identity()
+    # Basic plot setup
+    df_plot <- mocapr::mocap_plot_basic(df_data,
+                                        planes = {{planes}},
+                                        planes_in_rows_or_cols = {{planes_in_rows_or_cols}},
+                                        row_facets = {{row_facets}},
+                                        col_facets = {{col_facets}},
+                                        subject = {{subject}},
+                                        remove_facet_labels = {{remove_facet_labels}},
+                                        remove_grid = FALSE
+    )
 
-    # Remove facet labels
-    if(remove_facet_labels){
-      df_plot <- df_plot +
-        ggplot2::theme(
-          strip.text.x = ggplot2::element_blank(),
-          strip.text.y = ggplot2::element_blank())
-    }
+
+    # Add avatar
+    df_plot <- mocapr::mocap_plot_avatar(df_plot,
+                                         use_geom_point = {{use_geom_point}},
+                                         line_colored = {{line_colored}},
+                                         line_colored_alpha = {{line_colored_alpha}},
+                                         line_black = {{line_black}},
+                                         line_black_alpha = {{line_black_alpha}},
+                                         point = {{point}},
+                                         point_alpha = {{point_alpha}},
+                                         up_column = Y)
+
+    if(return_plot){return(df_plot)}
+
+    # Animate it
+    mocap_finish_animation(df_plot, ...)
+}
+
+
+# Plot
+#' Set up basic ggplot2 plotting structure for mocapr plots and animations
+#'
+#' \code{mocap_plot_basic} is caled by the functions \code{\link{animate_global}}, \code{\link{animate_anatomical}}, and \code{\link{animate_movement}} functions
+#' to set up the basic structure of the plots and animations
+#'
+#' @param .data A tibble containg mocap data in the mocapr format.
+#' @param planes What planes should be included in the final plot/animation? defaults to c("R", "F"), use c("X", "Z") if you are using global coordinates.
+#' @param planes_in_rows_or_cols Facet the chosen planes in either rows or columns. Must be one of c("rows", "cols"). Defaults to "cols".
+#' @param row_facets Make additional row-facets in the animation using a given variable. Defaults to NULL.
+#' @param col_facets Make additional column-facets in the animation using a given variable. Defaults to NULL.
+#' @param subject Column that contains subject ID. Is only needed if more than one subject is present in the same frame.
+#' @param remove_facet_labels Remove the facet labels. Defaults to \code{TRUE}.
+#' @param remove_grid Remove the grid lines. Defaults to \code{TRUE}
+#'
+#' @return a ggplot2 object
+#' @export
+#'
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- dplyr::filter(df, frame %in% c(1, 50, 75, 100))
+#' df <- mocapr::animate_global(df,
+#'                        return_data = TRUE)
+#' mocap_plot_basic(df,
+#'                  planes = c("X", "Y"), # Because the data comes from animate_global()
+#'                  planes_in_rows_or_cols = "rows",
+#'                  col_facets = frame)
+mocap_plot_basic <- function(.data,
+                             planes = c("R", "F"),
+                             planes_in_rows_or_cols = c("cols"),
+                             row_facets = NULL,
+                             col_facets = NULL,
+                             subject = NULL,
+                             remove_facet_labels = TRUE,
+                             remove_grid = TRUE
+                             ){
+  # Avoid "No visible binding for global...."
+  Side_frame <- Dir <- theme <- NULL
+
+  df_plot <- .data %>%
+    ggplot2::ggplot(ggplot2::aes(group = Side_frame))+
+    ggplot2::ylab("Height (mm)")+
+    ggplot2::xlab("(mm)")+
+    ggplot2::coord_equal()+
+    ggplot2::guides(size = FALSE)+
+    ggplot2::theme_bw()+
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank(),
+      legend.position = "bottom",
+      legend.title = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank())+
+    ggplot2::scale_size_identity()
 
     # How should the planes be faceted (make NULL if no facet is needed)
     if(planes_in_rows_or_cols == "rows"){
@@ -671,41 +649,127 @@ animate_global <- function(.data,
       rowplanes <- NULL
       colplanes <- rlang::quo(Dir)}
 
-    if( all(planes == "X") |  all(planes == "Z")){
+    if( length(planes) <= 1){
       rowplanes <- NULL
       colplanes <- NULL
     }
 
-    #Animation and plotting stuff
-    # With geom_point
-    if(use_geom_point){
-      df_plot <- df_plot +
-        ggplot2::geom_path(ggplot2::aes(x = value, y = Y, size = size_path_color))+
-        ggplot2::geom_point(ggplot2::aes(x = value, y = Y, fill = Side, size = size_point), color = "black", shape = 21)+
-        ggplot2::geom_path(ggplot2::aes(x = value, y = Y, size = size_path_black), color = "black", alpha = line_black_alpha)+
-        ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
+  # Remove facet labels
+  if(remove_facet_labels){
+    df_plot <- df_plot +
+      ggplot2::theme(
+        strip.text.x = ggplot2::element_blank(),
+        strip.text.y = ggplot2::element_blank())
+  }
 
-      if(return_plot){return(df_plot)}
-      df_plot <- df_plot+
-        gganimate::transition_time(frame)+
-        gganimate::ease_aes('linear')
-      return(gganimate::animate(df_plot, ...))
-    }else{
-      # With geom_circle
-      df_plot <- df_plot +
-        ggplot2::geom_path(ggplot2::aes(x = value, y = Y, size = size_path_color))+
-        ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = Y, r = size_circle, fill = Side), color = "black")+
-        ggplot2::geom_path(ggplot2::aes(x = value, y = Y, size = size_path_black), color = "black", alpha = line_black_alpha)+
-        ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
+  # Remove grid
+  if(remove_grid){
+    df_plot <- df_plot+
+      ggplot2::theme(
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank())
+  }
 
-      if(return_plot){return(df_plot)}
-      df_plot <- df_plot+
-        gganimate::transition_time(frame)+
-        gganimate::ease_aes('linear')
-      return(gganimate::animate(df_plot, ...))
-    }
+
+    df_plot <- df_plot+
+      ggplot2::facet_grid(cols = dplyr::vars(!!colplanes, {{col_facets}}), rows = dplyr::vars(!!rowplanes, {{row_facets}}))
+
+    df_plot
 }
 
+#' Add an avatar to a mocap plot or animation
+#'
+#' \code{mocap_plot_avartar} is called by the functions \code{\link{animate_global}}, \code{\link{animate_anatomical}}, and \code{\link{animate_movement}} functions
+#' after they have called \code{\link{mocap_plot_basic}}
+#'
+#' @param .data A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}
+#' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
+#' @param line_colored Shall the joints be connected by colored lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.
+#' @param line_colored_alpha The alpha value of the colored lines connecting the joint centers.
+#' @param line_black Shall the joints be connected by black lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.
+#' @param line_black_alpha The alhpa value of the black lines connecting the joint centers.
+#' @param point Shall the joint centers be marked by points? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.
+#' @param point_alpha The alpha of the points or circles that mark the joint centers.
+#' @param up_column The unquoted name of the column that contains the Up direction. Defaults to \code{U}, must be \code{Y} if the plots is prepared using \code{\link{animate_global}}.
+#'
+#' @return A ggplot2 object
+#' @export
+#'
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- dplyr::filter(df, frame %in% c(1, 50, 75, 100))
+#' df <- mocapr::animate_global(df,
+#'                              return_data = TRUE)
+#' df <- mocap_plot_basic(df,
+#'                  planes = c("X", "Y"), # Because the data comes from animate_global()
+#'                  planes_in_rows_or_cols = "rows",
+#'                  col_facets = frame)
+#' mocap_plot_avatar(df,
+#'                   up_column = Y) # Because the data comes from animate_global()
+mocap_plot_avatar <- function(.data,
+                              use_geom_point = TRUE,
+                              line_colored = TRUE,
+                              line_colored_alpha = 1,
+                              line_black = TRUE,
+                              line_black_alpha = 0.5,
+                              point = TRUE,
+                              point_alpha = 1,
+                              up_column = U){
+  # Avoid "no visible global ..."
+  U <- value <- size_path_color <- Side <- size_point <- size_circle <- NULL
+  size_path_black <- NULL
 
+  df_plot <- .data
+
+  if(line_colored){
+    df_plot <- df_plot+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, size = size_path_color, color = Side), alpha = line_colored_alpha)
+  }
+
+  if(point & use_geom_point){
+    df_plot <- df_plot+
+      ggplot2::geom_point(ggplot2::aes(x = value, y = {{up_column}}, fill = Side, size = size_point), color = "black", shape = 21, alpha = point_alpha)
+  }
+
+  if(point & !use_geom_point){
+    df_plot <- df_plot+
+      ggforce::geom_circle(ggplot2::aes(x0 = value, y0 = {{up_column}}, r = size_circle, fill = Side), color = "black", alpha = point_alpha)
+  }
+
+  if(line_black){
+    df_plot <- df_plot+
+      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, size = size_path_black), color = "black", alpha = line_black_alpha)
+  }
+
+  df_plot
+}
+
+#' convert a mocap plot in the mocapr format to an animation
+#'
+#' @param .data A ggplot2 object containing mocap data in the mocapr format.
+#' @param ... Additional arguments are passed to \code{\link[gganimate]{animate}}.
+#'
+#' @return A gif
+#' @export
+#'
+#' @examples
+#' df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
+#' df <- mocapr::project_full_body_to_AP(df)
+#' df <- mocapr::animate_anatomical(df,
+#'                                  return_data = TRUE)
+#' df <- mocapr::mocap_plot_basic(df)
+#' df <- mocapr::mocap_plot_avatar(df)
+#' mocap_finish_animation(df)
+mocap_finish_animation <- function(.data, ...){
+  # Avoid "no visible binding for ..."
+  frame <- NULL
+
+
+  df_plot <- .data+
+    gganimate::transition_time(frame)+
+    gganimate::ease_aes('linear')
+
+  gganimate::animate(df_plot, ...)
+}
 
 
