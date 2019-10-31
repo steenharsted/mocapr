@@ -3,6 +3,9 @@
 * project_single_joint_to_MP() and project_full_body_to_MP() now has the argument .method to support different ways of projecting data.
 * added unit tests and package coverage
 * mocapr_data now contains 11 movements
+* Add arguments to include line_colored, line_black, and points (TRUE/FALSE)
+* Add arguments to control the alpha of line_colored, line_black, and points
+* Break the animation functions into smaller functions for better functionality and customization options.
 
 # mocapr 0.0.1.9003
 ### Major changes
