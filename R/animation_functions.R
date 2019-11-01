@@ -759,7 +759,7 @@ mocap_plot_avatar <- function(.data,
 #'                                  return_data = TRUE)
 #' df <- mocapr::mocap_plot_basic(df)
 #' df <- mocapr::mocap_plot_avatar(df)
-#' mocap_finish_animation(df)
+#' # mocap_finish_animation(df)
 mocap_finish_animation <- function(.data, ...){
   # Avoid "no visible binding for ..."
   frame <- NULL
