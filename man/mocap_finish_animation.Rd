@@ -24,5 +24,5 @@ df <- mocapr::animate_anatomical(df,
                                  return_data = TRUE)
 df <- mocapr::mocap_plot_basic(df)
 df <- mocapr::mocap_plot_avatar(df)
-mocap_finish_animation(df)
+# mocap_finish_animation(df)
 }

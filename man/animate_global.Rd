@@ -77,8 +77,4 @@ mocapr::animate_global(df,
                        planes_in_rows_or_cols = "rows",
                        col_facets = frame,
                        return_plot = TRUE)
-\dontrun{
-jump_1 <-  dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
-mocapr::animate_global(jump_1, nframes = nrow(jump_1), fps = 50)
-}
 }
