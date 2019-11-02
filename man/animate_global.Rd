@@ -61,7 +61,7 @@ animate_global(.data, planes = c("X", "Z"),
 
 \item{reduce_data}{Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.}
 
-\item{...}{These arguments are passed to \code{\link[gganimate]{animate}}.}
+\item{...}{Additional arguments are passed to gganimate::\code{\link[gganimate]{animate}}.}
 }
 \value{
 Defaults to an animated gif. Different outputs can be achieved by passing different arguments via ... to the gganimate::animate() function. If return_plot = TRUE a ggplot plot is returned. If return_data = TRUE a tibble is returned.
