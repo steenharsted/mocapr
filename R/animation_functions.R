@@ -216,7 +216,6 @@
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
-#' @param ... These arguments are passed to the gganimate::animate() function.
 #'
 #' @inheritParams mocap_plot_basic
 #' @inheritParams mocap_plot_avatar
@@ -741,7 +740,7 @@ mocap_plot_avatar <- function(.data,
 #' convert a mocap plot in the mocapr format to an animation
 #'
 #' @param .data A ggplot2 object containing mocap data in the mocapr format.
-#' @param ... Additional arguments are passed to gganimate::\code{\link[gganimate]{animate}}.
+#' @param ... Additional arguments are passed to \code{gganimate::}\code{\link[gganimate]{animate}}.
 #'
 #' @return A gif
 #' @export

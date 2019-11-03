@@ -9,7 +9,7 @@ mocap_finish_animation(.data, ...)
 \arguments{
 \item{.data}{A ggplot2 object containing mocap data in the mocapr format.}
 
-\item{...}{Additional arguments are passed to gganimate::\code{\link[gganimate]{animate}}.}
+\item{...}{Additional arguments are passed to \code{gganimate::}\code{\link[gganimate]{animate}}.}
 }
 \value{
 A gif
