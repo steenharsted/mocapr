@@ -54,3 +54,23 @@ test_that("plots are stable between versions", {
   expect_equal(df$coordinates$ratio, 1)
 
   })
+
+
+test_that("Layers are different if arguments are FALSE", {
+  df <- mocapr::mocapr_data %>%
+    dplyr::filter(movement_nr == 1) %>%
+    dplyr::filter(frame %in% c(1)) %>%
+    mocapr::animate_global(
+      point = FALSE,
+      line_colored = FALSE,
+      line_black = FALSE,
+      return_plot = TRUE)
+
+  # Test layers and required aes()
+  expect_error(df$layers[[1]]$geom$required_aes)
+})
+
+
+test_that("mocap_plot_avatar fails if .plot is not a ggplot object", {
+  expect_error(mocap_plot_avatar(c(1)))
+})

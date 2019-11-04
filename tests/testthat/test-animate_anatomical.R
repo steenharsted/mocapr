@@ -42,3 +42,19 @@ test_that("plots are stable between versions", {
   # Test that ratio of axis is 1
   expect_equal(df$coordinates$ratio, 1)
 })
+
+
+test_that("Layers are different if arguments are FALSE", {
+  df <- mocapr::mocapr_data %>%
+    dplyr::filter(movement_nr == 1) %>%
+    dplyr::filter(frame %in% c(1)) %>%
+    mocapr::project_full_body_to_AP() %>%
+    mocapr::animate_anatomical(
+      point = FALSE,
+      line_colored = FALSE,
+      line_black = FALSE,
+      return_plot = TRUE)
+
+  # Test layers and required aes()
+  expect_error(df$layers[[1]]$geom$required_aes)
+})
