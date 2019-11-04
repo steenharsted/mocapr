@@ -2,7 +2,7 @@
 % Please edit documentation in R/animation_functions.R
 \name{mocap_finish_animation}
 \alias{mocap_finish_animation}
-\title{convert a mocap plot in the mocapr format to an animation}
+\title{Make an animation from a \code{mocapr} plot}
 \usage{
 mocap_finish_animation(.data, ...)
 }
@@ -15,7 +15,7 @@ mocap_finish_animation(.data, ...)
 A gif
 }
 \description{
-convert a mocap plot in the mocapr format to an animation
+Make an animation from a \code{mocapr} plot
 }
 \examples{
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
