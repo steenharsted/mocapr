@@ -675,7 +675,7 @@ mocap_plot_basic <- function(.data,
 #' \code{mocap_plot_avartar} is called by the functions \code{\link{animate_global}}, \code{\link{animate_anatomical}}, and \code{\link{animate_movement}} functions
 #' after they have called \code{\link{mocap_plot_basic}}
 #'
-#' @param .data A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}
+#' @param .plot A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}
 #' @param use_geom_point Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.
 #' @param line_colored Shall the joints be connected by colored lines? (\code{TRUE} or \code{FALSE}). Defaults to \code{TRUE}.
 #' @param line_colored_alpha The alpha value of the colored lines connecting the joint centers.
@@ -699,7 +699,7 @@ mocap_plot_basic <- function(.data,
 #'                  col_facets = frame)
 #' mocap_plot_avatar(df,
 #'                   up_column = Y) # Because the data comes from animate_global()
-mocap_plot_avatar <- function(.data,
+mocap_plot_avatar <- function(.plot,
                               use_geom_point = TRUE,
                               line_colored = TRUE,
                               line_colored_alpha = 1,
@@ -712,7 +712,11 @@ mocap_plot_avatar <- function(.data,
   U <- value <- size_path_color <- Side <- size_point <- size_circle <- NULL
   size_path_black <- NULL
 
-  df_plot <- .data
+  if(!ggplot2::is.ggplot(.plot)){
+    stop(".plot supplied in the first argument must be a ggplot object")
+  }
+
+  df_plot <- .plot
 
   if(line_colored){
     df_plot <- df_plot+
@@ -737,7 +741,7 @@ mocap_plot_avatar <- function(.data,
   df_plot
 }
 
-#' convert a mocap plot in the mocapr format to an animation
+#' Make an animation from a \code{mocapr} plot
 #'
 #' @param .data A ggplot2 object containing mocap data in the mocapr format.
 #' @param ... Additional arguments are passed to \code{gganimate::}\code{\link[gganimate]{animate}}.

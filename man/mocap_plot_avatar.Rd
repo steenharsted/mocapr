@@ -4,12 +4,12 @@
 \alias{mocap_plot_avatar}
 \title{Add an avatar to a mocap plot or animation}
 \usage{
-mocap_plot_avatar(.data, use_geom_point = TRUE, line_colored = TRUE,
+mocap_plot_avatar(.plot, use_geom_point = TRUE, line_colored = TRUE,
   line_colored_alpha = 1, line_black = TRUE, line_black_alpha = 0.5,
   point = TRUE, point_alpha = 1, up_column = U)
 }
 \arguments{
-\item{.data}{A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}}
+\item{.plot}{A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}}
 
 \item{use_geom_point}{Defaults to TRUE. If TRUE, points in the animation will be created using ggplot2::geom_point(). If FALSE, points are created using ggforce::geom_circle(). This will ensure correct size-proportions of the points, and that no points are croped out of the animation. However, it comes at the prize of much longer rendering-times.}
 
