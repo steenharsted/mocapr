@@ -56,6 +56,10 @@ test_that("add_jump_length_and_jump_height works", {
     LAZ =   rep(-10,9),
     RAZ =   rep( 10,9))
 
+  # Test that the function fails if add_jump_events() is not run before
+  expect_error(add_jump_length_and_height(df))
+
+  # Run add_jump_events
   df <- add_jump_events(df)
   df <- add_jump_length_and_height(df)
 
@@ -96,4 +100,6 @@ test_that("add_jump_length_and_jump_height works", {
   expect_equal(unique(df$jump_length), 10.2)
   expect_equal(unique(df$jump_height), 5)
   })
+
+
 

@@ -186,6 +186,11 @@ add_jump_length_and_height <- function(.data){
   # Avoid "No visible binding for global variable ..." when running check()
   LAZ <- LAX <- RAZ <- RAX <- LHY <- RHY <- jump_events <- phase <- NULL
 
+  # Check inputs
+  if(suppressWarnings(is.null(.data$jump_events))) {
+    stop(".data is missing the column 'jump_events'. You probably need to run 'mocapr::add_jump_events()' first.")
+  }
+
   # Function
   df_1 <- .data %>%
     dplyr::filter(jump_events == "toe_off" |  jump_events == "flat_foot")
