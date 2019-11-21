@@ -59,6 +59,13 @@ test_that("add_jump_length_and_jump_height works", {
   # Test that the function fails if add_jump_events() is not run before
   expect_error(add_jump_length_and_height(df))
 
+  # Test that jump_events contains the needed values if it exists
+  df_test1 <- df_test2 <- df
+  df_test1$jump_events <- "BAD"
+  df_test1$jump_events <- NA
+  expect_error((add_jump_length_and_height(df_test1)))
+  expect_error((add_jump_length_and_height(df_test2)))
+
   # Run add_jump_events
   df <- add_jump_events(df)
   df <- add_jump_length_and_height(df)

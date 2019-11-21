@@ -191,6 +191,10 @@ add_jump_length_and_height <- function(.data){
     stop(".data is missing the column 'jump_events'. You probably need to run 'mocapr::add_jump_events()' first.")
   }
 
+  if(!any(.data$jump_events == "toe_off" | .data$jump_events == "flat_foot", na.rm = TRUE)){
+    stop("The column 'jump_events' must contain the values 'toe_off' and 'flat_foot' in order to calculate jump length and jump height")
+  }
+
   # Function
   df_1 <- .data %>%
     dplyr::filter(jump_events == "toe_off" |  jump_events == "flat_foot")
