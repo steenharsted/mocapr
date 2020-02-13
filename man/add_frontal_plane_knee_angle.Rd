@@ -2,8 +2,7 @@
 % Please edit documentation in R/frontal_plane_kinematics.R
 \name{add_frontal_plane_knee_angle}
 \alias{add_frontal_plane_knee_angle}
-\title{Calculate frontal plane knee kinematics.
-Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).}
+\title{Calculate frontal plane knee kinematics.}
 \usage{
 add_frontal_plane_knee_angle(.data)
 }
@@ -15,7 +14,6 @@ global spatial joint center positions using \code{project_full_body_to_AP()}}
 The tibble supplied in \code{.data} argument with the added columns \code{LFPKA} and \code{RFPKA}.
 }
 \description{
-Calculate frontal plane knee kinematics.
 Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
 }
 \examples{
@@ -31,4 +29,9 @@ df <- data.frame(
                  RK_APU = c(10,10,10,10,10))
 
 add_frontal_plane_knee_angle(df)
+}
+\references{
+Stone EE, Butler M, McRuer A, Gray A, Marks J, Skubic M. Evaluation of the Microsoft Kinect for screening ACL injury. Conf Proc IEEE Eng Med Biol Soc. 2013;2013:4152-5.
+\cr\cr Ortiz A, Rosario-Canales M, Rodriguez A, Seda A, Figueroa C, Venegas-Rios HL. Reliability and concurrent validity between two-dimensional and three-dimensional evaluations of knee valgus during drop jumps. Open access journal of sports medicine. 2016;7:65-73.
+\cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
 }

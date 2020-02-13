@@ -4,10 +4,16 @@
 \alias{mocap_plot_basic}
 \title{Set up basic ggplot2 plotting structure for mocapr plots and animations}
 \usage{
-mocap_plot_basic(.data, planes = c("R", "F"),
-  planes_in_rows_or_cols = c("cols"), row_facets = NULL,
-  col_facets = NULL, subject = NULL, remove_facet_labels = TRUE,
-  remove_grid = TRUE)
+mocap_plot_basic(
+  .data,
+  planes = c("R", "F"),
+  planes_in_rows_or_cols = c("cols"),
+  row_facets = NULL,
+  col_facets = NULL,
+  subject = NULL,
+  remove_facet_labels = TRUE,
+  remove_grid = TRUE
+)
 }
 \arguments{
 \item{.data}{A tibble containg mocap data in the mocapr format.}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/frontal_plane_kinematics.R
 \name{add_frontal_plane_projection_angle}
 \alias{add_frontal_plane_projection_angle}
-\title{add fontal plane projection angle kinematics to a mocap tibble}
+\title{add fontal plane projection angle kinematics to a mocap tibble.}
 \usage{
 add_frontal_plane_projection_angle(.data)
 }
@@ -13,7 +13,19 @@ add_frontal_plane_projection_angle(.data)
 The tibble supplied in the .data argument with two extra columns (LFPPA and RFPPA).
 }
 \description{
-\code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble.
+\code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.
+}
+\details{
+\cr\cr The naming convention for \emph{the frontal plane projection angle} differs in the litterature,
+the measure has also been named \emph{the frontal plane \strong{knee} projection angle} and \emph{the frontal plane knee angle}. It was originally described by McLean et. al as
+\emph{the frontal plane knee angle}, and calculated using global coordinate positions of lower extremity joint centers.2D vectors were computed from the knee to hip centre (kh)
+and from the knee to ankle centre (ka). The cross product and vector norms were computed from the global coordinates, and the frontal plane projection angle was computed as:
+
+\deqn{\Theta = aSin( |kh x ka|  /  |kh||ka| )}
+
+\code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
+to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle.
+
 \cr\cr\emph{Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
@@ -74,4 +86,9 @@ ggplot2::geom_text(ggplot2::aes(label = paste0("LFPKD: ", round(LFPKD, 1)),
 ggplot2::geom_text(ggplot2::aes(label = paste0("RFPKD: ", round(RFPKD, 1)),
                   x = mean(value)+15, y= max(U)+10), color = "black", size = 3)
 
+}
+\references{
+McLean SG, Walker K, Ford KR, Myer GD, Hewett TE, van den Bogert AJ. Evaluation of a two dimensional analysis method as a screening and evaluation tool for anterior cruciate ligament injury. Br J Sports Med. 2005;39(6):355-62.
+\cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
+\cr\cr Willson JD, Davis IS. Utility of the frontal plane projection angle in females with patellofemoral pain. The Journal of orthopaedic and sports physical therapy. 2008;38(10):606-15.
 }

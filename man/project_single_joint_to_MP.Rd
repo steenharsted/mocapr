@@ -4,8 +4,14 @@
 \alias{project_single_joint_to_MP}
 \title{project_single_joint_to_MP()}
 \usage{
-project_single_joint_to_MP(.data, Y, X, Z, New_Name = "New",
-  .method = "first_last")
+project_single_joint_to_MP(
+  .data,
+  Y,
+  X,
+  Z,
+  New_Name = "New",
+  .method = "first_last"
+)
 }
 \arguments{
 \item{.data}{A tibble containing the global 3D positions of the joint given in the parameters X, Y, Z and the 3D  positions of both hip joints.}

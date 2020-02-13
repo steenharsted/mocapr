@@ -3,7 +3,6 @@
 \docType{package}
 \name{mocapr}
 \alias{mocapr}
-\alias{mocapr-package}
 \title{mocapr: An R package to plot, animate and analyze motion capture data}
 \description{
 The mocapr package provides 6 groups of functions and 2 built in data sets.

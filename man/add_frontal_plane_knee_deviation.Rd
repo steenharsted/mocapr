@@ -15,9 +15,14 @@ The tibble supplied in \code{.data} argument with the added columns \code{LFPKD}
 }
 \description{
 \code{add_frontal_plane_knee_deviation()} adds distance measures of medial and lateral knee deviation in the frontal plane to the supplied tibble in the \code{.data.} argument.
-The measure is calculated by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
-Negative values indicate medial deviation of the knee.
-\cr\cr\emph{Please note that the measure is prone to planar cross talk from especially knee flexion. \cr See examples for details.}
+The measure is calculated in the anatomical frontal plane by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
+Negative values indicate medial deviation of the knee (dynamic knee valgus).
+}
+\details{
+\cr\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
+The authors use "Medial knee position" to calculate the "Medial knee deviation."
+
+\cr Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 }
 \examples{
 #' # Prepare data
@@ -61,4 +66,9 @@ ggplot2::geom_text(ggplot2::aes(label = paste0("LFPKD: ", round(LFPKD, 1)),
 ggplot2::geom_text(ggplot2::aes(label = paste0("RFPKD: ", round(RFPKD, 1)),
                   x = mean(value)+15, y= max(U)+10), color = "black", size = 3)
 
+}
+\references{
+Krosshaug T, Steffen K, Kristianslund E, Nilstad A, Mok KM, Myklebust G, et al. The Vertical Drop Jump Is a Poor Screening Test for ACL Injuries in Female Elite Soccer and Handball Players: A Prospective Cohort Study of 710 Athletes. Am J Sports Med. 2016;44(4):874-83.
+\cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
+\cr\cr Willis BW, Hocker K, Razu S, Gray AD, Skubic M, Sherman SL, et al. Relationship Between 2-Dimensional Frontal Plane Measures and the Knee Abduction Angle During the Drop Vertical Jump. J Sport Rehab. 2019;28(4):399.
 }

@@ -4,8 +4,14 @@
 \alias{align_movements}
 \title{Time align two or more motion capture recordings containing the same event.}
 \usage{
-align_movements(.data, .group_var, event_var, event_value,
-  return_equal_length_groups = TRUE, prolong_event = 1)
+align_movements(
+  .data,
+  .group_var,
+  event_var,
+  event_value,
+  return_equal_length_groups = TRUE,
+  prolong_event = 1
+)
 }
 \arguments{
 \item{.data}{A tibble containing multible movements that are grouped by a variable (provided in group_var), and that all contain the same event (provided in event_var and event_value). )}

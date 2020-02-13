@@ -4,9 +4,17 @@
 \alias{mocap_plot_avatar}
 \title{Add an avatar to a mocap plot or animation}
 \usage{
-mocap_plot_avatar(.plot, use_geom_point = TRUE, line_colored = TRUE,
-  line_colored_alpha = 1, line_black = TRUE, line_black_alpha = 0.5,
-  point = TRUE, point_alpha = 1, up_column = U)
+mocap_plot_avatar(
+  .plot,
+  use_geom_point = TRUE,
+  line_colored = TRUE,
+  line_colored_alpha = 1,
+  line_black = TRUE,
+  line_black_alpha = 0.5,
+  point = TRUE,
+  point_alpha = 1,
+  up_column = U
+)
 }
 \arguments{
 \item{.plot}{A ggplot2 object containg mocap data in the mocapr format as it it created by \code{\link{mocap_plot_basic}}}

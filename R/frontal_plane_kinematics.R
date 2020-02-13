@@ -1,5 +1,6 @@
 # add_frontal_plane_knee_angle----
 #' Calculate frontal plane knee kinematics.
+#'
 #' Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
 #'
 #' @param .data A tibble containg knee and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
@@ -7,6 +8,9 @@
 #'
 #' @return The tibble supplied in \code{.data} argument with the added columns \code{LFPKA} and \code{RFPKA}.
 #' @export
+#' @references Stone EE, Butler M, McRuer A, Gray A, Marks J, Skubic M. Evaluation of the Microsoft Kinect for screening ACL injury. Conf Proc IEEE Eng Med Biol Soc. 2013;2013:4152-5.
+#' \cr\cr Ortiz A, Rosario-Canales M, Rodriguez A, Seda A, Figueroa C, Venegas-Rios HL. Reliability and concurrent validity between two-dimensional and three-dimensional evaluations of knee valgus during drop jumps. Open access journal of sports medicine. 2016;7:65-73.
+#' \cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
 #'
 #' @examples
 #' # Prepare data
@@ -34,9 +38,20 @@ add_frontal_plane_knee_angle <- function(.data){
 }
 
 # add_frontal_plane_projection_angle----
-#' add fontal plane projection angle kinematics to a mocap tibble
+#' add fontal plane projection angle kinematics to a mocap tibble.
 #'
-#' \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble.
+#' \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.
+#'
+#' \cr\cr The naming convention for *the frontal plane projection angle* differs in the litterature,
+#'  the measure has also been named *the frontal plane **knee** projection angle* and *the frontal plane knee angle*. It was originally described by McLean et. al as
+#'  *the frontal plane knee angle*, and calculated using global coordinate positions of lower extremity joint centers.2D vectors were computed from the knee to hip centre (kh)
+#'   and from the knee to ankle centre (ka). The cross product and vector norms were computed from the global coordinates, and the frontal plane projection angle was computed as:
+#'
+#'   \deqn{\Theta = aSin( |kh x ka|  /  |kh||ka| )}
+#'
+#'   \code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
+#'   to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle.
+#'
 #' \cr\cr*Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 #' at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 #' approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
@@ -46,7 +61,6 @@ add_frontal_plane_knee_angle <- function(.data){
 #'
 #' @return The tibble supplied in the .data argument with two extra columns (LFPPA and RFPPA).
 #' @export
-#'
 #' @examples
 #' # Prepare data
 #' df <- data.frame(
@@ -103,6 +117,10 @@ add_frontal_plane_knee_angle <- function(.data){
 #'ggplot2::geom_text(ggplot2::aes(label = paste0("RFPKD: ", round(RFPKD, 1)),
 #'                   x = mean(value)+15, y= max(U)+10), color = "black", size = 3)
 #'
+#'@references McLean SG, Walker K, Ford KR, Myer GD, Hewett TE, van den Bogert AJ. Evaluation of a two dimensional analysis method as a screening and evaluation tool for anterior cruciate ligament injury. Br J Sports Med. 2005;39(6):355-62.
+#' \cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
+#' \cr\cr Willson JD, Davis IS. Utility of the frontal plane projection angle in females with patellofemoral pain. The Journal of orthopaedic and sports physical therapy. 2008;38(10):606-15.
+#'
 add_frontal_plane_projection_angle <- function(.data){
   # Avoid "No visible binding for global variable ..." when running check()
   LH_APU <- LK_APU <- LA_APU <- LH_APR <- LK_APR <- LA_APR <- NULL
@@ -157,14 +175,21 @@ add_frontal_plane_projection_angle <- function(.data){
 #' Add measures of medial and lateral knee deviation
 #'
 #'\code{add_frontal_plane_knee_deviation()} adds distance measures of medial and lateral knee deviation in the frontal plane to the supplied tibble in the \code{.data.} argument.
-#'The measure is calculated by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
-#'Negative values indicate medial deviation of the knee.
-#'\cr\cr*Please note that the measure is prone to planar cross talk from especially knee flexion. \cr See examples for details.*
+#'The measure is calculated in the anatomical frontal plane by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
+#'Negative values indicate medial deviation of the knee (dynamic knee valgus).
+#'
+#'\cr\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
+#'The authors use "Medial knee position" to calculate the "Medial knee deviation."
+#'
+#'\cr Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 #'
 #' @param .data A tibble containg hip, knee, and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
 #' global spatial joint center positions using \code{project_full_body_to_AP()}
 #' @return The tibble supplied in \code{.data} argument with the added columns \code{LFPKD} and \code{RFPKD}.
 #' @export
+#' @references Krosshaug T, Steffen K, Kristianslund E, Nilstad A, Mok KM, Myklebust G, et al. The Vertical Drop Jump Is a Poor Screening Test for ACL Injuries in Female Elite Soccer and Handball Players: A Prospective Cohort Study of 710 Athletes. Am J Sports Med. 2016;44(4):874-83.
+#' \cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
+#' \cr\cr Willis BW, Hocker K, Razu S, Gray AD, Skubic M, Sherman SL, et al. Relationship Between 2-Dimensional Frontal Plane Measures and the Knee Abduction Angle During the Drop Vertical Jump. J Sport Rehab. 2019;28(4):399.
 #'
 #' @examples
 #' #' # Prepare data
@@ -221,16 +246,27 @@ add_frontal_plane_knee_deviation <- function(.data){
 }
 
 # add_knee_ankle_hip_ratios----
-#' Add knee-to-hip, ankle-to-hip, and knee-to-ankle separation distance ratios.
+#' Add knee-to-hip, ankle-to-hip, and knee-to-ankle separation ratios.
 #'
-#' The ratios are calculated in the anatomical frontal plane. The ratios are calculated using both lower extremities. Therefore, they
+#' The ratios are calculated in the anatomical frontal plane, using joint-center positions from both lower extremities. Therefore, they
 #' should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).
+#'
+#' \cr Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.
+#' \cr Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.
+#' \cr Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.
+#'
+#' \cr\cr knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
+#' and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 #'
 #' @param .data A tbbile containg ankle, knee, and hip spatial joint center positions in the anatomical frontal plane. These positions can
 #' be generated from global spatial positions using \code{project_full_body_to_AP()}.
 #'
-#' @return The tibble supplied in \code{.data} argument with the added columns \code{KHR}, \code{AHR}, and \code{KAR}.
+#' @return The tibble supplied in \code{.data} argument with the added columns \code{KHR}, \code{AHR}, and \code{KASR}.
 #' @export
+#' @references Barber-Westin SD, Galloway M, Noyes FR, Corbett G, Walsh C. Assessment of lower limb neuromuscular control in prepubescent athletes. Am J Sports Med. 2005;33(12):1853-60.
+#' \cr\cr Noyes FR, Barber-Westin SD, Fleckenstein C, Walsh C, West J. The drop-jump screening test: difference in lower limb control by gender and effect of neuromuscular training in female athletes. Am J Sports Med. 2005;33(2):197-207.
+#' \cr\cr Mizner RL, Chmielewski TL, Toepke JJ, Tofte KB. Comparison of 2-dimensional measurement techniques for predicting knee angle and moment during a drop vertical jump. Clin J Sport Med. 2012;22(3):221-7.
+#' \cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
 #'
 #' @examples
 #' # Prepare data
@@ -262,5 +298,5 @@ add_knee_ankle_hip_ratios <- function(.data){
     dplyr::mutate(
       KHR = sqrt( (LK_APR-RK_APR)^2 + (LK_APU-RK_APU)^2 ) / sqrt( (LH_APR-RH_APR)^2 + (LH_APU-RH_APU)^2 ),
       AHR = sqrt( (LA_APR-RA_APR)^2 + (LA_APU-RA_APU)^2 ) / sqrt( (LH_APR-RH_APR)^2 + (LH_APU-RH_APU)^2 ),
-      KAR = sqrt( (LK_APR-RK_APR)^2 + (LK_APU-RK_APU)^2 ) / sqrt( (LA_APR-RA_APR)^2 + (LA_APU-RA_APU)^2 ))
+      KASR = sqrt( (LK_APR-RK_APR)^2 + (LK_APU-RK_APU)^2 ) / sqrt( (LA_APR-RA_APR)^2 + (LA_APU-RA_APU)^2 ))
 }

@@ -4,7 +4,7 @@
 \alias{add_jump_length_and_height}
 \title{Calculate measures of jump length and jump height}
 \usage{
-add_jump_length_and_height(.data)
+add_jump_length_and_height(.data, method = "movement_plane")
 }
 \arguments{
 \item{.data}{A tibble containing motion-capture data from a jump.\cr
@@ -25,8 +25,8 @@ Adds the columns \code{jump_length} and \code{jump_height} to a tibble containg 
 \examples{
 # Prepare data
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
-df <- dplyr::select(df, frame, marks, LHY, RHY, LAX, LAZ, RAX, RAZ)
-df <- add_jump_events(df)
+df <- add_phases_jump(df)
+df <- mocapr::project_full_body_to_MP(df)
 
 add_jump_length_and_height(df)
 

@@ -4,15 +4,32 @@
 \alias{animate_anatomical}
 \title{Animate motioncapture data in the anatomical planes}
 \usage{
-animate_anatomical(.data, planes = c("R", "F"),
-  planes_in_rows_or_cols = c("cols"), row_facets = NULL,
-  col_facets = NULL, subject = NULL, remove_facet_labels = TRUE,
-  use_geom_point = TRUE, line_colored = TRUE, line_colored_size = 2,
-  line_colored_alpha = 1, line_black = TRUE, line_black_size = 2,
-  line_black_alpha = 0.5, point = TRUE, point_size = 4,
-  circle_size = 40, point_alpha = 1, head_scale = 1.5,
-  torso_scale = 1.5, return_data = FALSE, return_plot = FALSE,
-  reduce_data = FALSE, ...)
+animate_anatomical(
+  .data,
+  planes = c("R", "F"),
+  planes_in_rows_or_cols = c("cols"),
+  row_facets = NULL,
+  col_facets = NULL,
+  subject = NULL,
+  remove_facet_labels = TRUE,
+  use_geom_point = TRUE,
+  line_colored = TRUE,
+  line_colored_size = 2,
+  line_colored_alpha = 1,
+  line_black = TRUE,
+  line_black_size = 2,
+  line_black_alpha = 0.5,
+  point = TRUE,
+  point_size = 4,
+  circle_size = 40,
+  point_alpha = 1,
+  head_scale = 1.5,
+  torso_scale = 1.5,
+  return_data = FALSE,
+  return_plot = FALSE,
+  reduce_data = FALSE,
+  ...
+)
 }
 \arguments{
 \item{.data}{A tibble containing joint center positions in the anatomical planes generated using the project_to_AP() function.}

@@ -62,7 +62,7 @@ test_that("add_knee_ankle_hip_ratios works", {
 
   expect_equal(df$KHR, c(1, 1, 1, 1, 1, 1))
   expect_equal(df$AHR, c(1, 1, 1, 4, 4, 5))
-  expect_equal(df$KAR, c(1, 1, 1, 0.25, 0.25, 0.2))
+  expect_equal(df$KASR, c(1, 1, 1, 0.25, 0.25, 0.2))
 
 })
 

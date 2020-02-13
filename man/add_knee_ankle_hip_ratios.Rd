@@ -2,7 +2,7 @@
 % Please edit documentation in R/frontal_plane_kinematics.R
 \name{add_knee_ankle_hip_ratios}
 \alias{add_knee_ankle_hip_ratios}
-\title{Add knee-to-hip, ankle-to-hip, and knee-to-ankle separation distance ratios.}
+\title{Add knee-to-hip, ankle-to-hip, and knee-to-ankle separation ratios.}
 \usage{
 add_knee_ankle_hip_ratios(.data)
 }
@@ -11,11 +11,19 @@ add_knee_ankle_hip_ratios(.data)
 be generated from global spatial positions using \code{project_full_body_to_AP()}.}
 }
 \value{
-The tibble supplied in \code{.data} argument with the added columns \code{KHR}, \code{AHR}, and \code{KAR}.
+The tibble supplied in \code{.data} argument with the added columns \code{KHR}, \code{AHR}, and \code{KASR}.
 }
 \description{
-The ratios are calculated in the anatomical frontal plane. The ratios are calculated using both lower extremities. Therefore, they
+The ratios are calculated in the anatomical frontal plane, using joint-center positions from both lower extremities. Therefore, they
 should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).
+}
+\details{
+\cr Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.
+\cr Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.
+\cr Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.
+
+\cr\cr knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
+and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 }
 \examples{
 # Prepare data
@@ -37,4 +45,10 @@ ggplot2::geom_text(ggplot2::aes(label = paste0("AHR: ", round(AHR, 2)),
                   x = mean(value), y= max(U)+20), color = "black", size = 3)+
 ggplot2::geom_text(ggplot2::aes(label = paste0("KAR: ", round(KAR, 2)),
                   x = mean(value), y= max(U)+10), color = "black", size = 3)
+}
+\references{
+Barber-Westin SD, Galloway M, Noyes FR, Corbett G, Walsh C. Assessment of lower limb neuromuscular control in prepubescent athletes. Am J Sports Med. 2005;33(12):1853-60.
+\cr\cr Noyes FR, Barber-Westin SD, Fleckenstein C, Walsh C, West J. The drop-jump screening test: difference in lower limb control by gender and effect of neuromuscular training in female athletes. Am J Sports Med. 2005;33(2):197-207.
+\cr\cr Mizner RL, Chmielewski TL, Toepke JJ, Tofte KB. Comparison of 2-dimensional measurement techniques for predicting knee angle and moment during a drop vertical jump. Clin J Sport Med. 2012;22(3):221-7.
+\cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
 }
