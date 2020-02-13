@@ -13,20 +13,20 @@ add_frontal_plane_projection_angle(.data)
 The tibble supplied in the .data argument with two extra columns (LFPPA and RFPPA).
 }
 \description{
-\code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.
-}
-\details{
-\cr The naming convention for \emph{the frontal plane projection angle} differs in the litterature,
+\code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.\cr
+\cr
+The naming convention for \emph{the frontal plane projection angle} differs in the litterature,
 the measure has also been named \emph{the frontal plane \strong{knee} projection angle} and \emph{the frontal plane knee angle}. It was originally described by McLean et. al as
 \emph{the frontal plane knee angle}, and calculated using global coordinate positions of lower extremity joint centers.2D vectors were computed from the knee to hip centre (kh)
 and from the knee to ankle centre (ka). The cross product and vector norms were computed from the global coordinates, and the frontal plane projection angle was computed as:
-
+}
+\details{
 \deqn{\Theta = aSin( |kh x ka|  /  |kh||ka| )}
 
 \code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
-to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle.
-
-\cr \emph{Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
+to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle. \cr
+\cr
+\emph{Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
 not involve deep positions of the pelvis (e.g. single-leg squats, gait etc.). \cr Please see examples for further detail.}

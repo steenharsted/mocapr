@@ -16,13 +16,11 @@ The tibble supplied in \code{.data} argument with the added columns \code{LFPKD}
 \description{
 \code{add_frontal_plane_knee_deviation()} adds distance measures of medial and lateral knee deviation in the frontal plane to the supplied tibble in the \code{.data.} argument.
 The measure is calculated in the anatomical frontal plane by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
-Negative values indicate medial deviation of the knee (dynamic knee valgus).
-}
-\details{
-\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
-They use the "Medial knee position" to calculate the "Medial knee deviation."
-
-\cr Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
+Negative values indicate medial deviation of the knee (dynamic knee valgus).\cr
+"Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
+They use the "Medial knee position" to calculate the "Medial knee \emph{deviation}."\cr
+\cr
+Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 }
 \examples{
 #' # Prepare data

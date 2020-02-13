@@ -40,9 +40,9 @@ add_frontal_plane_knee_angle <- function(.data){
 # add_frontal_plane_projection_angle----
 #' add fontal plane projection angle kinematics to a mocap tibble.
 #'
-#' \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.
-#'
-#' \cr The naming convention for *the frontal plane projection angle* differs in the litterature,
+#' \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.\cr
+#' \cr
+#'  The naming convention for *the frontal plane projection angle* differs in the litterature,
 #'  the measure has also been named *the frontal plane **knee** projection angle* and *the frontal plane knee angle*. It was originally described by McLean et. al as
 #'  *the frontal plane knee angle*, and calculated using global coordinate positions of lower extremity joint centers.2D vectors were computed from the knee to hip centre (kh)
 #'   and from the knee to ankle centre (ka). The cross product and vector norms were computed from the global coordinates, and the frontal plane projection angle was computed as:
@@ -50,9 +50,9 @@ add_frontal_plane_knee_angle <- function(.data){
 #'   \deqn{\Theta = aSin( |kh x ka|  /  |kh||ka| )}
 #'
 #'   \code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
-#'   to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle.
-#'
-#' \cr *Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
+#'   to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle. \cr
+#' \cr
+#' *Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 #' at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 #' approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
 #' not involve deep positions of the pelvis (e.g. single-leg squats, gait etc.). \cr Please see examples for further detail.*
@@ -174,14 +174,13 @@ add_frontal_plane_projection_angle <- function(.data){
 # add_frontal_plane_knee_deviation----
 #' Add measures of medial and lateral knee deviation
 #'
-#'\code{add_frontal_plane_knee_deviation()} adds distance measures of medial and lateral knee deviation in the frontal plane to the supplied tibble in the \code{.data.} argument.
-#'The measure is calculated in the anatomical frontal plane by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
-#'Negative values indicate medial deviation of the knee (dynamic knee valgus).
-#'
-#'\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
-#'They use the "Medial knee position" to calculate the "Medial knee deviation."
-#'
-#'\cr Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
+#' \code{add_frontal_plane_knee_deviation()} adds distance measures of medial and lateral knee deviation in the frontal plane to the supplied tibble in the \code{.data.} argument.
+#' The measure is calculated in the anatomical frontal plane by drawing a line going through the hip and ankle joints. From this line, the shortest distance to the knee joint is calculated.
+#' Negative values indicate medial deviation of the knee (dynamic knee valgus).\cr
+#' "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
+#' They use the "Medial knee position" to calculate the "Medial knee *deviation*."\cr
+#'  \cr
+#' Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 #'
 #' @param .data A tibble containg hip, knee, and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
 #' global spatial joint center positions using \code{project_full_body_to_AP()}
@@ -249,13 +248,13 @@ add_frontal_plane_knee_deviation <- function(.data){
 #' Add knee-to-hip, ankle-to-hip, and knee-to-ankle separation ratios.
 #'
 #' The ratios are calculated in the anatomical frontal plane, using joint-center positions from both lower extremities. Therefore, they
-#' should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).
-#'
-#' \cr Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.
-#' \cr Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.
-#' \cr Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.
-#'
-#' \cr\cr knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
+#' should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).\cr
+#' \cr
+#' Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.\cr
+#' Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.\cr
+#' Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.\cr
+#' \cr
+#' knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
 #' and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 #'
 #' @param .data A tbbile containg ankle, knee, and hip spatial joint center positions in the anatomical frontal plane. These positions can

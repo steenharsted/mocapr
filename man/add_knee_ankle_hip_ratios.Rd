@@ -15,14 +15,13 @@ The tibble supplied in \code{.data} argument with the added columns \code{KHR}, 
 }
 \description{
 The ratios are calculated in the anatomical frontal plane, using joint-center positions from both lower extremities. Therefore, they
-should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).
-}
-\details{
-\cr Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.
-\cr Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.
-\cr Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.
-
-\cr\cr knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
+should only be used to analyze bilateral symetric movements (e.g., squats, or bilateral jump-landings).\cr
+\cr
+Knee-to-hip separation ratio (KHR) is the distance between the knee joint centers divided by the distance between the hip joint centers.\cr
+Ankle-to-hip separation ratio (AHR) is the distance between the ankle joint centers divided by the distance between the hip joint centers.\cr
+Knee-to-ankle separation ratio (KASR) is the distance between the knee joint centers divided by the distance between the ankle joint centers.\cr
+\cr
+knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
 and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 }
 \examples{
