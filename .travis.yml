@@ -1,5 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-language: R
+language: r
+r:
+  - oldrel
+  - release
+  - devel
 cache: packages
 sudo: true
 
@@ -17,9 +21,6 @@ addons:
       - libmagick++-dev
       - cargo
       - libavfilter-dev
-    sources:
-      - sourceline: 'ppa:jonathonf/ffmpeg-4'
-      - sourceline: 'ppa:jonathonf/ffmpeg-3'
 
 r_github_packages: r-lib/pkgdown
 
@@ -28,12 +29,6 @@ before_install:
   - sudo apt-get --yes --force-yes update -qq
   - sudo apt-get install --yes libudunits2-dev libproj-dev libgeos-dev libgdal-dev
   - Rscript -e 'update.packages(ask = FALSE)'
-
-matrix:
-  include:
-  - r: devel
-  - r: release
-  - r: oldrel
 
 after_success:
   - Rscript -e 'covr::codecov()'

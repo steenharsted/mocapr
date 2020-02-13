@@ -1,8 +1,15 @@
+# mocapr 0.0.1.9006
+### Major changes
+* added import_captury_csv() - this function correctly imports the new export format from the CapturyLive system
+* deprecated the function add_jump_events()
+
 # mocapr 0.0.1.9005
 ### Major changes
 * Add arguments to include line_colored, line_black, and points (TRUE/FALSE)
 * Add arguments to control the alpha of line_colored, line_black, and points
 * Break the animation functions into smaller functions for better functionality and customization options.
+* Addded the function add_phases_jump(), this will replace the function add_jump_events()
+* deprecated the function add_jump_events()
 
 # mocapr 0.0.1.9004
 ### Major changes
