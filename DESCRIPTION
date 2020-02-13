@@ -19,7 +19,6 @@ Suggests:
     base64enc,
     htmltools,
     covr,
-    transformr,
     av,
     png,
     gifski
