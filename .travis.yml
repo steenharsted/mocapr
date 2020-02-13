@@ -7,7 +7,7 @@ r:
 cache: packages
 sudo: true
 
-warnings_are_errors: true
+warnings_are_errors: false
 
 env:
   global:
