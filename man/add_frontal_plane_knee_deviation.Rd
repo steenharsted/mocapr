@@ -19,8 +19,8 @@ The measure is calculated in the anatomical frontal plane by drawing a line goin
 Negative values indicate medial deviation of the knee (dynamic knee valgus).
 }
 \details{
-\cr\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
-The authors use "Medial knee position" to calculate the "Medial knee deviation."
+\cr "Frontal plane knee deviation" has also been described by Krosshaug et. al and Willis et. al as "Medial knee position" (see references).
+They use the "Medial knee position" to calculate the "Medial knee deviation."
 
 \cr Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 }
