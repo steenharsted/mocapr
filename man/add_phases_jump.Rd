@@ -49,16 +49,16 @@ where there is transition (e.g. left foot still has contact with ground, while r
 \examples{
 # With synthetic data
 df <- tibble::tibble(
-                     frame = c(1:11),
-                     marks = c( NA, NA, NA,"TOB",  NA,  NA,  NA, "FFB", NA,  NA,  NA),
-                     LHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100),
-                     RHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100))
+       frame = c(1:11),
+       marks = c( NA, NA, NA,"TOB",  NA,  NA,  NA, "FFB", NA,  NA,  NA),
+       LHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100),
+       RHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100))
 
 df2 <- tibble::tibble(
-                      frame = c(1:15),
-                      marks = c( NA, NA, NA, "TOL", "TOR",  NA,  NA,  NA,  NA, "FFL", "FFR",  NA,  NA, NA,  NA),
-                      LHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100),
-                      RHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100))
+        frame = c(1:15),
+        marks = c( NA, NA, NA, "TOL", "TOR",  NA,  NA,  NA,  NA, "FFL", "FFR",  NA,  NA, NA,  NA),
+        LHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100),
+        RHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100))
 add_phases_jump(df)
 add_phases_jump(df2)
 

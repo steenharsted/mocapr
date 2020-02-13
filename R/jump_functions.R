@@ -36,16 +36,16 @@
 #' @examples
 #' # With synthetic data
 #' df <- tibble::tibble(
-#'                      frame = c(1:11),
-#'                      marks = c( NA, NA, NA,"TOB",  NA,  NA,  NA, "FFB", NA,  NA,  NA),
-#'                      LHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100),
-#'                      RHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100))
+#'        frame = c(1:11),
+#'        marks = c( NA, NA, NA,"TOB",  NA,  NA,  NA, "FFB", NA,  NA,  NA),
+#'        LHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100),
+#'        RHY =   c(100, 50, 75,  100, 125, 150, 125,   100, 75,  50, 100))
 #'
 #' df2 <- tibble::tibble(
-#'                       frame = c(1:15),
-#'                       marks = c( NA, NA, NA, "TOL", "TOR",  NA,  NA,  NA,  NA, "FFL", "FFR",  NA,  NA, NA,  NA),
-#'                       LHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100),
-#'                       RHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100))
+#'         frame = c(1:15),
+#'         marks = c( NA, NA, NA, "TOL", "TOR",  NA,  NA,  NA,  NA, "FFL", "FFR",  NA,  NA, NA,  NA),
+#'         LHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100),
+#'         RHY =   c(100, 50, 50,    75,  100,  125, 150, 150, 125,   100,    75,  70,  50, 50, 100))
 #' add_phases_jump(df)
 #' add_phases_jump(df2)
 #'
@@ -64,6 +64,9 @@
 #'                         return_plot = TRUE,
 #'                         col_facets = phase_b)
 add_phases_jump <- function(.data){
+  # Avoid no global binding
+  marks <- toe_offs <- impacts <- events_l <- events_r <- LHY <- RHY <- phase_l <- phase_r <- NULL
+  .dummy_HA_prep <- .dummy_HA_air <- .dummy_HA_land <- NULL
 
   # Check inputs
   # Test if marks contain the needed elements
@@ -390,6 +393,7 @@ add_jump_events <- function(.data){
 #' * \code{marks} A character column containg one or more of c("TOL", "TOR", "TOB"), AND one or more of c("FFL", "FFR", "FFB")
 #' * Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
 #' * Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
+#' @param method The method that should be used to calculate jump length.
 #'
 #' @return The tibble suplied in \code{.data} argument with the added columns \code{jump_length} and \code{jump_height} both measures are in cm.
 #' @export
@@ -405,6 +409,8 @@ add_jump_events <- function(.data){
 add_jump_length_and_height <- function(.data, method = "movement_plane"){
   # Avoid "No visible binding for global variable ..." when running check()
   LAZ <- LAX <- RAZ <- RAX <- LHY <- RHY <- jump_events <- phase <- NULL
+  events_b <- dummy <- . <- jump_length <- frame <- marks <- phase_b <- NULL
+  jump_height <- NULL
 
   # Check method argument
   if(!method %in% c("movement_plane", "global")){

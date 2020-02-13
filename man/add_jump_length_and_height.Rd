@@ -15,6 +15,8 @@ The data must contain the following columns:
 \item Global spatial ankle joint center positions in the floor plane: \code{LAX} \code{LAZ} \code{RAX} \code{RAZ}
 \item Global spatial hip joint-center height positions: \code{LHY} \code{RHY}
 }}
+
+\item{method}{The method that should be used to calculate jump length.}
 }
 \value{
 The tibble suplied in \code{.data} argument with the added columns \code{jump_length} and \code{jump_height} both measures are in cm.
