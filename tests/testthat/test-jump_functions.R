@@ -171,18 +171,18 @@ test_that("add_jump_length_and_jump_height works with global method", {
     RAZ =   rep( 10,9))
 
   # Test that the function fails if add_jump_events() is not run before
-  expect_error(add_jump_length_and_height(df, method = "global"))
+  expect_warning(expect_error(add_jump_length_and_height(df, method = "global")))
 
   # Test that jump_events contains the needed values if it exists
   df_test1 <- df_test2 <- df
   df_test1$jump_events <- "BAD"
   df_test1$jump_events <- NA
-  expect_error((add_jump_length_and_height(df_test1, method = "global")))
-  expect_error((add_jump_length_and_height(df_test2, method = "global")))
+   expect_warning(expect_error((add_jump_length_and_height(df_test1, method = "global"))))
+   expect_warning(expect_error((add_jump_length_and_height(df_test2, method = "global"))))
 
   # Run add_jump_events
-  df <- add_jump_events(df)
-  df <- add_jump_length_and_height(df, method = "global")
+  df <- suppressWarnings(add_jump_events(df))
+  df <- suppressWarnings(add_jump_length_and_height(df, method = "global"))
 
   expect_equal(unique(df$jump_length), 10)
   expect_equal(unique(df$jump_height), 5)
@@ -199,7 +199,7 @@ test_that("add_jump_length_and_jump_height works with global method", {
     RAZ =   rep( 10,9))
 
   df <- add_jump_events(df)
-  df <- add_jump_length_and_height(df, method = "global")
+  df <- suppressWarnings(add_jump_length_and_height(df, method = "global"))
 
   expect_equal(unique(df$jump_length), 10.2)
   expect_equal(unique(df$jump_height), 5)
@@ -216,7 +216,7 @@ test_that("add_jump_length_and_jump_height works with global method", {
     RAZ =   rep( 10,9))
 
   df <- add_jump_events(df)
-  df <- add_jump_length_and_height(df, method = "global")
+  df <- suppressWarnings(add_jump_length_and_height(df, method = "global"))
 
   expect_equal(unique(df$jump_length), 10.2)
   expect_equal(unique(df$jump_height), 5)
