@@ -28,5 +28,5 @@ and should be imported using \code{import_captury_csv()}.
 
 \examples{
 path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
-import_captury(path)
+suppressMessages(import_captury(path))
 }

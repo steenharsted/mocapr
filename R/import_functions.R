@@ -149,7 +149,7 @@ import_captury_csv <- function(filename, frames_pr_second = 50){
 #'
 #' @examples
 #' path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
-#' import_captury(path)
+#' suppressMessages(import_captury(path))
 import_captury <- function(filename, frames_pr_second = 50){
   print("This function imports captury data csv as it was exported prior to version 0.0.168, for newer exports use import_captury_csv()")
 
@@ -164,9 +164,10 @@ import_captury <- function(filename, frames_pr_second = 50){
 
   #Name Variables----
   df <-
+    suppressMessages(
     suppressWarnings(
       readr::read_delim(
-        paste0(filename), ";", escape_double = FALSE, col_names = FALSE, trim_ws = TRUE, skip = 6)) %>%
+        paste0(filename), ";", escape_double = FALSE, col_names = FALSE, trim_ws = TRUE, skip = 6))) %>%
     #Captury exports containts camera positions on the last 10 rows of the first 13 columns
     #Remove rows with information on cameara positions
     dplyr::filter(dplyr::row_number() < dplyr::n()-10) %>%

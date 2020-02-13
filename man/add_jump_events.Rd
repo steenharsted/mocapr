@@ -39,11 +39,11 @@ The numerical values in \code{phase} column correspond to:
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 df <- dplyr::select(df, frame, marks, LHY, RHY)
 
-add_jump_events(df)
+suppressMessages(add_jump_events(df))
 
 # A plot displaying the phases
 df2 <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
-df2 <- add_jump_events(df2)
+df2 <- suppressMessages(add_jump_events(df2))
 
 mocapr::animate_global(df2,
                        planes = "X",
