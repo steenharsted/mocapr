@@ -68,5 +68,5 @@ test_that("multiplication works", {
                   event_var = aligner,
                   event_value = "here",
                   return_equal_length_groups = TRUE,
-                  prolong_event = 1))
+                  prolong_event = 0))
 })
