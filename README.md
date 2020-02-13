@@ -147,19 +147,19 @@ mocapr_data %>%
   nest()
 #> # A tibble: 11 x 3
 #> # Groups:   movement_nr, movement_description [11]
-#>    movement_nr movement_description                                    data
-#>          <dbl> <chr>                                          <list<df[,70>
-#>  1           1 standing long jump for maximal performance        [135 x 70]
-#>  2           2 standing long jump for maximal performance        [152 x 70]
-#>  3           3 standing long jump with simulated poor landin~    [169 x 70]
-#>  4           4 vertical jump for maximal performance             [143 x 70]
-#>  5           5 gait normal in a straight line                    [157 x 70]
-#>  6           6 gait normal in a semi square                      [375 x 70]
-#>  7           7 gait with simulated drop foot                     [191 x 70]
-#>  8           8 gait with simulated internal rotation             [255 x 70]
-#>  9           9 capoeira dance                                  [1,269 x 70]
-#> 10          10 forward lunge normal                              [176 x 70]
-#> 11          11 squat normal                                      [165 x 70]
+#>    movement_nr movement_description                                data         
+#>          <dbl> <chr>                                               <list>       
+#>  1           1 standing long jump for maximal performance          <tibble [135~
+#>  2           2 standing long jump for maximal performance          <tibble [152~
+#>  3           3 standing long jump with simulated poor landing tec~ <tibble [169~
+#>  4           4 vertical jump for maximal performance               <tibble [143~
+#>  5           5 gait normal in a straight line                      <tibble [157~
+#>  6           6 gait normal in a semi square                        <tibble [375~
+#>  7           7 gait with simulated drop foot                       <tibble [191~
+#>  8           8 gait with simulated internal rotation               <tibble [255~
+#>  9           9 capoeira dance                                      <tibble [1,2~
+#> 10          10 forward lunge normal                                <tibble [176~
+#> 11          11 squat normal                                        <tibble [165~
 ```
 
 The format of the data is wide and contains frame by frame joint angles
@@ -406,7 +406,7 @@ jump_2 %>%
 
 <img src="man/figures/README-show_how_to_plot-1.png" width="100%" />
 
-## Animating and plotting multible movements
+## Animating and plotting multiple movements
 
 `mocapr` utilizes the powerful faceting features of `ggplot2`. This
 means that you can plot and animate mulitple movements next to
@@ -476,6 +476,8 @@ mocapr_data %>%
     line_colored_size = 1.2,
     line_black_size = 1,
     line_black_alpha = 1)
+#> This function has been deprecated since mocapr version 1.9006 available on Github since 2019-12-01. Consider using add_phases_jump() instead
+#> This function has been deprecated since mocapr version 1.9006 available on Github since 2019-12-01. Consider using add_phases_jump() instead
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />

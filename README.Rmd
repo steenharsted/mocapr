@@ -261,7 +261,7 @@ jump_2 %>%
                      return_plot = TRUE)
 ```
 
-## Animating and plotting multible movements
+## Animating and plotting multiple movements
 `mocapr` utilizes the powerful faceting features of `ggplot2`. This means that you can plot and animate mulitple movements next to eachother. This is especially usefull if you wish to visualize variation in movement patterns (test-retest or pre-post treatment scenarios).
 
 When you animate multiple movements the movements will only rarely have the same duration. `mocapr` allows you to align such movements based on a key event via the function `align_movements()`
