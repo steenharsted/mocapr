@@ -151,7 +151,7 @@ import_captury_csv <- function(filename, frames_pr_second = 50){
 #' path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
 #' suppressMessages(import_captury(path))
 import_captury <- function(filename, frames_pr_second = 50){
-  print("This function imports captury data csv as it was exported prior to version 0.0.168, for newer exports use import_captury_csv()")
+  message("This function imports captury data csv as it was exported prior to version 0.0.168, for newer exports use import_captury_csv()")
 
   # Avoid "No visible binding for global variable ..." when performing check()
   X1 <- X3 <- X4 <- X5 <- X6 <- X7 <- X8 <- X9 <- NULL

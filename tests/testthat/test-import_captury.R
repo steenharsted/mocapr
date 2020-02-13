@@ -9,7 +9,7 @@ test_that("import_captury_csv works", {
 
 test_that("import_captury", {
   path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
-  df <- import_captury(path)
+  df <- suppressMessages(import_captury(path))
   expect_equal(nrow(df), 143)
   expect_equal(ncol(df), 70)
   expect_equal(df[[1,1]], "Captury")
