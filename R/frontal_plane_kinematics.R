@@ -5,7 +5,7 @@
 #'
 #' @section Equation:
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-#' @section Figures:
+#' @section Figure:
 #' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
 #' @param .data A tibble containg knee and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
@@ -61,6 +61,11 @@ add_frontal_plane_knee_angle <- function(.data){
 #' at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
 #' approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
 #' not involve deep positions of the pelvis (e.g. single-leg squats, gait etc.). \cr Please see examples for further detail.*
+#'
+#' @section Equation:
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqFPPA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' @section Figure:
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcFPPA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
 #' @param .data A tibble that must contain lower extremity spatial joint postions in the anatomical plane (please see \code{project_full_body_to_AP()})
 #'
@@ -192,6 +197,7 @@ add_frontal_plane_projection_angle <- function(.data){
 #' @section Figure:
 #' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKD.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
+#'
 #' @param .data A tibble containg hip, knee, and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
 #' global spatial joint center positions using \code{project_full_body_to_AP()}
 #' @return The tibble supplied in \code{.data} argument with the added columns \code{LFPKD} and \code{RFPKD}.
@@ -266,6 +272,23 @@ add_frontal_plane_knee_deviation <- function(.data){
 #' \cr
 #' knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
 #' and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
+#'
+#' @section Equations:
+#' *Knee-to-hip separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' *Ankle-to-hip separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' *Knee-to-ankle separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' @section Figures:
+#' *Knee-to-hip separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' *Ankle-to-hip separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' *Knee-to-ankle separation ratio*
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#'
+#'
 #'
 #' @param .data A tbbile containg ankle, knee, and hip spatial joint center positions in the anatomical frontal plane. These positions can
 #' be generated from global spatial positions using \code{project_full_body_to_AP()}.
