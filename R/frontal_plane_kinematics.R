@@ -46,6 +46,8 @@ add_frontal_plane_knee_angle <- function(.data){
 #' add fontal plane projection angle kinematics to a mocap tibble.
 #'
 #' \code{add_frontal_plane_projection_angle()} adds the frontal plane projection angle to a tibble. Negative values implies dynamic knee valgus.\cr
+#'   \code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
+#'   to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle. \cr
 #' \cr
 #'  The naming convention for *the frontal plane projection angle* differs in the litterature,
 #'  the measure has also been named *the frontal plane **knee** projection angle* and *the frontal plane knee angle*. It was originally described by McLean et. al as
@@ -53,9 +55,6 @@ add_frontal_plane_knee_angle <- function(.data){
 #'   and from the knee to ankle centre (ka). The cross product and vector norms were computed from the global coordinates, and the frontal plane projection angle was computed as:
 #'
 #'   \deqn{\Theta = aSin( |kh x ka|  /  |kh||ka| )}
-#'
-#'   \code{mocapr} calculates the angle in the anatomical planes rather than using global coordinates. You must, therefore, likely run the function \code{project_full_body_to_AP()} in order
-#'   to obtain the joint center positions in the anatomical planes that are nescceary in order to compute the the frontal plane projection angle. \cr
 #' \cr
 #' *Please note that the frontal plane projection angle has been developed for 2D video analysis of motions that do not involve the height of hip joint being
 #' at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar cross talk, the projected kinemtics produce high, and potentially misleading, values when the height of the hip joint
@@ -274,19 +273,19 @@ add_frontal_plane_knee_deviation <- function(.data){
 #' and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 #'
 #' @section Equations:
-#' *Knee-to-hip separation ratio*
+#' **Knee-to-hip separation ratio:**
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-#' *Ankle-to-hip separation ratio*
+#' **Ankle-to-hip separation ratio:**
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-#' *Knee-to-ankle separation ratio*
+#' **Knee-to-ankle separation ratio:**
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
 #' @section Figures:
-#' *Knee-to-hip separation ratio*
-#' \if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-#' *Ankle-to-hip separation ratio*
-#' \if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-#' *Knee-to-ankle separation ratio*
-#' \if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' **Knee-to-hip separation ratio:**
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+#' **Ankle-to-hip separation ratio:**
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+#' **Knee-to-ankle separation ratio:**
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
 #'
 #'

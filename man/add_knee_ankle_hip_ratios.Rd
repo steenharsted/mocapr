@@ -26,22 +26,22 @@ and "Normalised ankle separation distance". Mizner et. al described the "Knee-to
 }
 \section{Equations}{
 
-\emph{Knee-to-hip separation ratio}
+\strong{Knee-to-hip separation ratio:}
 \if{html}{\out{<div style="text-align: center">}\figure{eqKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-\emph{Ankle-to-hip separation ratio}
+\strong{Ankle-to-hip separation ratio:}
 \if{html}{\out{<div style="text-align: center">}\figure{eqAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-\emph{Knee-to-ankle separation ratio}
+\strong{Knee-to-ankle separation ratio:}
 \if{html}{\out{<div style="text-align: center">}\figure{eqKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
 }
 
 \section{Figures}{
 
-\emph{Knee-to-hip separation ratio}
-\if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-\emph{Ankle-to-hip separation ratio}
-\if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
-\emph{Knee-to-ankle separation ratio}
-\if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\strong{Knee-to-hip separation ratio:}
+\if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+\strong{Ankle-to-hip separation ratio:}
+\if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+\strong{Knee-to-ankle separation ratio:}
+\if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 }
 
 \examples{
