@@ -22,6 +22,12 @@ They use the "Medial knee position" to calculate the "Medial knee \emph{deviatio
 \cr
 Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 }
+\section{Figures}{
+
+\if{html}{\out{<div style="text-align: center">}\figure{eqFPKD.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\if{html}{\out{<div style="text-align: center">}\figure{pcFPKD.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+}
+
 \examples{
 #' # Prepare data
 df <- data.frame(

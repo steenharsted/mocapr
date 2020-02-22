@@ -186,6 +186,10 @@ add_frontal_plane_projection_angle <- function(.data){
 #'  \cr
 #' Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 #'
+#' @section Figures:
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKD.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKD.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+#'
 #' @param .data A tibble containg hip, knee, and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
 #' global spatial joint center positions using \code{project_full_body_to_AP()}
 #' @return The tibble supplied in \code{.data} argument with the added columns \code{LFPKD} and \code{RFPKD}.
