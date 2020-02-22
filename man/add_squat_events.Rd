@@ -13,7 +13,7 @@ add_squat_events(.data)
 A tibble with three added columns. \code{squat_events}, \code{phase}, and \code{squat_depth}. \code{squat_depth} is given in cm.
 }
 \description{
-\code{add_squat_events()} takes a tibble as the only argument, and returns the tible with three extra columns usefull for further analysis.
+\code{add_squat_events()} takes a tibble as the only argument, and returns the tible with three extra columns useful for further analysis.
 The three extra columns are: "squat_events", "phase", and "squat_depth".
 The tibble must contain motioncapture data with the columns \code{frame}, \code{LHY}, and \code{RHY}
 and the captured motion must be a squat. Please note that the function will not fail if the movement is not a squat.
