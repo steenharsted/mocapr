@@ -16,6 +16,12 @@ The tibble supplied in \code{.data} argument with the added columns \code{LFPKA}
 \description{
 Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
 }
+\section{Figures}{
+
+\if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+}
+
 \examples{
 # Prepare data
 df <- data.frame(

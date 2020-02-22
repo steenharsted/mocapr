@@ -3,6 +3,10 @@
 #'
 #' Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
 #'
+#' @section Figures:
+#' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+#'
 #' @param .data A tibble containg knee and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
 #' global spatial joint center positions using \code{project_full_body_to_AP()}
 #'
