@@ -3,8 +3,9 @@
 #'
 #' Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
 #'
-#' @section Figures:
+#' @section Equation:
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' @section Figures:
 #' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
 #' @param .data A tibble containg knee and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
@@ -186,8 +187,9 @@ add_frontal_plane_projection_angle <- function(.data){
 #'  \cr
 #' Please note that the measure is prone to planar cross talk from especially knee flexion (See examples for details).
 #'
-#' @section Figures:
+#' @section Equation:
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKD.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+#' @section Figure:
 #' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKD.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
 #' @param .data A tibble containg hip, knee, and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
