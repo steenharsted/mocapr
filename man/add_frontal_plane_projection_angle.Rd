@@ -31,6 +31,16 @@ at the level of the knee joint of lower (e.g. single-leg-squats). Due to planar 
 approaches that of the knee joint. The frontal plane projeciton kinematics are likely only usefull for analyzing motions that do
 not involve deep positions of the pelvis (e.g. single-leg squats, gait etc.). \cr Please see examples for further detail.}
 }
+\section{Equation}{
+
+\if{html}{\out{<div style="text-align: center">}\figure{eqFPPA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+}
+
+\section{Figure}{
+
+\if{html}{\out{<div style="text-align: center">}\figure{pcFPPA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
+}
+
 \examples{
 # Prepare data
 df <- data.frame(

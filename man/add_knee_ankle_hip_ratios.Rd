@@ -24,6 +24,26 @@ Knee-to-ankle separation ratio (KASR) is the distance between the knee joint cen
 knee-to-hip and ankle-to-hip separation ratio was orignially described Barber-Westin et al. and Noyes et al. as "Normalised knee separation distance"
 and "Normalised ankle separation distance". Mizner et. al described the "Knee-to-ankle separation ratio" in 2012. The measures were originally developed for 2D analysis of video recordings.
 }
+\section{Equations}{
+
+\emph{Knee-to-hip separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{eqKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\emph{Ankle-to-hip separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{eqAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\emph{Knee-to-ankle separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{eqKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+}
+
+\section{Figures}{
+
+\emph{Knee-to-hip separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{pcKHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\emph{Ankle-to-hip separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{pcAHR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+\emph{Knee-to-ankle separation ratio}
+\if{html}{\out{<div style="text-align: center">}\figure{pcKASR.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
+}
+
 \examples{
 # Prepare data
 df <- dplyr::filter(mocapr::mocapr_synthetic_data, sample == 1)

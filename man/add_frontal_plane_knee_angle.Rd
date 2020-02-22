@@ -21,7 +21,7 @@ Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee 
 \if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
 }
 
-\section{Figures}{
+\section{Figure}{
 
 \if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 }
