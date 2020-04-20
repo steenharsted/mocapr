@@ -1,5 +1,6 @@
 # mocapr 0.0.1.9006
 ### Major changes
+* added shoulder-to-shoulder and hip-to-hip line
 * added import_captury_csv() - this function correctly imports the new export format from the CapturyLive system
 * deprecated the function add_jump_events()
 
