@@ -4,7 +4,8 @@
 \name{mocapr_synthetic_data}
 \alias{mocapr_synthetic_data}
 \title{Synthetic motion capture data of spatial joint-center positions in the anatomcial frontal plane}
-\format{A \code{tibble}
+\format{
+A \code{tibble}
 \describe{
 \item{_APU}{A variable containg the 'Up' spatial position.}
 \item{_APR}{A variable containg the 'Right' spatial position.}
@@ -15,7 +16,8 @@
 \item{sample}{A variable usefull for filtering the data.\cr Sample == 1 Contains postures that are intended to help with the visual understanding of the frontal plane
 kinematic measures.\cr Sample == 2 displays three movements where the knee and ankle joint positions are constant, and the hip joints are descending.
 This is usefull for displaying issues with planar-cross-talk for some of the frontal plane kinematics.}
-}}
+}
+}
 \usage{
 mocapr_synthetic_data
 }
