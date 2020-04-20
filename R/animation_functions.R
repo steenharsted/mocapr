@@ -124,24 +124,20 @@
       #Create groups for all the joints and extremities. This is needed for ggplot to  connect the correct joints together with geom_path()
       dplyr::mutate(
         Joint = factor(Joint),
-        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LS", "LE", "LW", "NH", "NS", "NC", "RT", "RA", "RK", "RH", "RS", "RE", "RW"),
+        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LW", "LE", "LS", "NH", "NS", "NC", "RH", "RK", "RA", "RT", "RS", "RE", "RW"),
         Side =  dplyr::case_when(
-          Joint %in% c("LT", "LA", "LK", "LH") ~ "Left Leg",
+          Joint %in% c("LT", "LA", "LK") ~ "Left Leg",
           Joint %in% c("RT", "RA", "RK", "RH") ~ "Right Leg",
-          Joint %in% c("LS", "LE", "LW") ~ "Left Arm",
+          Joint %in% c("LW", "LE") ~ "Left Arm",
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
+        Connecter =  dplyr::case_when(
+          Joint %in% c("LT", "LA", "LK", "LH", "RH", "RK", "RA", "RT") ~ "LE",
+          Joint %in% c("LW", "LE", "LS", "RS", "RE", "RW") ~ "OE",
+          TRUE ~ "Center"),
+        Connecter_frame = paste0(as.character(Connecter), as.character(frame), {{subject}}),
         Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
-
-        #Create a larger size for the Torso
-        size_path_color = dplyr::case_when(
-          Joint == "NH" ~ line_colored_size*torso_scale,
-          TRUE ~ line_colored_size),
-
-        size_path_black = dplyr::case_when(
-          Joint == "NH" ~ line_black_size*torso_scale,
-          TRUE ~ line_black_size),
 
         #Create a larger size for the Cranium and smaller feet
         size_point = dplyr::case_when(
@@ -320,16 +316,20 @@
       #Create groups for all the joints and extremities. This is needed for ggplot to  connect the correct joints together with geom_path()
       dplyr::mutate(
         Joint = factor(Joint),
-        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LS", "LE", "LW", "NH", "NS", "NC", "RT", "RA", "RK", "RH", "RS", "RE", "RW"),
+        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LW", "LE", "LS", "NH", "NS", "NC", "RH", "RK", "RA", "RT", "RS", "RE", "RW"),
         Side =  dplyr::case_when(
-          Joint %in% c("LT", "LA", "LK", "LH") ~ "Left Leg",
+          Joint %in% c("LT", "LA", "LK") ~ "Left Leg",
           Joint %in% c("RT", "RA", "RK", "RH") ~ "Right Leg",
-          Joint %in% c("LS", "LE", "LW") ~ "Left Arm",
+          Joint %in% c("LW", "LE") ~ "Left Arm",
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
+        Connecter =  dplyr::case_when(
+          Joint %in% c("LT", "LA", "LK", "LH", "RH", "RK", "RA", "RT") ~ "LE",
+          Joint %in% c("LW", "LE", "LS", "RS", "RE", "RW") ~ "OE",
+          TRUE ~ "Center"),
+        Connecter_frame = paste0(as.character(Connecter), as.character(frame), {{subject}}),
         Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
-
         #Create a larger size for the Torso
         size_path_color = dplyr::case_when(
           Joint == "NH" ~ line_colored_size*torso_scale,
@@ -504,14 +504,19 @@ animate_global <- function(.data,
       #Create groups for all the joints and extremities. This is needed for ggplot to  connect the correct joints together with geom_path()
       dplyr::mutate(
         Joint = factor(Joint),
-        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LS", "LE", "LW", "NH", "NS", "NC", "RT", "RA", "RK", "RH", "RS", "RE", "RW"),
+        Joint = forcats::fct_relevel(Joint, "LT", "LA", "LK", "LH", "LW", "LE", "LS", "NH", "NS", "NC", "RH", "RK", "RA", "RT", "RS", "RE", "RW"),
         Side =  dplyr::case_when(
-          Joint %in% c("LT", "LA", "LK", "LH") ~ "Left Leg",
+          Joint %in% c("LT", "LA", "LK") ~ "Left Leg",
           Joint %in% c("RT", "RA", "RK", "RH") ~ "Right Leg",
-          Joint %in% c("LS", "LE", "LW") ~ "Left Arm",
+          Joint %in% c("LW", "LE") ~ "Left Arm",
           Joint %in% c("RS", "RE", "RW") ~ "Right Arm",
           TRUE ~ "Center"),
         Side = factor(Side, levels = c("Left Arm", "Left Leg", "Center", "Right Arm", "Right Leg")),
+        Connecter =  dplyr::case_when(
+          Joint %in% c("LT", "LA", "LK", "LH", "RH", "RK", "RA", "RT") ~ "LE",
+          Joint %in% c("LW", "LE", "LS", "RS", "RE", "RW") ~ "OE",
+          TRUE ~ "Center"),
+        Connecter_frame = paste0(as.character(Connecter), as.character(frame), {{subject}}),
         Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
 
         #Create a larger size for the Torso
@@ -616,10 +621,10 @@ mocap_plot_basic <- function(.data,
                              remove_grid = TRUE
                              ){
   # Avoid "No visible binding for global...."
-  Side_frame <- Dir <- theme <- NULL
+  Side_frame <- Connecter_frame <- Dir <- theme <- NULL
 
   df_plot <- .data %>%
-    ggplot2::ggplot(ggplot2::aes(group = Side_frame))+
+    ggplot2::ggplot(ggplot2::aes(group = Connecter_frame))+
     ggplot2::ylab("Height (mm)")+
     ggplot2::xlab("(mm)")+
     ggplot2::coord_equal()+
@@ -696,9 +701,11 @@ mocap_plot_basic <- function(.data,
 #' df <- mocap_plot_basic(df,
 #'                  planes = c("X", "Y"), # Because the data comes from animate_global()
 #'                  planes_in_rows_or_cols = "rows",
-#'                  col_facets = frame)
+#'                  col_facets = frame
+#'                  )
 #' mocap_plot_avatar(df,
 #'                   up_column = Y) # Because the data comes from animate_global()
+#'
 mocap_plot_avatar <- function(.plot,
                               use_geom_point = TRUE,
                               line_colored = TRUE,

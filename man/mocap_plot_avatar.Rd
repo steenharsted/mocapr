@@ -50,7 +50,9 @@ df <- mocapr::animate_global(df,
 df <- mocap_plot_basic(df,
                  planes = c("X", "Y"), # Because the data comes from animate_global()
                  planes_in_rows_or_cols = "rows",
-                 col_facets = frame)
+                 col_facets = frame
+                 )
 mocap_plot_avatar(df,
                   up_column = Y) # Because the data comes from animate_global()
+
 }

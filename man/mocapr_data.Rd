@@ -4,7 +4,8 @@
 \name{mocapr_data}
 \alias{mocapr_data}
 \title{Motion Capture Data of Various Movements}
-\format{A \code{tibble}
+\format{
+A \code{tibble}
 \describe{
 \item{movement_nr}{A variable for easy reference of the movements in the dataset}
 \item{movement_description}{A short description of the movement being performed}
@@ -12,7 +13,8 @@
 \item{time_seconds}{Passed time in seconds from begining of the recording}
 \item{Please_see_above_for_the_remaining_68_columns}{The data set contains 68 columns more.\cr Please read the abbreviation guide above
 or the GitHub \href{https://github.com/steenharsted/mocapr}{README.md} for more information.}
-}}
+}
+}
 \usage{
 mocapr_data
 }
