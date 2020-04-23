@@ -83,7 +83,7 @@
     NS_MPR <- NS_MPF <- NS_MPU <- NULL
     NH_MPR <- NH_MPF <- NH_MPU <- NULL
     frame <- key <- value <- Dir <- R <- Joint <- Side <- Side_frame <- U <- NULL
-    size_path_color <- size_point <- size_path_black <- size_circle <- NULL
+    size_path_color <- size_point <- size_path_black <- size_circle <- Connecter <- NULL
 
     #Make Data Frame
     df <- .data
@@ -267,7 +267,7 @@
     NH_APR <- NH_APF <- NH_APU <- NULL
     Normaliser_R <- Normaliser_F <- NULL
     frame <- key <- value <- Dir <- R <- Joint <- Side <- Side_frame <- U <- NULL
-    size_path_color <- size_point <- size_path_black <- size_circle <- NULL
+    size_path_color <- size_point <- size_path_black <- size_circle <- Connecter <- NULL
 
 
     # Prevent jitter. Stabilizie the joint center positions around the center of the hip joints
@@ -454,7 +454,7 @@ animate_global <- function(.data,
     RWX <-  RWY <-  RWZ <- REX <-  REY <-  REZ <- RSX <-  RSY <-  RSZ <- NULL
     NHX <-  NHY <-  NHZ <- NSX <-  NSY <-  NSZ <- NCX <-  NCY <-  NCZ <- NULL
     frame <- key <- value <- Dir <- X <- Z <- Joint <- Side <- Side_frame <- Y <- NULL
-    size_path_color <- size_point <- size_path_black <- size_circle <-  NULL
+    size_path_color <- size_point <- size_path_black <- size_circle <- Connecter <- NULL
 
     # Make dataframe
     df <- .data

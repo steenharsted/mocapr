@@ -34,7 +34,7 @@ test_that("plots are stable between versions", {
   expect_identical(df$labels, list(
     x = "(mm)",
     y = "Height (mm)",
-    group = "Side_frame",
+    group = "Connecter_frame",
     size = "size_path_color",
     colour = "Side",
     fill = "Side"))
