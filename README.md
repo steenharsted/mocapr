@@ -458,17 +458,17 @@ mocapr_data %>%
   group_by(movement_nr) %>% 
   
   # Add jump phases and events
-  group_modify(~add_jump_events(.x)) %>% 
+  group_modify(~add_phases_jump(.x)) %>% 
   group_modify(~project_full_body_to_AP(.x)) %>%
   
   # Keep only single frame events and highest position in jump
   filter(
-    phase %in% c(2, 4, 6, 8) | CGY == max(CGY)) %>% 
+    phase_b %in% c(2, 4, 6, 8, 10)) %>% 
   
   animate_anatomical(
     planes = "F",             # Show only the forward plane, change to "R for the forward plane. Remove for both planes
     row_facets = movement_nr, # Facet the two movements in two rows
-    col_facets = phase,       # Facet the phases in columns
+    col_facets = phase_b,       # Facet the phases in columns
     return_plot = TRUE,       # Return a plot
 
     # Just styling options
@@ -476,8 +476,6 @@ mocapr_data %>%
     line_colored_size = 1.2,
     line_black_size = 1,
     line_black_alpha = 1)
-#> This function has been deprecated since mocapr version 1.9006 available on Github since 2019-12-01. Consider using add_phases_jump() instead
-#> This function has been deprecated since mocapr version 1.9006 available on Github since 2019-12-01. Consider using add_phases_jump() instead
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
