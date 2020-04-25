@@ -13,6 +13,8 @@ status](https://travis-ci.org/steenharsted/mocapr.svg?branch=master)](https://tr
 status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
 [![Codecov test
 coverage](https://codecov.io/gh/steenharsted/mocapr/branch/master/graph/badge.svg)](https://codecov.io/gh/steenharsted/mocapr?branch=master)
+[![R build
+status](https://github.com/steenharsted/mocapr/workflows/R-CMD-check/badge.svg)](https://github.com/steenharsted/mocapr/actions)
 <!-- badges: end -->
 
 The goal of `mocapr` is to help researchers and clinicians to work with

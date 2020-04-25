@@ -13,3 +13,4 @@
 ^README_cache$
 ^CODE_OF_CONDUCT.md
 ^codecov\.yml$
+^\.github$
