@@ -139,6 +139,16 @@
         Connecter_frame = paste0(as.character(Connecter), as.character(frame), {{subject}}),
         Side_frame = paste0(as.character(Side), as.character(frame), {{subject}}),
 
+        #Create a larger size for the Torso
+        size_path_color = dplyr::case_when(
+          Joint == "NH" ~ line_colored_size*torso_scale,
+          TRUE ~ line_colored_size),
+
+        size_path_black = dplyr::case_when(
+          Joint == "NH" ~ line_black_size*torso_scale,
+          TRUE ~ line_black_size),
+
+
         #Create a larger size for the Cranium and smaller feet
         size_point = dplyr::case_when(
           Joint == "NC" ~ point_size*head_scale,
