@@ -7,16 +7,16 @@
 import_captury(filename, frames_pr_second = 50)
 }
 \arguments{
-\item{filename}{Path and filename of a .csv file containg motion capture data from the Captury system}
+\item{filename}{Path and file name of a .csv file containing motion capture data from the Captury system}
 
-\item{frames_pr_second}{Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.}
+\item{frames_pr_second}{Recorded frames pr. second used in the setup when capturing the data. Defaults to 50.}
 }
 \value{
-A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
+A tibble containing joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 }
 \description{
-Import_Captury() takes the filepath and filename of a .csv file containg motion capture data captured and exported using the CapturyLive motion capture system. The
-.csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abreviated names (e.g. left knee flexion =
+import_captury() takes the file path and file name of a .csv file containing motion capture data captured and exported using the CapturyLive motion capture system. The
+.csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abbreviated names (e.g. left knee flexion =
 LKF, global Y coordinate of the right hip joint is RHY).\cr
 Please see the GitHub README.me for a more detailed description.
 }

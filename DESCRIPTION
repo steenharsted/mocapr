@@ -1,7 +1,7 @@
 Package: mocapr
 Type: Package
 Title: Functions to import, plot, animate, and analyse motion capture data
-Version: 0.0.1.9008
+Version: 0.0.1.9009
 Author: Steen Harsted
 Maintainer: Steen Harsted <steenharsted@gmail.com>
 Description: Functions to import, plot, animate, and analyse motion capture data.
@@ -9,7 +9,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     magick,
     svglite,
@@ -19,7 +19,8 @@ Suggests:
     base64enc,
     htmltools,
     covr,
-    png
+    png,
+    RMoCap,
 Imports: 
     tidyr,
     gganimate,

@@ -17,3 +17,7 @@ test_that("import_captury", {
 })
 
 
+test_that("import_DARI_bvh", {
+  path <- system.file("examples", "vertical_jump_old_cap_version.csv", package = "mocapr")
+  expect_error(import_DARI_bvh(path))
+})

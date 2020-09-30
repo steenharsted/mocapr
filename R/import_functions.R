@@ -133,18 +133,18 @@ import_captury_csv <- function(filename, frames_pr_second = 50){
 #captury import function----
 #' import_captury
 #'
-#' Import_Captury() takes the filepath and filename of a .csv file containg motion capture data captured and exported using the CapturyLive motion capture system. The
-#' .csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abreviated names (e.g. left knee flexion =
+#' import_captury() takes the file path and file name of a .csv file containing motion capture data captured and exported using the CapturyLive motion capture system. The
+#' .csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abbreviated names (e.g. left knee flexion =
 #' LKF, global Y coordinate of the right hip joint is RHY).\cr
 #' Please see the GitHub README.me for a more detailed description.
 #' @section Note:
 #' This function imports Captury .csv files as they are exported from CapturyLive version 0.0.168 and earlier. Newer versions have a different layout
 #' and should be imported using \code{import_captury_csv()}.
 #'
-#' @param filename Path and filename of a .csv file containg motion capture data from the Captury system
-#' @param frames_pr_second Recorded frames pr. second used in the setup when capuring the data. Defaults to 50.
+#' @param filename Path and file name of a .csv file containing motion capture data from the Captury system
+#' @param frames_pr_second Recorded frames pr. second used in the setup when capturing the data. Defaults to 50.
 #'
-#' @return A tibble containg joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
+#' @return A tibble containing joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 #' @export
 #'
 #' @examples
@@ -234,4 +234,122 @@ import_captury <- function(filename, frames_pr_second = 50){
       HAZ = (LHZ+RHZ)/2) %>%
     dplyr::select(mocap_system, frame, time_seconds, dplyr::everything())
   dplyr::as_tibble(df)
+}
+
+
+# DARI import function----
+
+#' import_DARI_bvh
+#'
+#' import_DARI_bvh takes the file-path and file-name of a .bvh file containing motion capture data exported using the DARI motion capture system. The
+#' .bvh file is then imported, cleaned, and returned as a tibble. All global joint center positions are in abbreviated names (e.g. global Y coordinate of the right hip joint is RHY).\cr
+#' Please see the GitHub README.me for a more detailed description.
+#' @section Note:
+#' This function imports .bvh files as they are exported from the DARI motion capture software.
+#'
+#' @param filename Path and file-name of the .bvh file to be imported
+#'
+#' @return A tibble containing global joint center positions of the: toes, ankles, knees, hips, clavicles, shoulders, elbows, and wrists.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' path <- system.file("examples", "DARI.bvh", package = "mocapr")
+#' suppressMessages(import_DARI_bvh(path))
+#' }
+import_DARI_bvh <- function(filename) {
+  ## Avodi no global binding for....
+  LeftArm.Dx <- LeftArm.Dy <- LeftArm.Dz <- LeftFoot.Dx <- LeftFoot.Dy <- NULL
+  LeftFoot.Dz <- LeftForeArm.Dx <- LeftForeArm.Dy <- LeftForeArm.Dz <- NULL
+  LeftHand.Dx <- LeftHand.Dy <- LeftHand.Dz <-  LeftLeg.Dx <- NULL
+  LeftLeg.Dy <- LeftLeg.Dz <- LeftShoulder.Dx <- LeftShoulder.Dy <- NULL
+  LeftShoulder.Dz <- LeftToeBase.Dx <- LeftToeBase.Dy <- LeftToeBase.Dz <- NULL
+  LeftUpLeg.Dx <- LeftUpLeg.Dy <- LeftUpLeg.Dz <- RightArm.Dx <- NULL
+  RightArm.Dy <- RightArm.Dz <- RightFoot.Dx <- RightFoot.Dy <- NULL
+  RightFoot.Dz <- RightForeArm.Dx <- RightForeArm.Dy <-  RightForeArm.Dz <- NULL
+  RightHand.Dx <- RightHand.Dy <- RightHand.Dz <- RightLeg.Dx <- RightLeg.Dy <- NULL
+  RightLeg.Dz <- RightShoulder.Dx <- RightShoulder.Dy <- RightShoulder.Dz <- NULL
+  RightToeBase.Dx <- RightToeBase.Dy <- RightToeBase.Dz <- RightUpLeg.Dx <- NULL
+  RightUpLeg.Dy <- RightUpLeg.Dz <- NULL
+
+  if (!requireNamespace("RMoCap")){
+    stop(
+      "\nTo run the import_DARI_bvh() function you first need to install the RMoCap package from https://github.com/browarsoftware/RMoCap\nThe RMoCap package is made by Tomasz Hachaj and Marek R. Ogiela\n
+Please consider citing their paper https://doi.org/10.1007/s00530-019-00633-9\n
+To install the RMoCap package you can copy and run the following code:\n
+            if (!require('RMoCap'))\n
+               {\n
+               if (!require('devtools'))\n
+               {\n
+                install.packages('devtools') # if you have not installed 'devtools' package\n
+               }\n
+               devtools::install_github('browarsoftware/RMoCap')\n
+            }\n")
+  }
+
+  joint_data <-
+    RMoCap::read.bvh(filename)
+
+  joint_data <- joint_data %>%
+    RMoCap::bvh.to.df()
+
+  jd_renamed <- joint_data %>% dplyr::rename(
+    #Left Upper Extremity
+    LCX = LeftShoulder.Dx, #Clavicle x
+    LCY = LeftShoulder.Dy, #Clavicle y
+    LCZ = LeftShoulder.Dz, #Clavicle z
+    LSX = LeftArm.Dx, # Shoulder x
+    LSY = LeftArm.Dy, # Shoulder y
+    LSZ = LeftArm.Dz, # Shoulder z
+    LEX = LeftForeArm.Dx, # Elbow x
+    LEY = LeftForeArm.Dy, # Elbow y
+    LEZ = LeftForeArm.Dz, # Elbow z
+    LWX = LeftHand.Dx, # Wrist x
+    LWY = LeftHand.Dy, # Wrist y
+    LWZ = LeftHand.Dz, # Wrist z
+    #Left Lower Extremity
+    LHX = LeftUpLeg.Dx, # Hip x
+    LHY = LeftUpLeg.Dy, # Hip y
+    LHZ = LeftUpLeg.Dz, # Hip z
+    LKX = LeftLeg.Dx, # Knee X
+    LKY = LeftLeg.Dy, # Knee y
+    LKZ = LeftLeg.Dz, # Knee z
+    LAX = LeftFoot.Dx, # Ankle x
+    LAY = LeftFoot.Dy, # Ankle y
+    LAZ = LeftFoot.Dz, # Ankle z
+    LTX = LeftToeBase.Dx, #  Toe x
+    LTY = LeftToeBase.Dy, #  Toe y
+    LTZ = LeftToeBase.Dz, #  Toe z
+
+    #Right Upper Extremity
+    RCX = RightShoulder.Dx, #Clavicle x
+    RCY = RightShoulder.Dy, #Clavicle y
+    RCZ = RightShoulder.Dz, #Clavicle z
+    RSX = RightArm.Dx, # Shoulder x
+    RSY = RightArm.Dy, # Shoulder y
+    RSZ = RightArm.Dz, # Shoulder z
+    REX = RightForeArm.Dx, # Elbow x
+    REY = RightForeArm.Dy, # Elbow y
+    REZ = RightForeArm.Dz, # Elbow z
+    RWX = RightHand.Dx, # Wrist x
+    RWY = RightHand.Dy, # Wrist y
+    RWZ = RightHand.Dz, # Wrist z
+    #Right lower Extremity
+    RHX = RightUpLeg.Dx, # Hip x
+    RHY = RightUpLeg.Dy, # Hip y
+    RHZ = RightUpLeg.Dz, # Hip z
+    RKX = RightLeg.Dx, # Knee X
+    RKY = RightLeg.Dy, # Knee y
+    RKZ = RightLeg.Dz, # Knee z
+    RAX = RightFoot.Dx, # Ankle x
+    RAY = RightFoot.Dy, # Ankle y
+    RAZ = RightFoot.Dz, # Ankle z
+    RTX = RightToeBase.Dx, #  Toe x
+    RTY = RightToeBase.Dy, #  Toe y
+    RTZ = RightToeBase.Dz, #  Toe z
+  ) %>%
+    dplyr::mutate(
+      frame = dplyr::row_number()
+    )
+  jd_renamed
 }

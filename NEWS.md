@@ -1,3 +1,8 @@
+# mocapr 0.0.1.9009
+### Major changes
+* added import_DARI_bvh() - this functions imports .bvh files from the DARI system
+* added RMoCap to suggested packages
+
 # mocapr 0.0.1.9006
 ### Major changes
 * added shoulder-to-shoulder and hip-to-hip line
