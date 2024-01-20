@@ -247,7 +247,6 @@ import_captury <- function(filename, frames_pr_second = 50){
 #' Please see the GitHub README.me for a more detailed description.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Optitrack system
-#' @param frames_pr_second Recorded frames pr. second used in the setup when capuring the data. Defaults to 200.
 #'
 #' @return A tibble containing joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 #' @export
