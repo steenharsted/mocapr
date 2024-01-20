@@ -9,18 +9,15 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.0
 Suggests: 
     magick,
-    svglite,
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
     base64enc,
     htmltools,
-    covr,
-    png,
-    RMoCap,
+    png
 Imports: 
     tidyr,
     gganimate,

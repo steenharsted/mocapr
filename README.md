@@ -49,32 +49,6 @@ While all functions should run without loading other libraries I
 recommend you also load the tidyverse `library(tidyverse)` when loading
 the mocapr library.
 
-Feedback and suggestions for improvement and future developments are
-**most welcome**.
-
-## Short on the story behind the package
-
-I am a Ph.d. student at The Department of Sports Science and Clinical
-Biomechanics, Faculty of Health Sciences at the University of Southern
-Denmark (SDU). My work is a part of the project Motor Skills in
-Pre-Schoolers
-([MiPS](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5576290/)), which
-is led by Lise Hestbæk.  
-In MiPS we follow a cohort of \~950 pre-school children with yearly
-follow-ups. At each follow-up we collect data using markerless motion
-capture of the children as they perform a series of jumps and squats. My
-Ph.d. project revolves around collecting and analyzing this motion
-capture data, and the code available in this package is a more general
-form of some of the code I have written so far for use in this project.
-My initial attempts at approaching the data were made in Stata, but my
-work significantly picked up speed after I was introduced to R in the
-summer of 2017, and especially after I discovered the Tidyverse.
-
-I have found R to be completely capable of working with large amounts of
-motion capture data, and I hope this package can, at least, serve as an
-inspiration as to how R can be utilized to work with motion capture
-data.
-
 ## Installation
 
 You can install the development version of `mocapr` from
@@ -90,29 +64,29 @@ order to run `gganimate` functions.
 
 ### Functions and objects in `mocapr`
 
-  - **Import Functions:**
-      - `import_captury()`
-  - **Projection functions**
-      - `project_full_body_to_AP()`
-      - `project_full_body_to_MP()`
-  - **Animation and plotting functions**
-      - `animate_global()`
-      - `animate_anatomical()`
-      - `animate_movement()`
-  - **Helper functions for animations**
-      - `align_movements()`
-  - **Kinematics in the anatomical frontal plane**
-      - `add_frontal_plane_knee_angle()`
-      - `add_frontal_plane_projection_angle()`
-      - `add_frontal_plane_knee_deviation()`
-      - `add_knee_ankle_hip_ratios()`
-  - **Built in data sets**
-      - `mocapr_data`
-      - `mocapr_synthetic_data`
-  - **Movement specific functions**
-      - `add_jump_length_and_height()`
-      - `add_jump_events()`
-      - `add_squat_events()`
+- **Import Functions:**
+  - `import_captury()`
+- **Projection functions**
+  - `project_full_body_to_AP()`
+  - `project_full_body_to_MP()`
+- **Animation and plotting functions**
+  - `animate_global()`
+  - `animate_anatomical()`
+  - `animate_movement()`
+- **Helper functions for animations**
+  - `align_movements()`
+- **Kinematics in the anatomical frontal plane**
+  - `add_frontal_plane_knee_angle()`
+  - `add_frontal_plane_projection_angle()`
+  - `add_frontal_plane_knee_deviation()`
+  - `add_knee_ankle_hip_ratios()`
+- **Built in data sets**
+  - `mocapr_data`
+  - `mocapr_synthetic_data`
+- **Movement specific functions**
+  - `add_jump_length_and_height()`
+  - `add_jump_events()`
+  - `add_squat_events()`
 
 The functions and datasets have descriptions and examples that can be
 explored using `help(function_name)` or `?function_name`.
@@ -125,7 +99,7 @@ visualized below. ![](figures/mocapr_namespace.png)
 `mocapr` contains two sample data sets `mocapr_data` and
 `mocapr_synthetic_data`
 
-#### mocapr\_data
+#### mocapr_data
 
 `mocapr_data` consists of 11 movements, each supplied with a number
 (`movement_nr`) and a short description (`movement_description`). Videos
@@ -147,32 +121,32 @@ library(mocapr)
 mocapr_data %>% 
   group_by(movement_nr, movement_description) %>% 
   nest()
-#> # A tibble: 11 x 3
+#> # A tibble: 11 × 3
 #> # Groups:   movement_nr, movement_description [11]
-#>    movement_nr movement_description                                data         
-#>          <dbl> <chr>                                               <list>       
-#>  1           1 standing long jump for maximal performance          <tibble [135~
-#>  2           2 standing long jump for maximal performance          <tibble [152~
-#>  3           3 standing long jump with simulated poor landing tec~ <tibble [169~
-#>  4           4 vertical jump for maximal performance               <tibble [143~
-#>  5           5 gait normal in a straight line                      <tibble [157~
-#>  6           6 gait normal in a semi square                        <tibble [375~
-#>  7           7 gait with simulated drop foot                       <tibble [191~
-#>  8           8 gait with simulated internal rotation               <tibble [255~
-#>  9           9 capoeira dance                                      <tibble [1,2~
-#> 10          10 forward lunge normal                                <tibble [176~
-#> 11          11 squat normal                                        <tibble [165~
+#>    movement_nr movement_description                                     data    
+#>          <dbl> <chr>                                                    <list>  
+#>  1           1 standing long jump for maximal performance               <tibble>
+#>  2           2 standing long jump for maximal performance               <tibble>
+#>  3           3 standing long jump with simulated poor landing techniqu… <tibble>
+#>  4           4 vertical jump for maximal performance                    <tibble>
+#>  5           5 gait normal in a straight line                           <tibble>
+#>  6           6 gait normal in a semi square                             <tibble>
+#>  7           7 gait with simulated drop foot                            <tibble>
+#>  8           8 gait with simulated internal rotation                    <tibble>
+#>  9           9 capoeira dance                                           <tibble>
+#> 10          10 forward lunge normal                                     <tibble>
+#> 11          11 squat normal                                             <tibble>
 ```
 
 The format of the data is wide and contains frame by frame joint angles
 and global joint center positions. Therefore, each joint is typically
 represented by 6 columns (3 angles and 3 positions). To prevent long
 repetitive column names, all joint related variables are abbreviated
-according to their side (L|R), joint(A|K|H|S|E|W), and
-angle|position.
+according to their side (L\|R), joint(A\|K\|H\|S\|E\|W), and
+angle\|position.
 
 | Side      | Joint        | Angle/Position                                        |
-| :-------- | :----------- | :---------------------------------------------------- |
+|:----------|:-------------|:------------------------------------------------------|
 |           | A (Ankle)    | F (Flexion)                                           |
 | L (left)  | K (Knee)     | Varus                                                 |
 |           | H (Hip)      | DF (Dorsi Flexion)                                    |
@@ -180,11 +154,10 @@ angle|position.
 |           | E (Elbow)    | Y (joint center position on the global Y axis)(up)    |
 |           | S (Shoulder) | Z (joint center position on the global Z axis)(floor) |
 
-Example for left
-knee:
+Example for left knee:
 
 | Abbreviated Variable Name |                   Meaning of abbreviation                   |
-| :-----------------------: | :---------------------------------------------------------: |
+|:-------------------------:|:-----------------------------------------------------------:|
 |            LKF            |                      Left Knee Flexion                      |
 |            LKX            | Left Knee joint center position on the X axis (floor plane) |
 
@@ -225,7 +198,7 @@ The `animate_global()` function animates the subject using the global
 joint center positions. It creates two animations: one in the X and Y
 plane; and one in the Z and Y plane. If the subject is moving along
 either the X or the Z axis the viewpoints will essentially be a side
-view and a front|back view.
+view and a front\|back view.
 
 ``` r
 jump_1 %>% 
@@ -234,17 +207,26 @@ jump_1 %>%
     # gganimate options passed via ...
     nframes = nrow(.), 
     fps = 50)
+#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+#> of ggplot2 3.3.4.
+#> ℹ The deprecated feature was likely used in the mocapr package.
+#>   Please report the issue at <https://github.com/steenharsted/mocapr/issues>.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 <img src="man/figures/README-jump_1_GP-1.gif" width="100%" />
 
-If the recorded subject moves at an angle to the axis’ of the global
+If the recorded subject moves out of the primary planes of the global
 coordinate system, animations and plots using global joint center
-positions will have oblique viewpoints. `jump_2` contains a simulated
-poor landing on the right knee, but the direction of the movement occurs
-at an oblique angle to the X and Z axis’ in the global coordinate
-system. Therefore, using the `animate_global()` function on `jump_2`
-produces an animation with oblique viewpoints.
+positions will appear skewed or tilted. This is what we refer to as
+‘out-of-plane movement’. For instance, `jump_2` simulates a poor landing
+on the right knee, with the direction of the movement occurring out of
+the primary planes (X and Z axes) in the global coordinate system.
+Consequently, using the `animate_global()` function on `jump_2` produces
+an animation that exhibits this out-of-plane movement, which could
+potentially make the animation more challenging to interpret.
 
 ``` r
 jump_2 %>% 
@@ -257,32 +239,39 @@ jump_2 %>%
 
 <img src="man/figures/README-jump_2_GP-1.gif" width="100%" />
 
+## Dealing with out-of-plane movement
+
 ### Animating with `animate_movement()` and `animate_anatomical()`
 
-In many cases, out of axis movement and oblique viewpoints are easy to
-prevent. In these cases the `animate_global()` function might be
-sufficient, but in other cases, such as working with with pre-school
-children, out of axis movement is difficult to prevent without
-interfering with the spontaneous movements of the subject. Oblique
-viewpoints may also stem from differences in the orientation of the
-global coordinate system between motion capture systems or between
-different setups of the same motion-capture system.
+In many instances, it’s straightforward to prevent out-of-plane movement
+and oblique viewpoints, making the `animate_global()` function
+sufficient. However, there are scenarios, such as when working with
+pre-school children, where preventing movement that deviates from the
+primary axes is challenging without interfering with the subject’s
+spontaneous movements. Oblique viewpoints can also arise from variations
+in the orientation—such as rotational or translational differences—of
+the global coordinate system between different motion capture systems or
+setups.
 
-For the purpose of analyzing or interpreting motions, oblique viewpoints
-are, in general, less optimal. This creates a need for animation and
-plotting functions that are free from the orientation of the global
-coordinate system, and instead focused on either the subject itself or
-the direction of the movement the subject is performing. `mocapr` solves
-this challenge by providing two functions that projects the global joint
-center positions onto the planes of the movement direction
-(`project_full_body_to_MP()`) or the anatomical planes the subject
-(`project_full_body_to_AP()`). You can think of these functions as
-functions that creates new coordinate systems that are just
-**shifted/tilted** version of the global coordinate system, such that
-animations that use the joint center positions in the new coordinate
-systems will have viewpoints that are directly in front of and to the
-side of the direction of the movement (`animate_movement()`) or the
-person (`animate_anatomical()`).
+For the purpose of analyzing or interpreting motions, out-of-plane
+movement can distort the perception of movement. This necessitates
+animation and plotting functions that are independent of the orientation
+of the global coordinate system, focusing instead on the subject itself
+or the direction of the movement the subject is performing.
+
+`mocapr` addresses this challenge by providing two functions:
+`project_full_body_to_MP()` and `project_full_body_to_AP()`. The former
+projects the global joint center positions onto the planes aligned with
+the direction of movement, while the latter projects them onto the
+anatomical planes of the subject. Essentially, these functions create
+new coordinate systems that are shifted or tilted versions of the global
+coordinate system.
+
+As a result, animations that use the joint center positions in these new
+coordinate systems, such as those created by `animate_movement()` or
+`animate_anatomical()`, will have viewpoints that are directly in front
+of and to the side of the direction of the movement or the person. This
+allows for a more accurate and intuitive interpretation of the motion.
 
 The direction of the movement is determined by the position of the
 subject at the first and the last frame of the recording.
@@ -339,7 +328,7 @@ direction of the movement changes throughout the recording.
 Lets explore the difference between the two types of projections by
 looking at a movement that is not unidirectional.
 
-#### animate\_movement()
+#### animate_movement()
 
 ``` r
 gait %>%
@@ -358,7 +347,7 @@ gait %>%
 
 <img src="man/figures/README-walking_square_MP-1.gif" width="100%" />
 
-#### animate\_anatomical()
+#### animate_anatomical()
 
 ``` r
 gait %>%

@@ -26,7 +26,7 @@
 #' \code{\link{mocapr_data}}\cr
 #' \code{\link{mocapr_synthetic_data}}\cr
 #'
-#' @docType package
+#' _PACKAGE
 #' @name mocapr
 NULL
 #> NULL
