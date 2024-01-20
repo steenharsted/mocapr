@@ -293,7 +293,7 @@
     if(reduce_data) {
       #Select only Frame number and Joint center positions from the joints we wish to plot.
       df <- df %>%
-        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"), {{row_facets}}, {{col_facets}}, {{subject}})
+        dplyr::select(frame, dplyr::ends_with("_APR"), dplyr::ends_with("_APU"), dplyr::ends_with("_APF"),{{row_facets}}, {{col_facets}}, {{subject}})
     }
 
 
@@ -638,7 +638,7 @@ mocap_plot_basic <- function(.data,
     ggplot2::ylab("Height (mm)")+
     ggplot2::xlab("(mm)")+
     ggplot2::coord_equal()+
-    ggplot2::guides(size = FALSE)+
+    ggplot2::guides(size = "none")+
     ggplot2::theme_bw()+
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),
@@ -737,7 +737,7 @@ mocap_plot_avatar <- function(.plot,
 
   if(line_colored){
     df_plot <- df_plot+
-      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, size = size_path_color, color = Side), alpha = line_colored_alpha)
+      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, linewidth = size_path_color, color = Side), alpha = line_colored_alpha)
   }
 
   if(point & use_geom_point){
@@ -752,7 +752,7 @@ mocap_plot_avatar <- function(.plot,
 
   if(line_black){
     df_plot <- df_plot+
-      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, size = size_path_black), color = "black", alpha = line_black_alpha)
+      ggplot2::geom_path(ggplot2::aes(x = value, y = {{up_column}}, linewidth = size_path_black), color = "black", alpha = line_black_alpha)
   }
 
   df_plot

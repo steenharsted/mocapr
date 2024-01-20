@@ -65,7 +65,7 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
       !!New_R := AP_R_X*!!X + AP_R_Y*!!Y + AP_R_Z*!!Z,
       !!New_U := AP_U_X*!!X + AP_U_Y*!!Y + AP_U_Z*!!Z,
       !!New_F := AP_F_X*!!X + AP_F_Y*!!Y + AP_F_Z*!!Z) %>%
-    dplyr::select(New_R, New_U, New_F)
+    dplyr::select(dplyr::all_of(c(New_R, New_U, New_F)))
 
   return(data)
 }
@@ -203,7 +203,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New", .method 
       !!New_F := MPF_X*!!X + MPF_Y*!!Y + MPF_Z*!!Z,
       !!New_U := MPU_X*!!X + MPU_Y*!!Y + MPU_Z*!!Z,
       !!New_R := MPR_X*!!X + MPR_Y*!!Y + MPR_Z*!!Z) %>%
-    dplyr::select(New_F, New_U, New_R)
+    dplyr::select(dplyr::all_of(c(New_F, New_U, New_R)))
 
   return(data)
 }

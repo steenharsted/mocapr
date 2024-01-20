@@ -57,7 +57,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
 
   #test if all groups contain only 1 match
   df_test  <- df %>%
-    dplyr::summarise(matches_in_group = sum(.data$dummy, na.rm = TRUE))
+    dplyr::summarise(matches_in_group = sum(dummy, na.rm = TRUE))
 
   if(any(!df_test$matches_in_group == 1) ) {
     df_test <- df_test %>%
@@ -103,7 +103,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
       dplyr::mutate(frame = dplyr::row_number()) %>%
 
       #remove helper vars and ungroup tibble
-      dplyr::select(-.data$duplicate_row, -.data$dummy, -.data$frame_nr_at_dummy, -.data$min_frame_by_group, -.data$max_frame_by_group, -.data$min_frame_all, -.data$max_frame_all, -.data$prolong) %>%
+      dplyr::select(-"duplicate_row", -"dummy", -"frame_nr_at_dummy", -"min_frame_by_group", -"max_frame_by_group", -"min_frame_all", -"max_frame_all", -"prolong") %>%
       dplyr::ungroup()}
   else{
     df <- df %>%
@@ -118,7 +118,7 @@ align_movements <- function(.data, .group_var, event_var, event_value, return_eq
         frame = min(.data$frame) + abs(.data$min_frame_all) + dplyr::row_number()) %>%
 
       #remove helper vars and ungroup tibble
-      dplyr::select(-.data$duplicate_row, -.data$dummy, -.data$frame_nr_at_dummy, -.data$min_frame_by_group, -.data$max_frame_by_group, -.data$min_frame_all, -.data$max_frame_all, -.data$prolong) %>%
+      dplyr::select(-"duplicate_row", -"dummy", -"frame_nr_at_dummy", -"min_frame_by_group", -"max_frame_by_group", -"min_frame_all", -"max_frame_all", -"prolong") %>%
       dplyr::ungroup()}
   df
 }
