@@ -7,14 +7,7 @@ mocapr
 
 <!-- badges: start -->
 
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/steenharsted/mocapr?branch=master&svg=true)](https://ci.appveyor.com/project/steenharsted/mocapr)
-[![Codecov test
-coverage](https://codecov.io/gh/steenharsted/mocapr/branch/master/graph/badge.svg)](https://codecov.io/gh/steenharsted/mocapr?branch=master)
-[![R build
-status](https://github.com/steenharsted/mocapr/workflows/R-CMD-check/badge.svg)](https://github.com/steenharsted/mocapr/actions)
-[![GitHub Actions
-Status](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steenharsted/mocapr/actions)
+[![R-CMD-check](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `mocapr` is to help researchers and clinicians to work with
