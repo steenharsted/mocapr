@@ -4,7 +4,7 @@
 \alias{import_optitrack_csv}
 \title{Import csv files exported by the Optitrack system}
 \usage{
-import_optitrack_csv(filename, frames_pr_second = 50)
+import_optitrack_csv(filename)
 }
 \arguments{
 \item{filename}{Path and filename of a .csv file containg motion capture data from the Optitrack system}
