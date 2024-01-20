@@ -23,10 +23,10 @@ environment:
 # Adapt as necessary starting from here
 
 build_script:
-  - travis-tool.sh install_deps
+  - ps: Rscript -e "devtools::install_deps(dependencies = TRUE)"
 
 test_script:
-  - travis-tool.sh run_tests
+  - ps: Rscript -e "devtools::check()"
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*
