@@ -9,6 +9,8 @@ output: github_document
 knitr::opts_chunk$set(
   cache = FALSE,
   collapse = TRUE,
+  message = FALSE, 
+  warning = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   fig.asp = 0.5, 
