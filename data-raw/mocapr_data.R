@@ -1,6 +1,6 @@
 ## code to prepare `mocapr_data` dataset goes here
 mocapr_data <- tibble::tibble(
-  file = list.files(here::here("data-raw"), pattern = ".csv")) %>%
+  file = list.files(here::here("data-raw"), pattern = "^shots_")) %>%
   dplyr::mutate(
     data = purrr::map(.x = file, .f = ~mocapr::import_captury(here::here("data-raw", .x)))) %>%
   dplyr::mutate(

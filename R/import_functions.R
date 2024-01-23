@@ -316,3 +316,95 @@ import_optitrack_csv <- function(filename){
      dplyr::select(mocap_system, frame, time_seconds, dplyr::everything())
 
 }
+
+
+
+
+
+
+
+
+#' FreeMoCap import
+#'
+#' \code{import_freemocap_csv} takes the filepath and filename of a .csv file containing motion capture data captured and exported using the FreeMoCap motion capture system. The
+#' .csv file is then imported and cleaned and returned as a tibble. All global joint center positions are in abbreviated names (e.g. global Y coordinate of the right hip joint is RHY).\cr
+#' Please see the GitHub README.me for a more detailed description.
+#'
+#' @param filename Path and filename to a .csv file with MoCap data from the FreeMoCap software
+#' @param keep_face_coords  A logical(TRUE/FALSE). Should coordinates from ears, mouth, eyes, and nose be kept if they exist in the dataframe? Defaults to FALSE
+#' @param keep_finger_coords A logical(TRUE/FALSE). Should coordinates from fingers be kept if they exist in the dataframe? Defaults to FALSE
+#'
+#' @return A tibble
+#' @export
+#'
+#' @examples
+#' path <- system.file("examples", "freemocap_sit_to_stand.csv", package = "mocapr")
+#' import_optitrack_csv(path)
+import_freemocap_csv <- function(filename,
+                                 keep_face_coords = FALSE,
+                                 keep_finger_coords = FALSE){
+
+  # Avoid "No visible binding for global variable ..." when performing check()
+  df <- LKF <- RKF <- frame <- LHX <- RHX <- LHY <- RHY <- LHZ <- RHZ <- mocap_system <- time_seconds <- NULL
+
+  # Function
+   df <- suppressMessages(suppressWarnings(readr::read_csv(
+    paste0(filename), skip = 0, col_names = TRUE)))
+
+   # Drop all face columns if face is FALSE
+   if(!keep_face_coords){
+     df <- df %>%
+       dplyr::select(-dplyr::starts_with("nose_"),
+                     -dplyr::starts_with("mouth_"),
+                     -dplyr::contains("_eye_"),
+                     -dplyr::contains("_ear_"))
+   }
+
+   # Drop all finger columns if fingers is FALSE
+   if(!keep_finger_coords){
+     df <- df %>%
+       dplyr::select(-dplyr::contains("_pinky_"),
+                     -dplyr::starts_with("right_index_"),
+                     -dplyr::starts_with("left_index_"),
+                     -dplyr::contains("_thumb_")
+                     )
+   }
+
+   # Clean names
+   names(df) <- names(df) %>%
+     stringr::str_replace("left", "L") %>%
+     stringr::str_replace("right", "R") %>%
+     stringr::str_replace("shoulder", "S") %>%
+     stringr::str_replace("elbow", "E") %>%
+     stringr::str_replace("wrist", "W") %>%
+     stringr::str_replace("hip", "H") %>%
+     stringr::str_replace("knee", "K") %>%
+     stringr::str_replace("ankle", "A") %>%
+     stringr::str_replace("heel", "HE") %>%
+     stringr::str_replace("foot_index", "T") %>%
+     stringr::str_replace("_x", "_X") %>%
+     stringr::str_replace("_y", "_Y") %>%
+     stringr::str_replace("_z", "_Z") %>%
+     stringr::str_remove("(?<=^[A-Z])_") %>%
+     stringr::str_remove("_(?=[A-Z]$)")
+
+
+
+   # Finish clean up
+   df %>%
+     tibble::as_tibble() %>%
+     dplyr::mutate(
+       frame = dplyr::row_number()
+       ) %>%
+
+     # Change all columns to numeric
+     dplyr::mutate(
+       dplyr::across(dplyr::everything(),
+                     as.numeric),
+       dplyr::across(dplyr::ends_with("Y"), ~ .x*-1)) %>%
+
+     #Add a column with the system name = "FreeMoCap" because this is the import_freemocap_csv() function
+     dplyr::mutate(mocap_system = "FreeMoCap") %>%
+     dplyr::select(mocap_system, frame, dplyr::everything())
+
+}
