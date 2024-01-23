@@ -20,11 +20,26 @@ test_that("import_captury", {
 
 test_that("import_optitrack", {
   path <- system.file("examples", "optitrack.csv", package = "mocapr")
-  df <- suppressMessages(import_captury(path))
-  expect_equal(nrow(df), 143)
-  expect_equal(ncol(df), 70)
-  expect_equal(df[[1,1]], "Captury")
-  expect_equal(round(df[[1,5]], 4), -128.8398)
+  df <- suppressMessages(import_optitrack_csv(path))
+  expect_equal(nrow(df), 765)
+  expect_equal(ncol(df), 150)
+  expect_equal(df[[1,1]], "Optitrack")
+  expect_equal(round(df[[1,5]], 3), 0.006)
+
+
+  df <- suppressMessages(import_optitrack_csv(path, keep_rotations = FALSE))
+  expect_equal(nrow(df), 765)
+  expect_equal(ncol(df), 66)
+
+  df <- suppressMessages(import_optitrack_csv(path, keep_rotations = FALSE, keep_finger_coords = TRUE))
+  expect_equal(nrow(df), 765)
+  expect_equal(ncol(df), 156)
+
+  df <- suppressMessages(import_optitrack_csv(path, keep_rotations = FALSE, keep_marker_coords = TRUE))
+  expect_equal(nrow(df), 765)
+  expect_equal(ncol(df), 156)
+
+
 })
 
 test_that("import_freemocap_csv", {

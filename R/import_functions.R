@@ -254,7 +254,10 @@ import_captury <- function(filename, frames_pr_second = 50){
 #' @examples
 #' path <- system.file("examples", "optitrack.csv", package = "mocapr")
 #' import_optitrack_csv(path)
-import_optitrack_csv <- function(filename){
+import_optitrack_csv <- function(filename,
+                                 keep_rotations = TRUE,
+                                 keep_finger_coords = FALSE,
+                                 keep_marker_coords = FALSE){
 
   # Avoid "No visible binding for global variable ..." when performing check()
   df <- LKF <- RKF <- frame <- LHX <- RHX <- LHY <- RHY <- LHZ <- RHZ <- mocap_system <- time_seconds <- NULL
@@ -263,13 +266,20 @@ import_optitrack_csv <- function(filename){
    df <- suppressMessages(suppressWarnings(readr::read_csv(
     paste0(filename), skip = 2, col_names = FALSE)))
 
-   # Drop all columns with markers
-   df <- df[, !grepl("Marker", df[1,])]
+   # Drop all columns with markers if keep_marker_coords is FALSE
+   if(!keep_marker_coords){
+     df <- df[, !grepl("Marker", df[1,])]
+   }
 
 
    # Clean names
-   # This is done by combining information from the first row 2, 4, and 5 of the dataframe
+   # This is done by combining information from the first row 1, 2, 4, and 5 of the dataframe
    df <- as.data.frame(df)
+
+   row1 <- df[1,] %>%
+     stringr::str_remove("Bone$") %>%
+     stringr::str_replace("Bone Marker", "BM_") %>%
+     stringr::str_replace("Marker", "M_")
 
    row2 <- df[2,] %>%
      stringr::str_remove_all("Skeleton") %>%
@@ -291,7 +301,7 @@ import_optitrack_csv <- function(filename){
    row5 <- gsub("temp", "Z", row5)
 
    # Create the new names
-   newnames <- paste0(row2, row4, row5)
+   newnames <- paste0(row1, row2, row4, row5)
 
    # Drop the first 5 rows
    df <- df[-(1:5), ]
@@ -299,12 +309,36 @@ import_optitrack_csv <- function(filename){
    # Assign the new names to the dataframe
    names(df) <- newnames
 
+   # Remove columns?
+   df <- df %>% tibble::as_tibble()
+
+   # Remove rotations if keep_rotations is FALSE
+   if(!keep_rotations){
+     df <- df %>%
+       dplyr::select(-dplyr::contains("_rot_"))
+   }
+
+   # Remove finger coords if keep_finger_coords is FALSE
+   if(!keep_finger_coords){
+     df <- df %>%
+       dplyr::select(
+         -dplyr::matches("Thumb[0-9]"),
+         -dplyr::matches("Index[0-9]"),
+         -dplyr::matches("Middle[0-9]"),
+         -dplyr::matches("Ring[0-9]"),
+         -dplyr::matches("Pinky[0-9]")
+       )
+   }
+
    # Finish clean up
    df %>%
-     tibble::as_tibble() %>%
      dplyr::rename(
        "frame" = 1,
-       "time_seconds" = 2) %>%
+       "time_seconds" = 2,
+       "CGX" = "X",
+       "CGY" = "Y",
+       "CGZ" = "Z"
+       ) %>%
 
      # Change all columns to numeric
      dplyr::mutate(
