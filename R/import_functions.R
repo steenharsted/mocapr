@@ -362,7 +362,6 @@ import_optitrack_csv <- function(filename,
 
 
 #' FreeMoCap import
-#'
 #' \code{import_freemocap_csv} takes the filepath and filename of a .csv file containing motion capture data captured and exported using the FreeMoCap motion capture system. The
 #' .csv file is then imported and cleaned and returned as a tibble. All global joint center positions are in abbreviated names (e.g. global Y coordinate of the right hip joint is RHY).\cr
 #' Please see the GitHub README.me for a more detailed description.
@@ -376,7 +375,7 @@ import_optitrack_csv <- function(filename,
 #'
 #' @examples
 #' path <- system.file("examples", "freemocap_sit_to_stand.csv", package = "mocapr")
-#' import_optitrack_csv(path)
+#' import_freemocap_csv(path)
 import_freemocap_csv <- function(filename,
                                  keep_face_coords = FALSE,
                                  keep_finger_coords = FALSE){

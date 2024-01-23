@@ -2,7 +2,10 @@
 % Please edit documentation in R/import_functions.R
 \name{import_freemocap_csv}
 \alias{import_freemocap_csv}
-\title{FreeMoCap import}
+\title{FreeMoCap import
+\code{import_freemocap_csv} takes the filepath and filename of a .csv file containing motion capture data captured and exported using the FreeMoCap motion capture system. The
+.csv file is then imported and cleaned and returned as a tibble. All global joint center positions are in abbreviated names (e.g. global Y coordinate of the right hip joint is RHY).\cr
+Please see the GitHub README.me for a more detailed description.}
 \usage{
 import_freemocap_csv(
   filename,
@@ -21,11 +24,12 @@ import_freemocap_csv(
 A tibble
 }
 \description{
+FreeMoCap import
 \code{import_freemocap_csv} takes the filepath and filename of a .csv file containing motion capture data captured and exported using the FreeMoCap motion capture system. The
 .csv file is then imported and cleaned and returned as a tibble. All global joint center positions are in abbreviated names (e.g. global Y coordinate of the right hip joint is RHY).\cr
 Please see the GitHub README.me for a more detailed description.
 }
 \examples{
 path <- system.file("examples", "freemocap_sit_to_stand.csv", package = "mocapr")
-import_optitrack_csv(path)
+import_freemocap_csv(path)
 }
