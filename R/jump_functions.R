@@ -431,7 +431,7 @@ add_jump_length_and_height <- function(.data, method = "movement_plane"){
     }
 
     if(suppressWarnings(any(is.null(.data$LA_MPF), is.null(.data$RA_MPF)))) {
-      stop(".data must contain the columns 'LA_MPF' and 'RA_MPF'. You probably need to run 'mocapr::add_project_full_body_to_MP()' first.")
+      stop(".data must contain the columns 'LA_MPF' and 'RA_MPF'. You probably need to run 'mocapr::project_full_body_to_MP()' first.")
     }
 
     if(suppressWarnings(any(is.null(.data$LHY), is.null(.data$RHY)))) {

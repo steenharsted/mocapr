@@ -37,7 +37,7 @@ test_that("import_optitrack", {
 
   df <- suppressMessages(import_optitrack_csv(path, keep_rotations = FALSE, keep_marker_coords = TRUE))
   expect_equal(nrow(df), 765)
-  expect_equal(ncol(df), 156)
+  expect_equal(ncol(df), 324)
 
 
 })

@@ -247,6 +247,9 @@ import_captury <- function(filename, frames_pr_second = 50){
 #' Please see the GitHub README.me for a more detailed description.
 #'
 #' @param filename Path and filename of a .csv file containg motion capture data from the Optitrack system
+#' @param keep_rotations A logical. Should columns with joint rotations be kept if they exist in the data? Defaults to TRUE
+#' @param keep_finger_coords A logical. Should finger coordinates be kept if they exist in the data? Defaults to FALSE
+#' @param keep_marker_coords A logical. Should marker coordinate be kept if they exist in the data? Columns with Bone Marker data will start with a "BM". Columna with Marker data will start with a "M". Defaults to FALSE
 #'
 #' @return A tibble containing joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
 #' @export

@@ -17,16 +17,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# mocapr
-
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/steenharsted/mocapr/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/steenharsted/mocapr/actions/workflows/test-coverage.yaml)
 <!-- badges: end -->
 
-The goal of `mocapr` is to help researchers and clinicians to work with motion capture data in R by providing functions that can import, plot, animate, and analyse motion capture data. The package is in **the early experimental stages of development**. 
-
-`mocapr`, supports import from [the Captury](http://thecaptury.com/) system, but is capable of working with motion capture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in future versions of this package. 
-
+The goal of `mocapr` is to help researchers and clinicians to work with motion capture data in R by providing functions that can import, plot, animate, and analyse motion capture data. 
 
 `mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2), [`ggforce`](https://ggforce.data-imaginist.com/)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
 The package also contains two sample data sets `mocapr_data` and `mocapr_synthetic_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
@@ -42,11 +38,21 @@ You can install the development version of `mocapr` from [GitHub](https://github
 # install.packages("devtools")
 devtools::install_github("steenharsted/mocapr")
 ```
+
 You may have to install additional packages manually that are needed in order to run `gganimate` functions.
+
+
+### Import files
+`mocapr`, supports import of .csv files from systems like: [the Captury](http://thecaptury.com/), [FreeMoCap](https://github.com/freemocap/freemocap), and [Optitrack](https://optitrack.com/). 
+
+`mocapr` is capable of working with motion capture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in future versions of this package. 
+
 
 ## Functions and objects in `mocapr`
 * **Import Functions:**
-    * `import_captury()`
+    * `import_captury_csv()`
+    * `import_freemocap_csv()`
+    * `import_optitrack_csv()`
 * **Projection functions**
     * `project_full_body_to_AP()`
     * `project_full_body_to_MP()`
@@ -66,7 +72,7 @@ You may have to install additional packages manually that are needed in order to
     * `mocapr_synthetic_data`
 * **Movement specific functions**
     * `add_jump_length_and_height()`
-    * `add_jump_events()`
+    * `add_phases_jump()`
     * `add_squat_events()`
 
 The functions and datasets have descriptions and examples that can be explored using `help(function_name)` or `?function_name`.

@@ -4,10 +4,21 @@
 \alias{import_optitrack_csv}
 \title{Import csv files exported by the Optitrack system}
 \usage{
-import_optitrack_csv(filename)
+import_optitrack_csv(
+  filename,
+  keep_rotations = TRUE,
+  keep_finger_coords = FALSE,
+  keep_marker_coords = FALSE
+)
 }
 \arguments{
 \item{filename}{Path and filename of a .csv file containg motion capture data from the Optitrack system}
+
+\item{keep_rotations}{A logical. Should columns with joint rotations be kept if they exist in the data? Defaults to TRUE}
+
+\item{keep_finger_coords}{A logical. Should finger coordinates be kept if they exist in the data? Defaults to FALSE}
+
+\item{keep_marker_coords}{A logical. Should marker coordinate be kept if they exist in the data? Columns with Bone Marker data will start with a "BM". Columna with Marker data will start with a "M". Defaults to FALSE}
 }
 \value{
 A tibble containing joint angles and global joint center positions of the: toes, ankles, knees, hips, center of gravity, shoulders, elbows, and wrists.
