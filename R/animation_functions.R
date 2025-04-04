@@ -441,10 +441,10 @@ animate_global <- function(.data,
                              remove_facet_labels = TRUE,
                              use_geom_point = TRUE,
                              line_colored = TRUE,
-                             line_colored_size = 1,
+                             line_colored_size = 0.5,
                              line_colored_alpha = 1,
                              line_black = TRUE,
-                             line_black_size = 1,
+                             line_black_size = 0.5,
                              line_black_alpha = 0.5,
                              point = TRUE,
                              point_size = 2,
@@ -757,6 +757,7 @@ mocap_plot_avatar <- function(.plot,
   }
 
   df_plot
+
 }
 
 #' Make an animation from a \code{mocapr} plot
@@ -780,7 +781,7 @@ mocap_finish_animation <- function(.data, ...){
   frame <- NULL
 
 
-  df_plot <- .data+
+  df_plot <- .data +
     gganimate::transition_time(frame)+
     gganimate::ease_aes('linear')
 
