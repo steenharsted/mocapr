@@ -15,7 +15,7 @@ project_single_joint_to_AP(.data, Y, X, Z, New_Name = "New")
 
 \item{Z}{The name of the global Z coordinate column of the joint you wish to project to the frontal plane}
 
-\item{New_Name}{The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
+\item{New_Name}{The abbreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
 }
 \value{
 A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'

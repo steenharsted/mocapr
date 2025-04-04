@@ -14,7 +14,7 @@
 * Add arguments to include line_colored, line_black, and points (TRUE/FALSE)
 * Add arguments to control the alpha of line_colored, line_black, and points
 * Break the animation functions into smaller functions for better functionality and customization options.
-* Addded the function add_phases_jump(), this will replace the function add_jump_events()
+* Added the function add_phases_jump(), this will replace the function add_jump_events()
 * deprecated the function add_jump_events()
 
 # mocapr 0.0.1.9004

@@ -12,7 +12,7 @@
 #' @param Y The name of the global Y coordinate column (up direction) of the joint you wish to project to the frontal plane
 #' @param X The name of the global X coordinate column of the joint you wish to project to the frontal plane
 #' @param Z The name of the global Z coordinate column of the joint you wish to project to the frontal plane
-#' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
+#' @param New_Name The abbreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
 #'
 #' @return A tibble containing two columns with coordinates in the right and up direction. The variables are named '"New_Name"_FPR' and '"New_Name"_FPU'
 #' @importFrom rlang :=
@@ -83,7 +83,7 @@ project_single_joint_to_AP<- function(.data, Y, X, Z, New_Name ="New"){
 #' @param Y The name of the global Y coordinate column (up direction) of the joint you wish to project to the movement plane
 #' @param X The name of the global X coordinate column of the joint you wish to project to the movement plane
 #' @param Z The name of the global Z coordinate column of the joint you wish to project to the movement plane
-#' @param New_Name The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
+#' @param New_Name The abbreviated name of the new joint, the name of the returned variables will start with the value given in New_Name
 #' @param .method Must be one of `c("first_last", "first_dist")`.\cr What method shall be used to create the projection?\cr
 #' * `first_last` the projection will be created by using the first and the last frame of the recording.\cr
 #' * `first_dist` the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.

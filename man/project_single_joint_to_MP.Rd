@@ -22,7 +22,7 @@ project_single_joint_to_MP(
 
 \item{Z}{The name of the global Z coordinate column of the joint you wish to project to the movement plane}
 
-\item{New_Name}{The abreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
+\item{New_Name}{The abbreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
 
 \item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?\cr
 \itemize{

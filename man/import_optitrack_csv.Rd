@@ -25,7 +25,7 @@ A tibble containing joint angles and global joint center positions of the: toes,
 }
 \description{
 \code{import_optitrack_csv} takes the filepath and filename of a .csv file containg motion capture data captured and exported using the Optitrack motion capture system. The
-.csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abreviated names (e.g. left knee flexion =
+.csv file is then imported and cleaned and returned as a tibble. All joint angles and global joint center positions are in abbreviated names (e.g. left knee flexion =
 LKF, global Y coordinate of the right hip joint is RHY).\cr
 Please see the GitHub README.me for a more detailed description.
 }
