@@ -451,7 +451,7 @@ animate_global <- function(.data,
                              circle_size = 40,
                              point_alpha = 1,
                              head_scale = 1.5,
-                             torso_scale = 1.5,
+                             torso_scale = 1.1,
                              return_data = FALSE,
                              return_plot = FALSE,
                              reduce_data = FALSE,
@@ -639,6 +639,7 @@ mocap_plot_basic <- function(.data,
     ggplot2::xlab("(mm)")+
     ggplot2::coord_equal()+
     ggplot2::guides(size = "none")+
+    ggplot2::guides(linewidth = "none")+
     ggplot2::theme_bw()+
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),
