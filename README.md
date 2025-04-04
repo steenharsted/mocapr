@@ -45,10 +45,11 @@ order to run `gganimate` functions.
 
 ### Import files
 
-`mocapr`, supports import of .csv files from systems like: [the
-Captury](http://thecaptury.com/),
+`mocapr` supports import of .csv files from motion capture systems like:
+[the Captury](http://thecaptury.com/),
 [FreeMoCap](https://github.com/freemocap/freemocap), and
-[Optitrack](https://optitrack.com/).
+[OptiTrack](https://optitrack.com/), as well as kinematic output files
+(.mot) from [OpenCap](https://www.opencap.ai/).
 
 `mocapr` is capable of working with motion capture data from other
 systems as long as the data contain frame by frame global spatial
@@ -143,21 +144,22 @@ repetitive column names, all joint related variables are abbreviated
 according to their side (L\|R), joint(A\|K\|H\|S\|E\|W), and
 angle\|position.
 
-| Side      | Joint        | Angle/Position                                        |
-|:----------|:-------------|:------------------------------------------------------|
-|           | A (Ankle)    | F (Flexion)                                           |
-| L (left)  | K (Knee)     | Varus                                                 |
-|           | H (Hip)      | DF (Dorsi Flexion)                                    |
-| R (Right) | W (Wrist)    | X (joint center position on the global X axis (floor) |
-|           | E (Elbow)    | Y (joint center position on the global Y axis)(up)    |
-|           | S (Shoulder) | Z (joint center position on the global Z axis)(floor) |
+| Side | Joint | Angle/Position |
+|:---|:---|:---|
+|  | A (Ankle) | F (Flexion) |
+| L (left) | K (Knee) | Varus |
+|  | H (Hip) | DF (Dorsi Flexion) |
+|  | T (Toe) |  |
+| R (Right) | W (Wrist) | X (joint center position on the global X axis (floor) |
+|  | E (Elbow) | Y (joint center position on the global Y axis)(up) |
+|  | S (Shoulder) | Z (joint center position on the global Z axis)(floor) |
 
 Example for left knee:
 
-| Abbreviated Variable Name |                   Meaning of abbreviation                   |
-|:-------------------------:|:-----------------------------------------------------------:|
-|            LKF            |                      Left Knee Flexion                      |
-|            LKX            | Left Knee joint center position on the X axis (floor plane) |
+| Abbreviated Variable Name | Meaning of abbreviation |
+|:--:|:--:|
+| LKF | Left Knee Flexion |
+| LKX | Left Knee joint center position on the X axis (floor plane) |
 
 The focus of this tutorial is on plotting and animating motion capture
 data. For this we only need the joint center positions. I will not

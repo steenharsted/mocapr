@@ -39,6 +39,10 @@
 #'                 prolong_event = 1)
 align_movements <- function(.data, .group_var, event_var, event_value, return_equal_length_groups = TRUE, prolong_event = 1){
 
+  # Avoid "No visible binding for global variable ..." when performing check()
+  dummy <- NULL
+
+
   #Ensure prolong_event is a positive integer
   if(prolong_event %%1 != 0 | prolong_event <= 0 ) {
     stop("prolong_event must be a whole positive number")

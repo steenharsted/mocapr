@@ -39,7 +39,7 @@ test_that("plots are stable between versions", {
   expect_error(df$layers[[4]]$geom$required_aes)
 
   # Test that size guide removed
-  expect_identical(df$guides$size, "none")
+  expect_identical(df$guides$size, NULL)
 
   # Test Labels are stable
   expect_identical(df$labels, list(

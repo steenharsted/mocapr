@@ -45,7 +45,7 @@ You may have to install additional packages manually that are needed in order to
 
 
 ### Import files
-`mocapr`, supports import of .csv files from systems like: [the Captury](http://thecaptury.com/), [FreeMoCap](https://github.com/freemocap/freemocap), and [Optitrack](https://optitrack.com/). 
+`mocapr` supports import of .csv files from motion capture systems like: [the Captury](http://thecaptury.com/), [FreeMoCap](https://github.com/freemocap/freemocap), and [OptiTrack](https://optitrack.com/), as well as kinematic output files (.mot) from [OpenCap](https://www.opencap.ai/). 
 
 `mocapr` is capable of working with motion capture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in future versions of this package. 
 
@@ -108,6 +108,7 @@ The format of the data is wide and contains frame by frame joint angles and glob
 |         | A  (Ankle)   |F  (Flexion)   |
 |L (left) | K  (Knee)    |Varus          |
 |         | H  (Hip)     |DF (Dorsi Flexion)|
+|         | T  (Toe)     |               |
 |R (Right)| W  (Wrist)   |X  (joint center position on the global X axis (floor)|
 |         | E  (Elbow)   |Y  (joint center position on the global Y axis)(up)|
 |         | S  (Shoulder)|Z  (joint center position on the global Z axis)(floor)|

@@ -27,6 +27,7 @@ import_captury_csv <- function(filename, frames_pr_second = 50){
   X100 <- X101 <- X102 <- X103 <- X104 <- X105 <- X109 <- X110 <- X111 <- X112 <- X113 <- X114 <- X115 <- X116 <- NULL
   X117 <- X121 <- X122 <- X123 <- X127 <- X128 <- X129 <- X133 <- X134 <- X135 <- X139 <- X140 <- X141 <- X145 <- NULL
   X146 <- X147 <- X151 <- X152 <- X153 <- X91 <- X92 <- X93 <- X97 <- X98 <- X99 <- NULL
+  marks <- NULL
 
 
   df <- LKF <- RKF <- frame <- LHX <- RHX <- LHY <- RHY <- LHZ <- RHZ <- mocap_system <- time_seconds <- NULL
@@ -125,7 +126,12 @@ import_captury_csv <- function(filename, frames_pr_second = 50){
       LKF = LKF*(-1),
       RKF = RKF*(-1),
       #Calculate time in seconds
-      time_seconds = frame/frames_pr_second) %>%
+      time_seconds = frame/frames_pr_second,
+
+      # Ensure that marks is a character
+      marks = as.character(marks)
+
+      ) %>%
     dplyr::select(mocap_system, frame, time_seconds, dplyr::everything()) %>%
     dplyr::as_tibble(df)
 }
@@ -390,8 +396,8 @@ import_freemocap_csv <- function(filename,
    # Drop all face columns if face is FALSE
    if(!keep_face_coords){
      df <- df %>%
-       dplyr::select(-dplyr::starts_with("nose_"),
-                     -dplyr::starts_with("mouth_"),
+       dplyr::select(-dplyr::contains("nose_"),
+                     -dplyr::contains("mouth_"),
                      -dplyr::contains("_eye_"),
                      -dplyr::contains("_ear_"))
    }
@@ -400,8 +406,8 @@ import_freemocap_csv <- function(filename,
    if(!keep_finger_coords){
      df <- df %>%
        dplyr::select(-dplyr::contains("_pinky_"),
-                     -dplyr::starts_with("right_index_"),
-                     -dplyr::starts_with("left_index_"),
+                     -dplyr::contains("right_index_"),
+                     -dplyr::contains("left_index_"),
                      -dplyr::contains("_thumb_")
                      )
    }
@@ -422,7 +428,9 @@ import_freemocap_csv <- function(filename,
      stringr::str_replace("_y", "_Y") %>%
      stringr::str_replace("_z", "_Z") %>%
      stringr::str_remove("(?<=^[A-Z])_") %>%
-     stringr::str_remove("_(?=[A-Z]$)")
+     stringr::str_remove("_(?=[A-Z]$)") |>
+     stringr::str_remove_all("body_") |>
+     stringr::str_remove("_")
 
 
 
@@ -443,4 +451,25 @@ import_freemocap_csv <- function(filename,
      dplyr::mutate(mocap_system = "FreeMoCap") %>%
      dplyr::select(mocap_system, frame, dplyr::everything())
 
+}
+
+
+#' Import OpenCap .mot file
+#'
+#' Reads a .mot file exported from OpenCap and returns it as a tibble.
+#'
+#' @param .mot Path to the .mot file (character).
+#'
+#' @return A tibble with numeric columns representing OpenCap output.
+#' @export
+#'
+#' @examples
+#' # file_path <- "path/to/opencap_file.mot"
+#' # df <- import_opencap_mot(file_path)
+import_opencap_mot <- function(.mot) {
+  readr::read_delim(file = .mot,
+                    delim = "\t",
+                    skip = 10,
+                    show_col_types = FALSE) |>
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric))
 }
