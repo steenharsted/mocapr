@@ -155,7 +155,7 @@ project_single_joint_to_MP <- function(.data, Y, X, Z, New_Name ="New", .method 
       warning(glue::glue(
         "In `project_single_joint_to_MP()`: The distance between first and last frame is much shorter than the max distance from first frame.\n",
         "Consider using `.method = 'first_dist'` instead.\n",
-        "→ dist(first, last): {round(dist_first_last, 3)}, max dist: {round(max_dist, 3)}"
+        "-> dist(first, last): {round(dist_first_last, 3)}, max dist: {round(max_dist, 3)}"
       ))
     }
 

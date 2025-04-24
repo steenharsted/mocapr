@@ -25,6 +25,7 @@ animate_movement(
   point_alpha = 1,
   head_scale = 2,
   torso_scale = 1.5,
+  adaptive_line_scaling = TRUE,
   return_data = FALSE,
   return_plot = FALSE,
   reduce_data = FALSE,
@@ -71,6 +72,8 @@ animate_movement(
 \item{head_scale}{The size of the head relative to the joint-centers.}
 
 \item{torso_scale}{The size of the torso line relative to the remaing lines.}
+
+\item{adaptive_line_scaling}{If TRUE, scale line thicknesses relative to the coordinate range to maintain consistent avatar proportions. Default is TRUE.}
 
 \item{return_data}{Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.}
 

@@ -10,11 +10,15 @@ test_that("projecting to MP is stable when .method is 'first_last'", {
 
   #expect_known_value(project_single_joint_to_MP(df, LSX, LSY, LSZ, "LS", .method = "first_last"), here::here("tests", "testthat", "reference_files", "first_last"))
 
-  df <- project_full_body_to_MP(df, .method = "first_last")
-  numeric_columns <- names(dplyr::select_if(df,is.numeric))
-  df <- tidyr::pivot_longer(df, cols = dplyr::one_of(numeric_columns))
-  df <- dplyr::summarise(df, value = mean(value))
-  expect_equal(round(dplyr::pull(df, value), 4), 160.5583)
+  expect_warning({
+
+    df <- project_full_body_to_MP(df, .method = "first_last")
+    numeric_columns <- names(dplyr::select_if(df,is.numeric))
+    df <- tidyr::pivot_longer(df, cols = dplyr::one_of(numeric_columns))
+    df <- dplyr::summarise(df, value = mean(value))
+    expect_equal(round(dplyr::pull(df, value), 4), 160.5583)
+
+    }, regexp = NULL)
 
 })
 

@@ -4,16 +4,14 @@
 \alias{project_full_body_to_MP}
 \title{Project global joint positions to the planes of the movement}
 \usage{
-project_full_body_to_MP(.data, .method = "first_last")
+project_full_body_to_MP(.data, .method = "first_last", distance_threshold = 2)
 }
 \arguments{
 \item{.data}{A tibble containing 3D positions of the following left and right joints: toe, ankle, knee, hip, wrist, elbow, and shoulder}
 
-\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?\cr
-\itemize{
-\item \code{first_last} the projection will be created by using the first and the last frame of the recording.\cr
-\item \code{first_dist} the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.
-}}
+\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?}
+
+\item{distance_threshold}{Used only when \code{.method = "first_last"}. If the distance between first and last frame is much shorter than the max distance from the first frame, a warning will be given. Default is 2.}
 }
 \value{
 A tibble with the positions of the pre-specied joint-centers in the movement planes.
@@ -21,7 +19,7 @@ A tibble with the positions of the pre-specied joint-centers in the movement pla
 \description{
 project_full_body_to_MP() uses project_single_joint_to_MP() to project a pre-specified collection of joint centers onto the movement planes of the subject.
 The pre-specified joint centers are the following from the left and right side: toe, ankle, knee, hip, wrist, elbow, and shoulder.
-Please see the GitHub README.md fpr a more detailed description.
+Please see the GitHub README.md for a more detailed description.
 }
 \examples{
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)

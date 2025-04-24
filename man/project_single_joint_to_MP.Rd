@@ -10,7 +10,8 @@ project_single_joint_to_MP(
   X,
   Z,
   New_Name = "New",
-  .method = "first_last"
+  .method = "first_last",
+  distance_threshold = 2
 )
 }
 \arguments{
@@ -24,22 +25,19 @@ project_single_joint_to_MP(
 
 \item{New_Name}{The abbreviated name of the new joint, the name of the returned variables will start with the value given in New_Name}
 
-\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?\cr
-\itemize{
-\item \code{first_last} the projection will be created by using the first and the last frame of the recording.\cr
-\item \code{first_dist} the projection will use the first frame and the frame where the position of the subject is furthest away from the  position of the subject in the first frame.
-}}
+\item{.method}{Must be one of \code{c("first_last", "first_dist")}.\cr What method shall be used to create the projection?}
+
+\item{distance_threshold}{Used only when \code{.method = "first_last"}. If the distance between first and last frame is much shorter than the max distance from the first frame, a warning will be given. Default is 2.}
 }
 \value{
-A tibble containig three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
+A tibble containing three columns with coordinates in the forward, up, and right direction. The variables are named '"New_Name"_MPF', '"New_Name"_MPU' and '"New_Name"_MPR'
 }
 \description{
 project_single_joint_to_MP() projects the global joint center positions of a single joint onto the movement planes (MP). MP is calculated by first creating a direction going from
-the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame.\cr Please see the GitHub README.me for a
+the position of the hip joint centers at the first frame to the position of the hip joint centers at the last frame.\cr Please see the GitHub README.md for a
 more in-depth explanation.
 }
 \examples{
 df <- dplyr::filter(mocapr::mocapr_data, movement_nr == 1)
 project_single_joint_to_MP(df, Y=LSY, X=LSX, Z=LSZ, New_Name = "LS")
-
 }
