@@ -1,46 +1,90 @@
 # add_frontal_plane_knee_angle----
-#' Calculate frontal plane knee kinematics.
+#' Calculate frontal plane knee kinematics in anatomical or movement plane.
 #'
-#' Positive values of LFPKA and RFPKA reflects lateral deviation of the knee (knee varus).
+#' Positive values of LFPKA and RFPKA reflect lateral deviation of the knee (knee varus).
 #'
 #' @section Equation:
 #' \if{html}{\out{<div style="text-align: center">}\figure{eqFPKA.png}{options: style="width:750px;max-width:90\%;"}\out{</div>}}
 #' @section Figure:
 #' \if{html}{\out{<div style="text-align: center">}\figure{pcFPKA.png}{options: style="width:750px;max-width:50\%;"}\out{</div>}}
 #'
-#' @param .data A tibble containg knee and ankle spatial joint center positions in the anatomical frontal plane. These positions can be created from
-#' global spatial joint center positions using \code{project_full_body_to_AP()}
+#' @param .data A tibble containing knee and ankle spatial joint center positions.
+#' These can be created from global joint center positions using either
+#' \code{project_full_body_to_AP()} for anatomical projection or
+#' \code{project_full_body_to_MP()} for movement plane projection.
 #'
-#' @return The tibble supplied in \code{.data} argument with the added columns \code{LFPKA} and \code{RFPKA}.
+#' @param plane A character string specifying which plane to use for angle calculation.
+#' Must be either \code{"anatomical"} (default) or \code{"movement"}.
+#' When \code{"anatomical"}, the angle is calculated using the anatomical frontal plane
+#' (Y-up, X-right). When \code{"movement"}, the angle is calculated in the task-specific
+#' movement frontal plane (UP, RIGHT).
+#'
+#' @return The tibble supplied in \code{.data}, with added columns:
+#' \itemize{
+#'   \item \code{LFPKA} – Left Frontal Plane Knee Angle
+#'   \item \code{RFPKA} – Right Frontal Plane Knee Angle
+#' }
+#'
 #' @export
-#' @references Stone EE, Butler M, McRuer A, Gray A, Marks J, Skubic M. Evaluation of the Microsoft Kinect for screening ACL injury. Conf Proc IEEE Eng Med Biol Soc. 2013;2013:4152-5.
-#' \cr\cr Ortiz A, Rosario-Canales M, Rodriguez A, Seda A, Figueroa C, Venegas-Rios HL. Reliability and concurrent validity between two-dimensional and three-dimensional evaluations of knee valgus during drop jumps. Open access journal of sports medicine. 2016;7:65-73.
-#' \cr\cr Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH. Concurrent validity of lower extremity kinematics and jump characteristics captured in pre-school children by a markerless 3D motion capture system. Chiropr Man Therap. 2019;27:39.
+#'
+#' @references
+#' Stone EE, Butler M, McRuer A, Gray A, Marks J, Skubic M.
+#' Evaluation of the Microsoft Kinect for screening ACL injury.
+#' Conf Proc IEEE Eng Med Biol Soc. 2013;2013:4152-5.
+#'
+#' Ortiz A, Rosario-Canales M, Rodriguez A, Seda A, Figueroa C, Venegas-Rios HL.
+#' Reliability and concurrent validity between two-dimensional and three-dimensional evaluations
+#' of knee valgus during drop jumps. Open access journal of sports medicine. 2016;7:65-73.
+#'
+#' Harsted S, Holsgaard-Larsen A, Hestbaek L, Boyle E, Lauridsen HH.
+#' Concurrent validity of lower extremity kinematics and jump characteristics captured in
+#' pre-school children by a markerless 3D motion capture system.
+#' Chiropr Man Therap. 2019;27:39.
 #'
 #' @examples
-#' # Prepare data
+#' # Simulated example for anatomical frontal plane
 #' df <- data.frame(
-#'                  LA_APR = c(10,5,0,-5,-10),
-#'                  LK_APR = c(0,0,0,0,0),
-#'                  LA_APU = c(0,0,0,0,0),
-#'                  LK_APU = c(10,10,10,10,10),
-#'                  RA_APR = c(20,15,10,5,0),
-#'                  RK_APR = c(10,10,10,10,10),
-#'                  RA_APU = c(0,0,0,0,0),
-#'                  RK_APU = c(10,10,10,10,10))
+#'   LA_APR = c(10,5,0,-5,-10),
+#'   LK_APR = c(0,0,0,0,0),
+#'   LA_APU = c(0,0,0,0,0),
+#'   LK_APU = c(10,10,10,10,10),
+#'   RA_APR = c(20,15,10,5,0),
+#'   RK_APR = c(10,10,10,10,10),
+#'   RA_APU = c(0,0,0,0,0),
+#'   RK_APU = c(10,10,10,10,10)
+#' )
 #'
-#' add_frontal_plane_knee_angle(df)
-add_frontal_plane_knee_angle <- function(.data){
-  # Avoid  "no visible binding for global variable ..." when running check()
-  LFPKA <- LA_APR <- LK_APR <- LK_APU <- LA_APU <- NULL
-  RFPKA <- RA_APR <- RK_APR <- RK_APU <- RA_APU <- NULL
+#' add_frontal_plane_knee_angle(df, plane = "anatomical")
+add_frontal_plane_knee_angle <- function(.data, plane = "anatomical") {
+  # Bindings to avoid notes in R CMD check
+  LFPKA <- RFPKA <- NULL
+
+  if (!plane %in% c("anatomical", "movement")) {
+    stop('`plane` must be one of "anatomical" or "movement"')
+  }
+
+  # Determine suffix based on selected plane
+  suffix_R <- ifelse(plane == "anatomical", "APR", "MPR")
+  suffix_U <- ifelse(plane == "anatomical", "APU", "MPU")
+
+  # Column names based on selected plane
+  LA_R <- paste0("LA_", suffix_R)
+  LK_R <- paste0("LK_", suffix_R)
+  LA_U <- paste0("LA_", suffix_U)
+  LK_U <- paste0("LK_", suffix_U)
+
+  RA_R <- paste0("RA_", suffix_R)
+  RK_R <- paste0("RK_", suffix_R)
+  RA_U <- paste0("RA_", suffix_U)
+  RK_U <- paste0("RK_", suffix_U)
 
   .data %>%
     dplyr::mutate(
-      #tan(angle) = opposite/adjacent
-      LFPKA = (atan((LA_APR-LK_APR)/(LK_APU - LA_APU))/pi*180),
-      RFPKA = (atan((RA_APR-RK_APR)/(RK_APU - RA_APU))/pi*180)*-1)
+      LFPKA = atan((.data[[LA_R]] - .data[[LK_R]]) / (.data[[LK_U]] - .data[[LA_U]])) * 180 / pi,
+      RFPKA = atan((.data[[RA_R]] - .data[[RK_R]]) / (.data[[RK_U]] - .data[[RA_U]])) * -180 / pi
+    )
 }
+
 
 # add_frontal_plane_projection_angle----
 #' add fontal plane projection angle kinematics to a mocap tibble.
