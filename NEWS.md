@@ -1,8 +1,10 @@
 # mocapr 0.0.1.902
 ### Major changes
-* added import_opencap_mot() - this function import .mot kinematic files from the OpenCap system
+* added import_opencap_mot() - this function imports .mot kinematic files from the OpenCap system
 * added swap_axis() - a function to swap axis (e.g. Z and Y)
 * updated import_freemocap_csv() to match the changed output from freemocap
+* updated project_full_body_to_MP() and project_single_joint_to_MP() to give better warnings
+* updated add_frontal_plane_knee_angle() so that it can also be calculated in the movement plane
 
 # mocapr 0.0.1.9009
 ### Major changes

@@ -14,6 +14,7 @@
 #' @param circle_size The size of the joint centers when \code{use_geom_point = FALSE}.
 #' @param head_scale The size of the head relative to the joint-centers.
 #' @param torso_scale The size of the torso line relative to the remaing lines.
+#' @param adaptive_line_scaling If TRUE, scale line thicknesses relative to the coordinate range to maintain consistent avatar proportions. Default is TRUE.
 #' @param return_data Return the wrangled data before it is sent to ggplot. This is useful for understanding the data-structure and for developmental purposes.
 #' @param return_plot Return a plot instead of an animaiton. This is useful for customizing the plot before passing it to gganimate::
 #' @param reduce_data Defaults to FALSE. If TRUE the function will reduce the input data to only include the variables that are needed for the plot or animation.This may improve performance slightly.
@@ -69,6 +70,7 @@
                                point_alpha = 1,
                                head_scale = 2,
                                torso_scale = 1.5,
+                               adaptive_line_scaling = TRUE,
                                return_data = FALSE,
                                return_plot = FALSE,
                                reduce_data = FALSE,
@@ -173,6 +175,17 @@
       #Arrange the data according to joint. This will make ggplot connect the joints as we wish
       dplyr::arrange(frame, Joint)
 
+    # Scale line widths based on range if adaptive scaling is requested
+    if(adaptive_line_scaling) {
+      range_val <- max(df_data$value, na.rm = TRUE) - min(df_data$value, na.rm = TRUE)
+      scale_factor <- 3000 / range_val
+      df_data <- df_data %>%
+        dplyr::mutate(
+          size_path_color = size_path_color * scale_factor,
+          size_path_black = size_path_black * scale_factor
+        )
+    }
+
     if(return_data) {
       return(df_data)
     }
@@ -205,7 +218,7 @@
 
     }
 
-##Animate antomical (Function)----
+## Animate antomical (Function)----
 #' Animate motioncapture data in the anatomical planes
 #'
 #' \code{animate_anatomical()} animates motioncapture data that is projected onto the anatomical planes of the body using \code{mocapr::project_full_body_to_AP()}.
@@ -648,7 +661,8 @@ mocap_plot_basic <- function(.data,
       legend.position = "bottom",
       legend.title = ggplot2::element_blank(),
       panel.grid.major = ggplot2::element_blank())+
-    ggplot2::scale_size_identity()
+    ggplot2::scale_size_identity() +
+    ggplot2::scale_linewidth_identity()
 
     # How should the planes be faceted (make NULL if no facet is needed)
     if(planes_in_rows_or_cols == "rows"){
