@@ -1,6 +1,6 @@
 Package: mocapr
 Type: Package
-Title: Functions to import, plot, animate, and analyse motion capture data
+Title: Functions to Import, Plot, Animate, and Analyse Motion Capture Data
 Version: 0.0.1.902
 Author: Steen Harsted
 Maintainer: Steen Harsted <steenharsted@gmail.com>
