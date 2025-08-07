@@ -385,6 +385,7 @@ import_opencap_mot <- function(.mot) {
 #'   \item{marker_XYZ}{Marker coordinates in millimeters (numeric)}
 #' }
 #'
+#' @importFrom purrr as_vector
 #' @export
 #' @examples
 #' path <- system.file("examples", "opencap_vertical.trc", package = "mocapr")
