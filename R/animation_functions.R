@@ -744,7 +744,7 @@ mocap_plot_avatar <- function(.plot,
   U <- value <- size_path_color <- Side <- size_point <- size_circle <- NULL
   size_path_black <- NULL
 
-  if(!ggplot2::is.ggplot(.plot)){
+  if(!ggplot2::is_ggplot(.plot)){
     stop(".plot supplied in the first argument must be a ggplot object")
   }
 

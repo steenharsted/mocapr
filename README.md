@@ -2,6 +2,7 @@ mocapr
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/steenharsted/mocapr/actions/workflows/R-CMD-check.yaml)
@@ -28,7 +29,7 @@ packages as well as [`purrr`](https://github.com/tidyverse/purrr).
 
 While all functions should run without loading other libraries I
 recommend you also load the tidyverse `library(tidyverse)` when loading
-the mocapr library.
+the `mocapr` library.
 
 ## Installation
 
@@ -48,7 +49,8 @@ order to run `gganimate` functions.
 `mocapr` supports import of .csv files from motion capture systems like:
 [the Captury](http://thecaptury.com/),
 [FreeMoCap](https://github.com/freemocap/freemocap), and
-[OptiTrack](https://optitrack.com/), as well as kinematic output files
+[OptiTrack](https://optitrack.com/), .trc files from
+[OpenCap](https://www.opencap.ai/), as well as kinematic output files
 (.mot) from [OpenCap](https://www.opencap.ai/).
 
 `mocapr` is capable of working with motion capture data from other
@@ -65,6 +67,8 @@ function and include the function in future versions of this package.
   - `import_captury_csv()`
   - `import_freemocap_csv()`
   - `import_optitrack_csv()`
+  - `import_opencap_trc()`
+  - `import_opencap_mot()`
 - **Projection functions**
   - `project_full_body_to_AP()`
   - `project_full_body_to_MP()`

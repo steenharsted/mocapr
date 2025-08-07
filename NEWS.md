@@ -1,3 +1,10 @@
+# mocapr 0.0.1.903
+### Major changes
+* added import_opencap_trc - This function imports joint center positions from the OpenCap system
+* removed import_captury() - this function had been superseeded by import_captury_csv() for 2 years now and is removed
+* added vctrs to imports
+
+
 # mocapr 0.0.1.902
 ### Major changes
 * added import_opencap_mot() - this function imports .mot kinematic files from the OpenCap system
