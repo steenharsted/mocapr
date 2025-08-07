@@ -26,8 +26,7 @@ knitr::opts_chunk$set(
 
 The goal of `mocapr` is to help researchers and clinicians to work with motion capture data in R by providing functions that can import, plot, animate, and analyse motion capture data. 
 
-`mocapr` uses a series of tidyverse packages to import ([`readr`](https://github.com/tidyverse/readr), [`tidyr`](https://github.com/tidyverse/tidyr), [`dplyr`](https://github.com/tidyverse/dplyr), [`stringr`](https://github.com/tidyverse/stringr), [`forcats`](https://github.com/tidyverse/forcats)), plot ([`ggplot2`](https://github.com/tidyverse/ggplot2), [`ggforce`](https://ggforce.data-imaginist.com/)), animate ([`gganimate`](https://github.com/thomasp85/gganimate)), and analyse motion capture data.  
-The package also contains two sample data sets `mocapr_data` and `mocapr_synthetic_data` which is generated using some of the above packages as well as [`purrr`](https://github.com/tidyverse/purrr).
+`mocapr` supports import of .csv files from motion capture systems like: [the Captury](http://thecaptury.com/), [FreeMoCap](https://github.com/freemocap/freemocap), and [OptiTrack](https://optitrack.com/), .trc files from [OpenCap](https://www.opencap.ai/), as well as kinematic output files (.mot) from [OpenCap](https://www.opencap.ai/).
 
 While all functions should run without loading other libraries I recommend you also load the tidyverse `library(tidyverse)` when loading the `mocapr` library.
 
@@ -42,12 +41,6 @@ devtools::install_github("steenharsted/mocapr")
 ```
 
 You may have to install additional packages manually that are needed in order to run `gganimate` functions.
-
-
-### Import files
-`mocapr` supports import of .csv files from motion capture systems like: [the Captury](http://thecaptury.com/), [FreeMoCap](https://github.com/freemocap/freemocap), and [OptiTrack](https://optitrack.com/), .trc files from [OpenCap](https://www.opencap.ai/), as well as kinematic output files (.mot) from [OpenCap](https://www.opencap.ai/). 
-
-`mocapr` is capable of working with motion capture data from other systems as long as the data contain frame by frame global spatial joint-center positions. If the data contains these positions it is possible to wrangle the data into a format that will allow usage of the functions in this package. If you have such motion capture data from other systems,  I will be happy to make an attempt at writing an import function and include the function in future versions of this package. 
 
 
 ## Functions and objects in `mocapr`
