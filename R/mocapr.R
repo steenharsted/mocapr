@@ -3,7 +3,11 @@
 #' The mocapr package provides 6 groups of functions and 2 built in data sets.
 #'
 #' @section Import Functions:
-#' \code{\link{import_captury}}\cr
+#' \code{\link{import_captury_csv}}\cr
+#' \code{\link{import_freemocap_csv}}\cr
+#' \code{\link{import_opencap_trc}}\cr
+#' \code{\link{import_opencap_mot}}\cr
+#' \code{\link{import_optitrack_csv}}\cr
 #' @section Projection functions:
 #' \code{\link{project_full_body_to_AP}}\cr
 #' \code{\link{project_full_body_to_MP}}\cr
