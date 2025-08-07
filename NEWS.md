@@ -3,6 +3,7 @@
 * added import_opencap_trc - This function imports joint center positions from the OpenCap system
 * removed import_captury() - this function had been superseeded by import_captury_csv() for 2 years now and is removed
 * added vctrs to imports
+* added purrr to imports
 
 
 # mocapr 0.0.1.902
